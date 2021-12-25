@@ -58,14 +58,14 @@ namespace TinyGames
 
             Random random = new Random(12);
 
-            for(int i = 0; i < 0; i++)
+            for(int i = 0; i < 100; i++)
             {
                 World.AddBody(new Body(new Vector2((random.NextFloat() * 2 - 1) * 180, (random.NextFloat() * 2 - 1) * 180), new Collider(AABB.CreateCentered(0, 0, random.NextFloat() * 64 + 8, random.NextFloat() * 64 + 8))) { 
                     Static = false
                 });
             }
 
-            for(int i = 0; i < 10; i++)
+            for(int i = 0; i < 0; i++)
             {
                 World.AddBody(new Body(new Vector2(i * 16 - 128, 0), new Collider(AABB.CreateCentered(0, 0, 16, 16)))
                 {
