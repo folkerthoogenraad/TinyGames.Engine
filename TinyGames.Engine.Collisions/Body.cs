@@ -12,13 +12,15 @@ namespace TinyGames.Engine.Collisions
 
         public Collider Collider;
         public bool Static;
+        public bool Solid;
 
-        public Body(Vector2 position, Collider collider, bool isStatic = false)
+        public Body(Vector2 position, Collider collider, bool isStatic = false, bool isSolid = false)
         {
             Position = position;
             Velocity = new Vector2();
             Collider = collider;
             Static = isStatic;
+            Solid = isSolid;
         }
     }
 }

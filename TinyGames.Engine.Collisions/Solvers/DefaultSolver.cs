@@ -17,6 +17,8 @@ namespace TinyGames.Engine.Collisions.Solvers
                 var boundsA = set.Bounds[collision.BodyA];
                 var boundsB = set.Bounds[collision.BodyB];
 
+                if (!boundsA.Solid && !boundsB.Solid) continue;
+
                 var aabbA = boundsA.Bounds.Translated(boundsA.UnstuckMotion);
                 var aabbB = boundsB.Bounds.Translated(boundsB.UnstuckMotion);
 

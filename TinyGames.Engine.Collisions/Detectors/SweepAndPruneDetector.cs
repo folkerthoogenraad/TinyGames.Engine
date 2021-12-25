@@ -17,7 +17,8 @@ namespace TinyGames.Engine.Collisions.Detectors
                 Velocity = x.Velocity,
                 Bounds = x.Collider.Bounds.Translated(x.Position),
                 Mass = 1,
-                Static = x.Static
+                Static = x.Static,
+                Solid = x.Solid,
             }).OrderBy(x => x.Bounds.Left).ToList();
 
             var collisions = new List<Collision>();
