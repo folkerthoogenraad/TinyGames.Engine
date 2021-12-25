@@ -7,6 +7,8 @@ using TinyGames.Engine.Graphics;
 
 using System.Linq;
 using TinyGames.Engine.Maths;
+using TinyGames.Engine.Collisions;
+using System.Collections.Generic;
 
 namespace TinyGames
 {
@@ -19,12 +21,16 @@ namespace TinyGames
 
         public Sprite Ground;
 
+        public Sprite SpikesSprite;
+        public Sprite CoinsSprite;
+
         public Sprite Lander;
         public Sprite BrokenLander;
 
         public Sprite UIGameOver;
         public Sprite UIDone;
 
+        public Body PlayerBody;
         public Vector2 Position;
         public Vector2 Velocity;
         public float GroundHeight = 300;
@@ -46,6 +52,10 @@ namespace TinyGames
         public SpriteNumbers SpriteNumbers;
 
         private Vector2[] Stars;
+        private Body[] Spikes;
+        private Body[] Coins;
+
+        private World World;
 
         public Color ForegroundColor = Color.White;
         public Color BackgroundColor = new Color(15, 24, 32);
@@ -83,12 +93,17 @@ namespace TinyGames
             Camera.Position = new Vector2(0, GroundHeight - Camera.Height / 2 + 32);
 
             Lander = new Sprite(sheet, new Rectangle(0, 0, 16, 16));
+
             Ground = new Sprite(sheet, new Rectangle(0, 16, 16, 16));
+            SpikesSprite = new Sprite(sheet, new Rectangle(16, 16, 16, 16));
             BrokenLander = new Sprite(sheet, new Rectangle(16, 0, 16, 16));
+
+            CoinsSprite = new Sprite(sheet, new Rectangle(48, 0, 16, 16));
 
             Lander.CenterOrigin();
             BrokenLander.CenterOrigin();
-            
+            CoinsSprite.CenterOrigin();
+
             UIDone = new Sprite(sheet, new Rectangle(0, 48, 64, 16));
             UIGameOver = new Sprite(sheet, new Rectangle(0, 32, 64, 16));
 
@@ -100,7 +115,15 @@ namespace TinyGames
             var bounds = Camera.Bounds;
             var random = new Random();
 
+            World = new World();
+
+            Spikes = new Body[0];
+            Coins = new Body[0];
             Stars = new Vector2[64].Select(x => bounds.TopLeft + new Vector2(bounds.Width * (float)random.NextDouble(), bounds.Height * (float)random.NextDouble())).ToArray();
+
+            PlayerBody = new Body(Position, new Collider(AABB.CreateCentered(Vector2.Zero, new Vector2(16, 16))));
+
+            World.AddBody(PlayerBody);
         }
 
         protected override void UnloadContent()
@@ -203,6 +226,17 @@ namespace TinyGames
                 Graphics.DrawRectangle(star, new Vector2(1, 1), Color.White);
             }
 
+            // Spikes
+            foreach (var spike in Spikes)
+            {
+                Graphics.DrawSprite(SpikesSprite, spike.Position);
+            }
+            // Spikes
+            foreach (var coin in Coins)
+            {
+                Graphics.DrawSprite(CoinsSprite, coin.Position);
+            }
+
             // Draw sprite
             Graphics.DrawSprite(Broken ? BrokenLander : Lander, Position, Angle * Tools.RadToDeg);
 
@@ -274,6 +308,61 @@ namespace TinyGames
             Position = new Vector2();
             Velocity = new Vector2();
             Done = false;
+
+
+            World = new World();
+
+            Spikes = GenerateSpikes();
+            Coins = GenerateCoins();
+
+            foreach (var body in Spikes) World.AddBody(body);
+            foreach (var body in Coins) World.AddBody(body);
+            World.AddBody(PlayerBody);
+        }
+
+        public Body[] GenerateSpikes()
+        {
+            var random = new Random();
+            var spikes = new List<Body>();
+            int skip = 0;
+            for (int i = -10; i < 10; i++)
+            {
+                if (skip > 0)
+                {
+                    skip -= 1;
+                    continue;
+                }
+                if (random.NextFloat() < 0.75f)
+                {
+                    skip = (int)(random.NextFloat() * 2) + 2;
+                }
+                spikes.Add(new Body(
+                    new Vector2(i * 16, GroundHeight - 16),
+                    new Collider(AABB.Create(0, 0, 16, 16)),
+                    true));
+            }
+            return spikes.ToArray();
+        }
+        public Body[] GenerateCoins()
+        {
+            var random = new Random();
+            var coins = new List<Body>();
+
+            float center = 0;
+            int count = 3;
+            float offsetY = GroundHeight / (count + 2);
+
+            float yPos = 0;
+
+            for(int i = 0; i < count; i++)
+            {
+                center += random.NextFloat() * 128 - 64;
+                yPos += offsetY;
+
+                coins.Add(new Body(new Vector2(center, yPos), new Collider(AABB.CreateCentered(Vector2.Zero, new Vector2(16, 16)))));
+            }
+
+            return coins.ToArray();
         }
     }
 }
