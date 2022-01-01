@@ -7,6 +7,6 @@ namespace TinyGames.Engine.Collisions.Solvers
 {
     public interface ISolver
     {
-        public void Solve(CollisionSet set);
+        public void Solve(BodyCollisionSet set);
     }
 }

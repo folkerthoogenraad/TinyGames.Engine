@@ -8,6 +8,7 @@ using TinyGames.Engine.Graphics;
 using System.Linq;
 using TinyGames.Engine.Maths;
 using TinyGames.Engine.Collisions;
+using TinyGames.Engine.Collisions.Contracts;
 
 namespace TinyGames
 {
@@ -24,6 +25,8 @@ namespace TinyGames
 
         Vector2 MousePosition;
         Vector2 OriginPosition;
+
+        private BodyCollisionSet _collisions;
 
         public CollisionTestGame()
         {
@@ -52,16 +55,16 @@ namespace TinyGames
 
             Camera = new Camera(360, 16f / 9f);
 
-            MouseBody = new Body(new Vector2(0, 0), new Collider(AABB.Create(-16, -16, 32, 32)));
+            MouseBody = new Body(new Vector2(0, 0), new Collider(AABB.Create(-16, -16, 32, 32))) { Solid = true };
 
             World.AddBody(MouseBody);
 
             Random random = new Random(12);
 
-            for(int i = 0; i < 100; i++)
+            for(int i = 0; i < 10; i++)
             {
                 World.AddBody(new Body(new Vector2((random.NextFloat() * 2 - 1) * 180, (random.NextFloat() * 2 - 1) * 180), new Collider(AABB.CreateCentered(0, 0, random.NextFloat() * 64 + 8, random.NextFloat() * 64 + 8))) { 
-                    Static = false
+                    Solid = true
                 });
             }
 
@@ -69,7 +72,7 @@ namespace TinyGames
             {
                 World.AddBody(new Body(new Vector2(i * 16 - 128, 0), new Collider(AABB.CreateCentered(0, 0, 16, 16)))
                 {
-                    Static = true
+                    Solid = true
                 });
             }
         }
@@ -99,7 +102,7 @@ namespace TinyGames
             var wantedPosition = targetPosition;
             MouseBody.Velocity = Vector2.Lerp(MouseBody.Velocity, (wantedPosition - MouseBody.Position) * 10, delta * 10);
 
-            World.Update(delta);
+            _collisions = World.Update(delta);
 
             base.Update(gameTime);
         }
@@ -156,17 +159,17 @@ namespace TinyGames
                 DrawBody(body, Color.Green);
             }
 
-            if (world.CollisionSet != null)
+            if (_collisions != null)
             {
-                foreach (var collision in world.CollisionSet.Collisions)
+                foreach (var collision in _collisions.CollisionIndices)
                 {
-                    var a = world.CollisionSet.Bounds[collision.BodyA];
-                    var b = world.CollisionSet.Bounds[collision.BodyB];
+                    var a = _collisions.Bounds[collision.BodyA];
+                    var b = _collisions.Bounds[collision.BodyB];
 
-                    // DrawAABB(a.Bounds, Color.Red);
-                    // DrawAABB(a.Bounds.Translated(a.UnstuckMotion), Color.Red);
-                    // DrawAABB(b.Bounds, Color.Red);
-                    // DrawAABB(b.Bounds.Translated(b.UnstuckMotion), Color.Red);
+                    //DrawAABB(a.Bounds, Color.Red);
+                    DrawAABB(a.Bounds.Translated(a.UnstuckMotion), Color.Red);
+                    //DrawAABB(b.Bounds, Color.Red);
+                    DrawAABB(b.Bounds.Translated(b.UnstuckMotion), Color.Red);
                 }
             }
         }

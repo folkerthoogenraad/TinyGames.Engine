@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31911.196
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyGames", "TinyGames\TinyGames.csproj", "{E434C5E1-4806-4931-9969-E863DEC8806B}"
 EndProject
@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyGames.Engine.Graphics",
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyGames.Engine.Collisions", "TinyGames.Engine.Collisions\TinyGames.Engine.Collisions.csproj", "{48245527-1A27-4B5E-83F7-1A543057114B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tinygames.Engine.Scenes", "Tinygames.Engine.Scenes\Tinygames.Engine.Scenes.csproj", "{93FB4E84-9117-405B-8AB9-387181A883C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,10 @@ Global
 		{48245527-1A27-4B5E-83F7-1A543057114B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48245527-1A27-4B5E-83F7-1A543057114B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48245527-1A27-4B5E-83F7-1A543057114B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93FB4E84-9117-405B-8AB9-387181A883C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93FB4E84-9117-405B-8AB9-387181A883C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93FB4E84-9117-405B-8AB9-387181A883C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93FB4E84-9117-405B-8AB9-387181A883C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

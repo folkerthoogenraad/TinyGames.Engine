@@ -8,7 +8,7 @@ namespace TinyGames.Engine.Collisions.Detectors
 {
     public class SweepAndPruneDetector : IDetector
     {
-        public CollisionSet Solve(IEnumerable<Body> bodies)
+        public BodyCollisionSet Solve(IEnumerable<Body> bodies)
         {
             var bodyBounds = bodies.Select(x => new BodyBounds()
             {
@@ -21,12 +21,11 @@ namespace TinyGames.Engine.Collisions.Detectors
                 Solid = x.Solid,
             }).OrderBy(x => x.Bounds.Left).ToList();
 
-            var collisions = new List<Collision>();
-            // TODO actually do sweep and prune instead of this shit but ok
+            var collisions = new List<BodyCollisionIndices>();
 
-            CollisionSet result = new CollisionSet();
+            BodyCollisionSet result = new BodyCollisionSet();
             result.Bounds = bodyBounds;
-            result.Collisions = collisions;
+            result.CollisionIndices = collisions;
             
             for(int i = 0; i < bodyBounds.Count; i++)
             {
@@ -36,12 +35,11 @@ namespace TinyGames.Engine.Collisions.Detectors
                 {
                     var boundsB = bodyBounds[j];
 
-                    // No static static collisions. Its kinda useless.
                     if (boundsA.Static && boundsB.Static) continue;
 
                     if (boundsA.Bounds.Overlaps(boundsB.Bounds))
                     {
-                        collisions.Add(new Collision(i, j));
+                        collisions.Add(new BodyCollisionIndices(i, j));
                     }
                 }
             }

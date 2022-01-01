@@ -4,12 +4,12 @@ using System.Text;
 
 namespace TinyGames.Engine.Collisions.Contracts
 {
-    public class Collision
+    public struct BodyCollisionIndices
     {
         public int BodyA;
         public int BodyB;
 
-        public Collision(int a, int b)
+        public BodyCollisionIndices(int a, int b)
         {
             BodyA = a;
             BodyB = b;

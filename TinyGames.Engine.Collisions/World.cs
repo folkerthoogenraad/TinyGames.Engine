@@ -11,8 +11,6 @@ namespace TinyGames.Engine.Collisions
     {
         public IEnumerable<Body> Bodies => _bodies;
 
-        public CollisionSet CollisionSet;
-
         private IDetector _detector;
         private ISolver _solver;
         private List<Body> _bodies;
@@ -34,25 +32,31 @@ namespace TinyGames.Engine.Collisions
             _bodies.Remove(body);
         }
 
-        public void Update(float delta)
+        public BodyCollisionSet Update(float delta)
         {
             // Update positions
             foreach(var body in _bodies)
             {
+                if (body.Static) continue;
+
                 body.Position += body.Velocity * delta;
             }
 
-            CollisionSet = _detector.Solve(_bodies);
-            _solver.Solve(CollisionSet);
+            // Solve the collisions
+            var collisions = _detector.Solve(_bodies);
+            _solver.Solve(collisions);
 
-            foreach(var collision in CollisionSet.Collisions)
+            // Get the unstuck motion
+            foreach(var collision in collisions.CollisionIndices)
             {
-                var from = CollisionSet.Bounds[collision.BodyA];
-                var to = CollisionSet.Bounds[collision.BodyB];
+                var from = collisions.Bounds[collision.BodyA];
+                var to = collisions.Bounds[collision.BodyB];
 
                 from.Body.Position = from.Position + from.UnstuckMotion;
                 to.Body.Position = to.Position + to.UnstuckMotion;
             }
+
+            return collisions;
         }
     }
 }

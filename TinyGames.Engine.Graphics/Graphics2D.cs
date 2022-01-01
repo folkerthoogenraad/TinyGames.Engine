@@ -7,19 +7,6 @@ using TinyGames.Engine.Maths;
 
 namespace TinyGames.Engine.Graphics
 {
-    public enum FontVAlign
-    {
-        Top,
-        Center,
-        Bottom
-    }
-
-    public enum FontHAlign
-    {
-        Left,
-        Center,
-        Right
-    }
 
     public class Graphics2D
     {

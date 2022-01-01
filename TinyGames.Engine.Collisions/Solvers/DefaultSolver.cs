@@ -10,9 +10,9 @@ namespace TinyGames.Engine.Collisions.Solvers
 {
     public class DefaultSolver : ISolver
     {
-        public void Solve(CollisionSet set)
+        public void Solve(BodyCollisionSet set)
         {
-            foreach(var collision in set.Collisions)
+            foreach(var collision in set.CollisionIndices)
             {
                 var boundsA = set.Bounds[collision.BodyA];
                 var boundsB = set.Bounds[collision.BodyB];
