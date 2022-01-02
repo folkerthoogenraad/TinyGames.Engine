@@ -159,7 +159,7 @@ namespace TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators
                 xOffset += _glyphWidth;
                 index++;
 
-                if(index > _columnCount)
+                if(index >= _columnCount)
                 {
                     index = 0;
                     xOffset = 0;
@@ -191,8 +191,8 @@ namespace TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators
             _glyphWidth = newWidth;
             _glyphHeight = newHeight;
 
-            int textureWidth = RoundToNearestPowerOfTwo(rows * newWidth);
-            int textureHeight = RoundToNearestPowerOfTwo(columns * newHeight);
+            int textureWidth = RoundToNearestPowerOfTwo((rows + 1) * newWidth);
+            int textureHeight = RoundToNearestPowerOfTwo((columns + 1) * newHeight);
 
             _colors = new Color[textureWidth * textureHeight];
             _texture = new Texture2D(_device, textureWidth, textureHeight);

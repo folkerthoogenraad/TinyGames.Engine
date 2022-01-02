@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using TinyGames.Engine.Graphics.Fonts;
 using TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators;
+using TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators.Contracts;
+using System.IO;
 
 namespace TinyGames
 {
@@ -53,32 +55,8 @@ namespace TinyGames
 
             Camera = new Camera(360, 16f / 9f);
 
-            Font = FontLoader.Load(new FontLoaderSettings()
-            {
-                GlyphOffsetX = 1,
-                GlyphOffsetY = 1,
 
-                GlyphSeperationX = 1,
-                GlyphSeperationY = 1,
-
-                GlyphWidth = 8,
-                GlyphHeight = 10,
-
-                GlyphBaseline = 8,
-
-                LetterSpacing = 1,
-
-                Texture = Content.Load<Texture2D>("Fonts/Font8x10"),
-                GlyphRows = new string[] {
-                    "ABCDEFGHIJKLMN",
-                    "OPQRSTUVWXYZ",
-                    "0123456789",
-                    ".,!?:;#'\"",
-                    "abcdefghijklmn",
-                    "opqrstuvwxyz"
-                },
-            });
-
+            Font = Content.LoadFont("Fonts/Font16x16");
             OutlineFont = FontOutline.Create(GraphicsDevice, Font);
         }
 
@@ -98,15 +76,17 @@ namespace TinyGames
 
         protected override void Draw(GameTime gameTime)
         {
-            Graphics.Clear(Color.CornflowerBlue);
+            Graphics.Clear(Color.DarkSlateGray);
 
             Graphics.Begin(Camera.GetMatrix());
 
             string text = "The quick brown fox jumps over the lazy frog";
-            string text2 = "0123456789!?";
+            string text2 = "0123456789";
+            string text3 = "Aardbei is een lekkere groente";
 
             DrawText(text, new Vector2(0, -16));
             DrawText(text2, new Vector2(0, 16));
+            DrawText(text3, new Vector2(0, 16 + 32));
 
             Graphics.End();
 
@@ -118,11 +98,10 @@ namespace TinyGames
             Vector2 size = Font.Measure(text);
             Vector2 scale = new Vector2(2, 2);
 
-            Graphics.DrawRectangle(position - size * scale * 0.5f, size * scale, Color.Green);
+            //Graphics.DrawRectangle(position - size * scale * 0.5f, size * scale, Color.Green);
 
             Graphics.DrawString(OutlineFont, text, position, scale, Color.Black, FontHAlign.Center, FontVAlign.Center);
             Graphics.DrawString(Font, text, position, scale, Color.White, FontHAlign.Center, FontVAlign.Center);
-
         }
     }
 }
