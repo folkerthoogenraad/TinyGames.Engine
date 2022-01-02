@@ -8,41 +8,86 @@ using TinyGames.Engine.Graphics;
 
 namespace TinyGames.Engine.Graphics.Fonts
 {
+    public class Glyph
+    {
+        public Rectangle Rectangle { get; set; }
+
+        public int Width => Rectangle.Width;
+        public int Height => Rectangle.Height;
+
+        public int OffsetX = 0;
+        public int OffsetY = 0;
+        public int Advance { get; set; }
+    }
+
     public class Font
     {
-        private Dictionary<char, Sprite> Sprites;
+        private Texture2D _texture;
+        private Dictionary<char, Glyph> _glyphs;
+
+        // TODO make this into something readonly or something
+        public Dictionary<char, Glyph> Glyphs => _glyphs;
+        public Texture2D Texture => _texture;
 
         public float LetterSpacing { get; set; } = 1;
+        public float Baseline { get; set; } = 0;
+        public int Height { get; set; } = 0;
 
-        public Font()
+        public float SpaceSize { get; set; } = 4;
+
+        public Font(Texture2D texture)
         {
-
+            _glyphs = new Dictionary<char, Glyph>();
+            _texture = texture; 
         }
 
-        public void DrawString(Graphics2D graphics, string t, Vector2 position)
+        public void DrawString(Graphics2D graphics, string t, Vector2 position, Vector2 scale, Color color, FontHAlign halign, FontVAlign valign)
         {
-            foreach (var sprite in t.Select(c => GetSpriteForCharacter(c)))
-            {
-                graphics.DrawSprite(sprite, position);
+            position -= scale * Measure(t) * GetAlignVector(halign, valign);
 
-                position.X += sprite.Width;
-                position.X += LetterSpacing;
+            foreach (var ch in t)
+            {
+                if(ch == ' ')
+                {
+                    position.X += SpaceSize * scale.X;
+                    continue;
+                }
+
+                var glyph = GetGlyphForCharacter(ch);
+
+                graphics.DrawTextureRegion(_texture, glyph.Rectangle, position + new Vector2(glyph.OffsetX, glyph.OffsetY) * scale, scale * new Vector2(glyph.Width, glyph.Height), color);
+
+                position.X += glyph.Advance * scale.X;
+                position.X += LetterSpacing * scale.X;
             }
         }
 
         public Vector2 Measure(string t)
         {
             Vector2 size = new Vector2();
+            size.Y = Height;
 
+            int offsetX = 0;
 
             for (int i = 0; i < t.Length; i++)
             {
                 bool last = i == t.Length - 1;
 
-                Sprite sprite = GetSpriteForCharacter(t[i]);
+                char ch = t[i];
 
-                size.X += sprite.Width;
-                size.Y = MathF.Max(size.Y, sprite.Height);
+                if(ch == ' ')
+                {
+                    size.X += SpaceSize;
+                    continue;
+                }
+
+                Glyph glyph = GetGlyphForCharacter(ch);
+
+                size.X += glyph.Advance;
+
+                // TODO figure out if we need this.
+                // This doesn't quite work if we put the offset here.
+                offsetX = 0;// glyph.Width - glyph.Advance;
 
                 if (!last)
                 {
@@ -50,18 +95,33 @@ namespace TinyGames.Engine.Graphics.Fonts
                 }
             }
 
-            return size;
+            return new Vector2(size.X + offsetX, size.Y);
         }
 
-        public Sprite GetSpriteForCharacter(char c)
+        public Glyph GetGlyphForCharacter(char c)
         {
-            return Sprites[c];
+            return _glyphs[c];
         }
 
-        public void SetSpriteForCharacter(char c, Sprite s)
+        public void SetGlyphForCharacter(char c, Glyph g)
         {
-            Sprites[c] = s;
+            _glyphs[c] = g;
         }
 
+        private Vector2 GetAlignVector(FontHAlign hAlign, FontVAlign vAlign)
+        {
+            float x = 0;
+            float y = 0;
+
+            if (hAlign == FontHAlign.Left) x = 0;
+            if (hAlign == FontHAlign.Center) x = 0.5f;
+            if (hAlign == FontHAlign.Right) x = 1;
+
+            if (vAlign == FontVAlign.Top) y = 0;
+            if (vAlign == FontVAlign.Center) y = 0.5f;
+            if (vAlign == FontVAlign.Bottom) y = 1;
+
+            return new Vector2(x, y);
+        }
     }
 }

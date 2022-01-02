@@ -165,6 +165,10 @@ namespace TinyGames.Engine.Graphics
 
         public void DrawTextureRegion(Texture2D texture, Rectangle sourceRectangle, Vector2 position, Vector2 size, float depth = 0)
         {
+            DrawTextureRegion(texture, sourceRectangle, position, size, Color.White, depth);
+        }
+        public void DrawTextureRegion(Texture2D texture, Rectangle sourceRectangle, Vector2 position, Vector2 size, Color blend, float depth = 0)
+        {
             if (VertexIndex >= Vertices.Length - 6) Flush();
 
             SetTexture(texture);
@@ -182,13 +186,13 @@ namespace TinyGames.Engine.Graphics
 
             Vector3 pos = new Vector3(position, depth);
 
-            Vertex(pos + new Vector3(0, 0, 0), new Vector2(u0, v0), Color.White);
-            Vertex(pos + new Vector3(size.X, 0, 0), new Vector2(u1, v0), Color.White);
-            Vertex(pos + new Vector3(size.X, size.Y, 0), new Vector2(u1, v1), Color.White);
+            Vertex(pos + new Vector3(0, 0, 0), new Vector2(u0, v0), blend);
+            Vertex(pos + new Vector3(size.X, 0, 0), new Vector2(u1, v0), blend);
+            Vertex(pos + new Vector3(size.X, size.Y, 0), new Vector2(u1, v1), blend);
 
-            Vertex(pos + new Vector3(0, 0, 0), new Vector2(u0, v0), Color.White);
-            Vertex(pos + new Vector3(size.X, size.Y, 0), new Vector2(u1, v1), Color.White);
-            Vertex(pos + new Vector3(0, size.Y, 0), new Vector2(u0, v1), Color.White);
+            Vertex(pos + new Vector3(0, 0, 0), new Vector2(u0, v0), blend);
+            Vertex(pos + new Vector3(size.X, size.Y, 0), new Vector2(u1, v1), blend);
+            Vertex(pos + new Vector3(0, size.Y, 0), new Vector2(u0, v1), blend);
         }
 
         public void DrawLine(Vector2 start, Vector2 end, float width, float depth, Color blend)
