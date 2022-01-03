@@ -10,5 +10,9 @@ namespace TinyGames.Engine.Extensions
         {
             return (float)random.NextDouble();
         }
+        public static float NextFloatNormalized(this Random random)
+        {
+            return (float)(random.NextDouble() * 2 - 1);
+        }
     }
 }

@@ -388,6 +388,7 @@ namespace TinyGames.Engine.Graphics
 #endif
 
             var effect = CurrentEffect as BasicEffect;
+            var alphaTest = CurrentEffect as AlphaTestEffect;
 
             if (effect != null)
             {
@@ -397,8 +398,15 @@ namespace TinyGames.Engine.Graphics
                 effect.TextureEnabled = true;
                 effect.VertexColorEnabled = true;
             }
-            
-            
+            if (alphaTest != null)
+            {
+                alphaTest.View = ViewMatrix;
+                alphaTest.World = ProjectionMatrix;
+                alphaTest.Texture = Textures[0];
+                alphaTest.VertexColorEnabled = true;
+            }
+
+
             foreach (var pass in CurrentEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
