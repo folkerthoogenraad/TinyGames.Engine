@@ -14,7 +14,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyGames.Engine.Graphics",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyGames.Engine.Collisions", "TinyGames.Engine.Collisions\TinyGames.Engine.Collisions.csproj", "{48245527-1A27-4B5E-83F7-1A543057114B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tinygames.Engine.Scenes", "Tinygames.Engine.Scenes\Tinygames.Engine.Scenes.csproj", "{93FB4E84-9117-405B-8AB9-387181A883C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tinygames.Engine.Scenes", "Tinygames.Engine.Scenes\Tinygames.Engine.Scenes.csproj", "{93FB4E84-9117-405B-8AB9-387181A883C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptica", "Cryptica\Cryptica.csproj", "{9894461E-483A-404D-A965-426E52F3E14F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,10 @@ Global
 		{93FB4E84-9117-405B-8AB9-387181A883C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93FB4E84-9117-405B-8AB9-387181A883C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93FB4E84-9117-405B-8AB9-387181A883C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9894461E-483A-404D-A965-426E52F3E14F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9894461E-483A-404D-A965-426E52F3E14F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9894461E-483A-404D-A965-426E52F3E14F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9894461E-483A-404D-A965-426E52F3E14F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -356,13 +356,13 @@ namespace TinyGames.Engine.Graphics
 
             if (VertexIndex <= 0) return;
 
-            Device.SamplerStates[0] = SamplerState.PointClamp;
+            Device.SamplerStates[0] = SamplerState.PointWrap;
             Device.RasterizerState = RasterizerState.CullNone;
-
+            
             Device.DepthStencilState = DefaultDepthStencilState;
             Device.BlendState = DefaultBlendState;
 
-
+#if false
             // TODO figure out if this is a lot slower or not? I'm not too sure how cached all this is
             for(int i = 0; i < Textures.Length; i++)
             {
@@ -385,7 +385,18 @@ namespace TinyGames.Engine.Graphics
                 if (paramName == "ScreenWidth") param.SetValue((float)Device.Viewport.Width);
                 if (paramName == "ScreenHeight") param.SetValue((float)Device.Viewport.Height);
             }
+#endif
 
+            var effect = CurrentEffect as BasicEffect;
+
+            if (effect != null)
+            {
+                effect.View = ViewMatrix;
+                effect.World = ProjectionMatrix;
+                effect.Texture = Textures[0];
+                effect.TextureEnabled = true;
+                effect.VertexColorEnabled = true;
+            }
             
             
             foreach (var pass in CurrentEffect.CurrentTechnique.Passes)

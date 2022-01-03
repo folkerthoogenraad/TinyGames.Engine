@@ -50,6 +50,7 @@ namespace TinyGames
         protected override void LoadContent()
         {
             var effect = Content.Load<Effect>("Effects/StandardEffect");
+            effect = new BasicEffect(GraphicsDevice);
 
             Graphics = new Graphics2D(GraphicsDevice, effect);
 
@@ -100,8 +101,8 @@ namespace TinyGames
 
             //Graphics.DrawRectangle(position - size * scale * 0.5f, size * scale, Color.Green);
 
-            Graphics.DrawString(OutlineFont, text, position, scale, Color.Black, FontHAlign.Center, FontVAlign.Center);
             Graphics.DrawString(Font, text, position, scale, Color.White, FontHAlign.Center, FontVAlign.Center);
+            Graphics.DrawString(OutlineFont, text, position, scale, Color.Black, FontHAlign.Center, FontVAlign.Center);
         }
     }
 }
