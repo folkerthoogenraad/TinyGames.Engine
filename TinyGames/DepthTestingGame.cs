@@ -68,7 +68,7 @@ namespace TinyGames
                     Depth = 0,
                     Position = new Vector2(random.NextFloatNormalized(), random.NextFloatNormalized()) * size,
                     Velocity = new Vector2(random.NextFloatNormalized(), random.NextFloatNormalized()) * size * 0.3f,
-                    Color = new Color(random.NextFloat(), random.NextFloat(), random.NextFloat()),
+                    Color = new Color(random.NextFloat(), random.NextFloat(), random.NextFloat(), 0.1f),
                     Angle = random.NextFloat() * 360,
                 });
             }
