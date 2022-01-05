@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,6 +13,11 @@ namespace TinyGames.Engine.Maths
         public static float Lerp(float a, float b, float f)
         {
             return a + (b - a) * f;
+        }
+
+        public static Vector2 AngleVector(float angle)
+        {
+            return new Vector2(MathF.Cos(angle), MathF.Sin(angle));
         }
     }
 }

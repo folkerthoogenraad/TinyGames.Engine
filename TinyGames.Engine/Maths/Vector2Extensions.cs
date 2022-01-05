@@ -16,5 +16,25 @@ namespace TinyGames.Engine.Maths
                 c * i.X - s * i.Y,
                 s * i.X + c * i.Y);
         }
+
+        public static Vector2 Perpendicular(this Vector2 i)
+        {
+            return new Vector2(i.Y, -i.X);
+        }
+
+        public static Vector2 Normalized(this Vector2 i)
+        {
+            i.Normalize();
+            return i;
+        }
+
+        public static float GetAngle(this Vector2 i)
+        {
+            return MathF.Atan2(i.Y, i.X);
+        }
+        public static float GetAngleInDegrees(this Vector2 i)
+        {
+            return MathF.Atan2(i.Y, i.X) * Tools.RadToDeg;
+        }
     }
 }

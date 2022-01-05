@@ -191,8 +191,8 @@ namespace TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators
             _glyphWidth = newWidth;
             _glyphHeight = newHeight;
 
-            int textureWidth = RoundToNearestPowerOfTwo((rows + 1) * newWidth);
-            int textureHeight = RoundToNearestPowerOfTwo((columns + 1) * newHeight);
+            int textureWidth = RoundToNearestPowerOfTwo((rows) * newWidth * 2);
+            int textureHeight = RoundToNearestPowerOfTwo((columns) * newHeight * 2);
 
             _colors = new Color[textureWidth * textureHeight];
             _texture = new Texture2D(_device, textureWidth, textureHeight);

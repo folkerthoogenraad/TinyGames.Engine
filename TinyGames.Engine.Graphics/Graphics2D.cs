@@ -32,6 +32,7 @@ namespace TinyGames.Engine.Graphics
 
         private int VertexIndex = 0;
 
+        public Graphics2D(GraphicsDevice device): this(device, new AlphaTestEffect(device)) { }
         public Graphics2D(GraphicsDevice device, Effect defaultEffect)
         {
             Device = device;
@@ -85,8 +86,8 @@ namespace TinyGames.Engine.Graphics
 
             if (angle != 0)
             {
-                s = MathF.Sin(angle * Maths.Tools.DegToRad);
-                c = MathF.Cos(angle * Maths.Tools.DegToRad);
+                s = MathF.Sin(angle * Tools.DegToRad);
+                c = MathF.Cos(angle * Tools.DegToRad);
             }
 
             // Basically create a matrix if you will
