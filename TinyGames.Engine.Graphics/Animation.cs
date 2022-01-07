@@ -33,5 +33,10 @@ namespace TinyGames.Engine.Graphics
 
             return this;
         }
+
+        public static Animation FromSprites(float frameRate, params Sprite[] sprites)
+        {
+            return new Animation(sprites) { FrameRate = frameRate };
+        }
     }
 }

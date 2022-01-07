@@ -29,6 +29,12 @@ namespace TinyGames.Engine.Graphics
             return this;
         }
 
+        public Sprite SetOrigin(float x, float y)
+        {
+            Origin = new Vector2(x, y);
+            return this;
+        }
+
         public Sprite SetOrigin(Vector2 origin)
         {
             Origin = origin;
