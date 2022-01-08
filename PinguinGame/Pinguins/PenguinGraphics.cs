@@ -9,7 +9,7 @@ using TinyGames.Engine.Maths;
 
 namespace PinguinGame.Pinguins
 {
-    internal class PinguinGraphicsForFacing
+    internal class PenguinGraphicsForFacing
     {
         public Animation Idle;
         public Animation IdleOverlay;
@@ -19,7 +19,7 @@ namespace PinguinGame.Pinguins
         public Animation SlideOverlay;
     }
 
-    public class PinguinGraphics
+    public class PenguinGraphics
     {
         public enum Facing
         {
@@ -29,12 +29,12 @@ namespace PinguinGame.Pinguins
             Right
         }
 
-        private Dictionary<Facing, PinguinGraphicsForFacing> _graphics;
+        private Dictionary<Facing, PenguinGraphicsForFacing> _graphics;
         private Sprite _shadow;
 
-        public PinguinGraphics(Texture2D texture)
+        public PenguinGraphics(Texture2D texture)
         {
-            _graphics = new Dictionary<Facing, PinguinGraphicsForFacing>();
+            _graphics = new Dictionary<Facing, PenguinGraphicsForFacing>();
 
             _graphics.Add(Facing.Down, GetGraphicsWithOffset(texture, 0));
             _graphics.Add(Facing.Right, GetGraphicsWithOffset(texture, 16));
@@ -74,35 +74,35 @@ namespace PinguinGame.Pinguins
             RawDrawSlideOverlay(graphics, _graphics[facing], position, animationTime, color);
         }
 
-        private void RawDrawWalk(Graphics2D graphics, PinguinGraphicsForFacing facing, Vector2 position, float animationTime)
+        private void RawDrawWalk(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime)
         {
             graphics.DrawSprite(facing.Walk.GetSpriteForTime(animationTime), position);
         }
-        private void RawDrawSlide(Graphics2D graphics, PinguinGraphicsForFacing facing, Vector2 position, float animationTime)
+        private void RawDrawSlide(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime)
         {
             graphics.DrawSprite(facing.Slide.GetSpriteForTime(animationTime), position);
         }
-        private void RawDrawIdle(Graphics2D graphics, PinguinGraphicsForFacing facing, Vector2 position, float animationTime)
+        private void RawDrawIdle(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime)
         {
             graphics.DrawSprite(facing.Idle.GetSpriteForTime(animationTime), position);
         }
 
-        private void RawDrawSlideOverlay(Graphics2D graphics, PinguinGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
+        private void RawDrawSlideOverlay(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
         {
             graphics.DrawSprite(facing.SlideOverlay.GetSpriteForTime(animationTime), position, 0, 0, color);
         }
-        private void RawDrawWalkOverlay(Graphics2D graphics, PinguinGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
+        private void RawDrawWalkOverlay(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
         {
             graphics.DrawSprite(facing.WalkOverlay.GetSpriteForTime(animationTime), position, 0, 0, color);
         }
-        private void RawDrawIdleOverlay(Graphics2D graphics, PinguinGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
+        private void RawDrawIdleOverlay(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
         {
             graphics.DrawSprite(facing.IdleOverlay.GetSpriteForTime(animationTime), position, 0, 0, color);
         }
 
-        private PinguinGraphicsForFacing GetGraphicsWithOffset(Texture2D texture, int xoffset)
+        private PenguinGraphicsForFacing GetGraphicsWithOffset(Texture2D texture, int xoffset)
         {
-            return new PinguinGraphicsForFacing()
+            return new PenguinGraphicsForFacing()
             {
                 Idle = Animation.FromSprites(6,
                     new Sprite(texture, new Rectangle(xoffset, 0, 16, 16)).SetOrigin(8, 16)

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using TinyGames.Engine.Graphics;
+using TinyGames.Engine.Util;
 
 namespace PinguinGame.Screens
 {
@@ -19,9 +20,9 @@ namespace PinguinGame.Screens
         private readonly IScreenService _screens;
 
         private Sprite Background;
-        private PinguinGraphics PinguinGraphics;
+        private PenguinGraphics PinguinGraphics;
 
-        private List<(PlayerInfo Info, PinguinPhysics Physics)> Physics;
+        private List<Penguin> Penguins;
 
         private float Timer = 0;
 
@@ -31,11 +32,11 @@ namespace PinguinGame.Screens
             _inputService = inputService;
             _screens = screens;
 
-            Physics = new List<(PlayerInfo Info, PinguinPhysics Physics)>();
+            Penguins = new List<Penguin>();
 
             foreach(var player in players.Players)
             {
-                Physics.Add((player, new PinguinPhysics(new PinguinSettings(), Vector2.Zero)));
+                Penguins.Add(new Penguin(player));
             }
         }
 
@@ -47,7 +48,7 @@ namespace PinguinGame.Screens
 
             Background = new Sprite(content.Load<Texture2D>("Sprites/World")).CenterOrigin();
 
-            PinguinGraphics = new PinguinGraphics(content.Load<Texture2D>("Sprites/PinguinSheet"));
+            PinguinGraphics = new PenguinGraphics(content.Load<Texture2D>("Sprites/PinguinSheet"));
         }
 
         public override void Update(float delta)
@@ -56,10 +57,36 @@ namespace PinguinGame.Screens
 
             Timer += delta;
 
-            Physics = Physics.Select(x => (
-                x.Info, 
-                x.Physics.Update(delta, _inputService.GetInputStateForDevice(x.Info.InputDevice).MoveDirection)
-            )).ToList();
+            foreach(var (penguin, input) in Penguins.Select(x => (x, _inputService.GetInputStateForDevice(x.Player.InputDevice))))
+            {
+                penguin.Update(new PenguinInput()
+                {
+                    MoveDirection = input.MoveDirection,
+                    SlideStart = input.ActionPressed,
+                    SlideHold = input.Action
+                }, delta);
+            }
+
+            // Bonks!
+            foreach(var (a, b) in Penguins.Combinations())
+            {
+                var p1 = a.Position;
+                var p2 = b.Position;
+
+                var dir = p2 - p1;
+                var dist = dir.Length();
+
+                if (dist > 8) continue;
+                if (dist == 0) continue;
+
+                dir /= dist;
+
+                var totalVelocity = (a.Physics.Velocity - b.Physics.Velocity).Length();
+                var bonkVelocity = Math.Max(1, totalVelocity / 2);
+
+                a.Bonk(-dir * bonkVelocity);
+                b.Bonk(dir * bonkVelocity);
+            }
         }
 
         public override void Draw()
@@ -72,42 +99,16 @@ namespace PinguinGame.Screens
 
             Graphics.DrawSprite(Background, Vector2.Zero);
 
-            var p = Physics.OrderBy(x => x.Physics.Position.Y);
+            var penguins = Penguins.OrderBy(x => x.Physics.Position.Y);
 
-            foreach (var (info, physics) in p)
+            foreach (var penguin in penguins)
             {
-                PinguinGraphics.DrawShadow(Graphics, physics.Position);
-            }
-
-            foreach (var (info, physics) in p)
-            {
-                var facing = PinguinGraphics.GetFacingFromVector(physics.Facing);
-
-                if (physics.IsWalking)
-                {
-                    PinguinGraphics.DrawWalk(Graphics, facing, physics.Position, Timer);
-                    PinguinGraphics.DrawWalkOverlay(Graphics, facing, physics.Position, Timer, GetColorFromIndex(info.Index));
-                }
-                else
-                {
-                    PinguinGraphics.DrawIdle(Graphics, facing, physics.Position, Timer);
-                    PinguinGraphics.DrawIdleOverlay(Graphics, facing, physics.Position, Timer, GetColorFromIndex(info.Index));
-
-                }
+                penguin.Draw(Graphics, PinguinGraphics);
             }
 
 
             Graphics.End();
         }
 
-        private Color GetColorFromIndex(int index)
-        {
-            if (index == 0) return Color.Red;
-            if (index == 1) return Color.Blue;
-            if (index == 2) return Color.Yellow;
-            if (index == 3) return Color.Green;
-
-            return Color.Black;
-        }
     }
 }
