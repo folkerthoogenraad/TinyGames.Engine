@@ -6,7 +6,8 @@ namespace PinguinGame.Input
 {
     public enum InputDevice
     {
-        Keyboard,
+        Keyboard0,
+        Keyboard1,
         Gamepad0,
         Gamepad1,
         Gamepad2,

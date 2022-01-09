@@ -36,6 +36,20 @@ namespace TinyGames.Engine.Util
                 last = t;
             }
         }
+        public static IEnumerable<(T, T)> Combinations<T>(this IEnumerable<T> input)
+        {
+            if (input.Count() < 2) yield break;
+
+            var arr = input.ToArray();
+
+            for(int i = 0; i < arr.Length; i++)
+            {
+                for(int j = i + 1; j < arr.Length; j++)
+                {
+                    yield return (arr[i], arr[j]);
+                }
+            }
+        }
 
     }
 }

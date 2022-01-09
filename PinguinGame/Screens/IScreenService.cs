@@ -9,5 +9,6 @@ namespace PinguinGame
     {
         public void ShowPlayerSelectScreen();
         public void ShowInGameScreen();
+        public void ShowResultScreen(Fight fight);
     }
 }

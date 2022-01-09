@@ -68,6 +68,15 @@ namespace PinguinGame.Pinguins
             return state;
         }
 
+        public PenguinPhysics SetFacing(Vector2 facing)
+        {
+            var state = Clone();
+
+            state.Facing = facing;
+
+            return state;
+        }
+
         private PenguinPhysics Clone()
         {
             return MemberwiseClone() as PenguinPhysics;

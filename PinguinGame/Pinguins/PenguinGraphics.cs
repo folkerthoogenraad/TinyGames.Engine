@@ -17,6 +17,8 @@ namespace PinguinGame.Pinguins
         public Animation WalkOverlay;
         public Animation Slide;
         public Animation SlideOverlay;
+        public Animation Drown;
+        public Animation DrownOverlay;
     }
 
     public class PenguinGraphics
@@ -41,7 +43,7 @@ namespace PinguinGame.Pinguins
             _graphics.Add(Facing.Up, GetGraphicsWithOffset(texture, 32));
             _graphics.Add(Facing.Left, GetGraphicsWithOffset(texture, 48));
 
-            _shadow = new Sprite(texture, new Rectangle(0, 80, 16, 16)).CenterOrigin();
+            _shadow = new Sprite(texture, new Rectangle(112, 112, 16, 16)).CenterOrigin();
         }
 
         public void DrawShadow(Graphics2D graphics, Vector2 position)
@@ -73,6 +75,14 @@ namespace PinguinGame.Pinguins
         {
             RawDrawSlideOverlay(graphics, _graphics[facing], position, animationTime, color);
         }
+        public void DrawDrown(Graphics2D graphics, Facing facing, Vector2 position, float animationTime)
+        {
+            RawDrawDrown(graphics, _graphics[facing], position, animationTime);
+        }
+        public void DrawDrownOverlay(Graphics2D graphics, Facing facing, Vector2 position, float animationTime, Color color)
+        {
+            RawDrawDrownOverlay(graphics, _graphics[facing], position, animationTime, color);
+        }
 
         private void RawDrawWalk(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime)
         {
@@ -86,6 +96,10 @@ namespace PinguinGame.Pinguins
         {
             graphics.DrawSprite(facing.Idle.GetSpriteForTime(animationTime), position);
         }
+        private void RawDrawDrown(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime)
+        {
+            graphics.DrawSprite(facing.Drown.GetSpriteForTime(animationTime), position);
+        }
 
         private void RawDrawSlideOverlay(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
         {
@@ -98,6 +112,10 @@ namespace PinguinGame.Pinguins
         private void RawDrawIdleOverlay(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
         {
             graphics.DrawSprite(facing.IdleOverlay.GetSpriteForTime(animationTime), position, 0, 0, color);
+        }
+        private void RawDrawDrownOverlay(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
+        {
+            graphics.DrawSprite(facing.DrownOverlay.GetSpriteForTime(animationTime), position, 0, 0, color);
         }
 
         private PenguinGraphicsForFacing GetGraphicsWithOffset(Texture2D texture, int xoffset)
@@ -117,6 +135,10 @@ namespace PinguinGame.Pinguins
                     new Sprite(texture, new Rectangle(xoffset, 48, 16, 16)).SetOrigin(8, 16),
                     new Sprite(texture, new Rectangle(xoffset, 64, 16, 16)).SetOrigin(8, 16)
                     ),
+                Drown = Animation.FromSprites(3,
+                    new Sprite(texture, new Rectangle(xoffset, 80, 16, 16)).SetOrigin(8, 16),
+                    new Sprite(texture, new Rectangle(xoffset, 96, 16, 16)).SetOrigin(8, 16)
+                    ),
 
                 // Overlays
                 IdleOverlay = Animation.FromSprites(6,
@@ -131,6 +153,10 @@ namespace PinguinGame.Pinguins
                 SlideOverlay = Animation.FromSprites(6,
                     new Sprite(texture, new Rectangle(xoffset + 64, 48, 16, 16)).SetOrigin(8, 16),
                     new Sprite(texture, new Rectangle(xoffset + 64, 64, 16, 16)).SetOrigin(8, 16)
+                    ),
+                DrownOverlay = Animation.FromSprites(3,
+                    new Sprite(texture, new Rectangle(xoffset + 64, 80, 16, 16)).SetOrigin(8, 16),
+                    new Sprite(texture, new Rectangle(xoffset + 64, 96, 16, 16)).SetOrigin(8, 16)
                     ),
             };
         }

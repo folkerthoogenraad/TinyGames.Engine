@@ -10,5 +10,7 @@ namespace PinguinGame.Pinguins
         public Vector2 MoveDirection { get; set; }
         public bool SlideStart { get; set; }
         public bool SlideHold { get; set; }
+
+        public static PenguinInput Empty => new PenguinInput();
     }
 }

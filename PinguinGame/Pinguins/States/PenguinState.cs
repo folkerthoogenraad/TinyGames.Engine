@@ -17,14 +17,5 @@ namespace PinguinGame.Pinguins
 
         }
 
-        protected Color GetColorFromIndex(int index)
-        {
-            if (index == 0) return Color.Red;
-            if (index == 1) return Color.Blue;
-            if (index == 2) return Color.Yellow;
-            if (index == 3) return Color.Green;
-
-            return Color.Black;
-        }
     }
 }

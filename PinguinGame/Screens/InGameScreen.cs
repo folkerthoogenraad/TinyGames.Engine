@@ -4,11 +4,14 @@ using Microsoft.Xna.Framework.Graphics;
 using PinguinGame.Input;
 using PinguinGame.Pinguins;
 using PinguinGame.Player;
+using PinguinGame.Screens.States;
+using PinguinGame.Screens.UI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using TinyGames.Engine.Graphics;
+using TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators;
 using TinyGames.Engine.Util;
 
 namespace PinguinGame.Screens
@@ -19,12 +22,24 @@ namespace PinguinGame.Screens
         private readonly InputService _inputService;
         private readonly IScreenService _screens;
 
-        private Sprite Background;
-        private PenguinGraphics PinguinGraphics;
+        private GameUISkin Skin;
 
-        private List<Penguin> Penguins;
+        public PenguinWorld World;
 
-        private float Timer = 0;
+        private GameState _gameState;
+        public GameState State
+        {
+            get => _gameState;
+            set
+            {
+                if(value != _gameState)
+                {
+                    _gameState?.Destroy();
+                    _gameState = value;
+                    _gameState?.Init(World, Device, Content, Skin);
+                }
+            }
+        }
 
         public InGameScreen(IScreenService screens, PlayerService players, InputService inputService)
         {
@@ -32,12 +47,6 @@ namespace PinguinGame.Screens
             _inputService = inputService;
             _screens = screens;
 
-            Penguins = new List<Penguin>();
-
-            foreach(var player in players.Players)
-            {
-                Penguins.Add(new Penguin(player));
-            }
         }
 
         public override void Init(GraphicsDevice device, ContentManager content)
@@ -46,46 +55,27 @@ namespace PinguinGame.Screens
 
             Camera.Height = 180;
 
-            Background = new Sprite(content.Load<Texture2D>("Sprites/World")).CenterOrigin();
+            var background = new Sprite(content.Load<Texture2D>("Sprites/World")).CenterOrigin();
 
-            PinguinGraphics = new PenguinGraphics(content.Load<Texture2D>("Sprites/PinguinSheet"));
+            World = new PenguinWorld(background, _playerService.Players.ToArray(), _inputService);
+            World.Camera = Camera;
+
+            Skin = new GameUISkin();
+            Skin.Font = content.LoadFont("Fonts/Font8x10");
+            Skin.FontOutline = FontOutline.Create(device, Skin.Font);
+
+            State = new PreGameState();
         }
 
         public override void Update(float delta)
         {
             base.Update(delta);
 
-            Timer += delta;
+            State = State.Update(delta);
 
-            foreach(var (penguin, input) in Penguins.Select(x => (x, _inputService.GetInputStateForDevice(x.Player.InputDevice))))
+            if (World.Fight.Done)
             {
-                penguin.Update(new PenguinInput()
-                {
-                    MoveDirection = input.MoveDirection,
-                    SlideStart = input.ActionPressed,
-                    SlideHold = input.Action
-                }, delta);
-            }
-
-            // Bonks!
-            foreach(var (a, b) in Penguins.Combinations())
-            {
-                var p1 = a.Position;
-                var p2 = b.Position;
-
-                var dir = p2 - p1;
-                var dist = dir.Length();
-
-                if (dist > 8) continue;
-                if (dist == 0) continue;
-
-                dir /= dist;
-
-                var totalVelocity = (a.Physics.Velocity - b.Physics.Velocity).Length();
-                var bonkVelocity = Math.Max(1, totalVelocity / 2);
-
-                a.Bonk(-dir * bonkVelocity);
-                b.Bonk(dir * bonkVelocity);
+                _screens.ShowResultScreen(World.Fight);
             }
         }
 
@@ -97,15 +87,7 @@ namespace PinguinGame.Screens
 
             Graphics.Begin(Camera.GetMatrix());
 
-            Graphics.DrawSprite(Background, Vector2.Zero);
-
-            var penguins = Penguins.OrderBy(x => x.Physics.Position.Y);
-
-            foreach (var penguin in penguins)
-            {
-                penguin.Draw(Graphics, PinguinGraphics);
-            }
-
+            State.Draw(Graphics);
 
             Graphics.End();
         }

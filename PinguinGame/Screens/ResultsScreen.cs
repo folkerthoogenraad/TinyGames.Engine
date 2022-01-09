@@ -12,27 +12,29 @@ using TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators;
 
 namespace PinguinGame.Screens
 {
-    public class PlayerSelectScreen : Screen
+    public class ResultsScreen : Screen
     {
-        private readonly PlayerService _playerService;
         private readonly InputService _inputService;
         private readonly IScreenService _screens;
+
+        public string Text { get; set; }
 
         private Font Font;
         private Font Outline;
 
-        public PlayerSelectScreen(IScreenService screens, PlayerService players, InputService inputService)
+        public ResultsScreen(IScreenService screens, InputService inputService, Fight fight)
         {
-            _playerService = players;
             _inputService = inputService;
             _screens = screens;
+
+            var winner = fight.Scoreboard.First().Player;
+
+            Text = $"Player {winner.Index + 1} wins the game!";
         }
 
         public override void Init(GraphicsDevice device, ContentManager content)
         {
             base.Init(device, content);
-
-            _playerService.UnJoinAll();
 
             Font = content.LoadFont("Fonts/Font8x10");
             Outline = FontOutline.Create(device, Font);
@@ -44,18 +46,9 @@ namespace PinguinGame.Screens
 
             foreach(var input in _inputService.InputStates)
             {
-                if (input.ActionPressed)
-                {
-                    _playerService.GetOrJoinPlayerByInputDevice(input.Device);
-                }
-            }
-
-
-            foreach (var input in _inputService.InputStates.Where(x => _playerService.IsPlayerJoinedByInputDevice(x.Device)))
-            {
                 if (input.StartPressed)
                 {
-                    _screens.ShowInGameScreen();
+                    _screens.ShowPlayerSelectScreen();
                 }
             }
         }
@@ -68,8 +61,8 @@ namespace PinguinGame.Screens
 
             Graphics.Begin(Camera.GetMatrix());
 
-            Graphics.DrawString(Outline, "Players: " + _playerService.PlayerCount, Camera.Position, Color.Black, FontHAlign.Center);
-            Graphics.DrawString(Font, "Players: " + _playerService.PlayerCount, Camera.Position, Color.White, FontHAlign.Center);
+            Graphics.DrawString(Outline, Text, Camera.Position, Color.Black, FontHAlign.Center);
+            Graphics.DrawString(Font, Text, Camera.Position, Color.White, FontHAlign.Center);
 
             Graphics.End();
         }

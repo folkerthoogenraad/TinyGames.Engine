@@ -42,16 +42,20 @@ namespace PinguinGame
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = false;
         }
 
         protected override void Initialize()
         {
             base.Initialize();
 
-            _graphics.PreferredBackBufferWidth = 1280;
-            _graphics.PreferredBackBufferHeight = 720;
-            // graphics.IsFullScreen = true;
+            //_graphics.PreferredBackBufferWidth = 1280;
+            //_graphics.PreferredBackBufferHeight = 720;
+            //_graphics.ApplyChanges();
+
+            _graphics.PreferredBackBufferWidth = 1440 * 16 / 9;
+            _graphics.PreferredBackBufferHeight = 1440;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
             inputService = new InputService();
@@ -94,6 +98,11 @@ namespace PinguinGame
         public void ShowInGameScreen()
         {
             Screen = new InGameScreen(this, playerService, inputService);
+        }
+
+        public void ShowResultScreen(Fight fight)
+        {
+            Screen = new ResultsScreen(this, inputService, fight);
         }
     }
 }

@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace PinguinGame.Player
 {
+    // Join players?
+    // This can be more of a factory where you can 
+    // Do a "create players" to get a Players players; object.
     public class PlayerService
     {
         private PlayerInfo[] _players;
@@ -59,6 +62,14 @@ namespace PinguinGame.Player
         public PlayerInfo GetNextAvailablePlayerInfo()
         {
             return _players.Where(x => !x.Joined).FirstOrDefault();
+        }
+
+        public void UnJoinAll()
+        {
+            foreach(var player in Players)
+            {
+                player.Joined = false;
+            }
         }
     }
 }

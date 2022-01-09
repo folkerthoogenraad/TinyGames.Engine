@@ -62,7 +62,8 @@ namespace PinguinGame.Input
                 new InputState(InputDevice.Gamepad1),
                 new InputState(InputDevice.Gamepad2),
                 new InputState(InputDevice.Gamepad3),
-                new InputState(InputDevice.Keyboard),
+                new InputState(InputDevice.Keyboard0),
+                new InputState(InputDevice.Keyboard1),
             };
         }
 
@@ -82,7 +83,8 @@ namespace PinguinGame.Input
         {
             switch (device)
             {
-                case InputDevice.Keyboard: return GetInputFrameFromKeyboard(Keyboard.GetState());
+                case InputDevice.Keyboard0: return GetInputFrameFromKeyboard(Keyboard.GetState(), 0);
+                case InputDevice.Keyboard1: return GetInputFrameFromKeyboard(Keyboard.GetState(), 1);
                 case InputDevice.Gamepad0: return GetInputFrameFromGamepadState(GamePad.GetState(0));
                 case InputDevice.Gamepad1: return GetInputFrameFromGamepadState(GamePad.GetState(1));
                 case InputDevice.Gamepad2: return GetInputFrameFromGamepadState(GamePad.GetState(2));
@@ -101,23 +103,42 @@ namespace PinguinGame.Input
                 MoveDirection = new Vector2(state.ThumbSticks.Left.X, -state.ThumbSticks.Left.Y)
             };
         }
-        private InputFrame GetInputFrameFromKeyboard(KeyboardState state)
+        private InputFrame GetInputFrameFromKeyboard(KeyboardState state, int index)
         {
             Vector2 dir = new Vector2();
 
-            if (state.IsKeyDown(Keys.Left)) dir.X -= 1;
-            if (state.IsKeyDown(Keys.Right)) dir.X += 1;
-            if (state.IsKeyDown(Keys.Up)) dir.Y -= 1;
-            if (state.IsKeyDown(Keys.Down)) dir.Y += 1;
-
-            if (dir.LengthSquared() > 1) dir.Normalize();
-
-            return new InputFrame
+            if(index == 0)
             {
-                Action = state.IsKeyDown(Keys.Space),
-                Start = state.IsKeyDown(Keys.Enter),
-                MoveDirection = dir
-            };
+                if (state.IsKeyDown(Keys.Left)) dir.X -= 1;
+                if (state.IsKeyDown(Keys.Right)) dir.X += 1;
+                if (state.IsKeyDown(Keys.Up)) dir.Y -= 1;
+                if (state.IsKeyDown(Keys.Down)) dir.Y += 1;
+
+                if (dir.LengthSquared() > 1) dir.Normalize();
+
+                return new InputFrame
+                {
+                    Action = state.IsKeyDown(Keys.Space),
+                    Start = state.IsKeyDown(Keys.Enter),
+                    MoveDirection = dir
+                };
+            }
+            else
+            {
+                if (state.IsKeyDown(Keys.NumPad4)) dir.X -= 1;
+                if (state.IsKeyDown(Keys.NumPad6)) dir.X += 1;
+                if (state.IsKeyDown(Keys.NumPad8)) dir.Y -= 1;
+                if (state.IsKeyDown(Keys.NumPad5)) dir.Y += 1;
+
+                if (dir.LengthSquared() > 1) dir.Normalize();
+
+                return new InputFrame
+                {
+                    Action = state.IsKeyDown(Keys.X),
+                    Start = state.IsKeyDown(Keys.Z),
+                    MoveDirection = dir
+                };
+            }
         }
 
         public InputState GetInputStateForDevice(InputDevice device)

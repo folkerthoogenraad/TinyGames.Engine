@@ -33,7 +33,7 @@ namespace PinguinGame.Pinguins
         public override void Draw(Graphics2D graphics, Penguin penguin, PenguinGraphics penguinGraphics)
         {
             var facing = PenguinGraphics.GetFacingFromVector(penguin.Facing);
-            var color = GetColorFromIndex(penguin.Player.Index);
+            var color = penguin.Player.Color;
 
             if (Walking)
             {
