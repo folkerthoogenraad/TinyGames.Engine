@@ -20,10 +20,14 @@ namespace PinguinGame.Pinguins
 
             if (input.SlideStart)
             {
-                Vector2 direction = penguin.Physics.Velocity;
+                Vector2 direction = penguin.Physics.Velocity / penguin.Settings.MoveSpeed;
+
+                direction += input.MoveDirection;
+
                 if (direction.LengthSquared() <= 0) direction = input.MoveDirection;
                 if (direction.LengthSquared() <= 0) direction = penguin.Facing;
                 if (direction.LengthSquared() <= 0) direction = new Vector2(1, 0);
+
                 return new PenguinSlideState(direction);
             }
 
