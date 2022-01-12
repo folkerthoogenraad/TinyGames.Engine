@@ -42,12 +42,22 @@ namespace TinyGames.Engine.Util
 
             var arr = input.ToArray();
 
-            for(int i = 0; i < arr.Length; i++)
+            for (int i = 0; i < arr.Length; i++)
             {
-                for(int j = i + 1; j < arr.Length; j++)
+                for (int j = i + 1; j < arr.Length; j++)
                 {
                     yield return (arr[i], arr[j]);
                 }
+            }
+        }
+        public static IEnumerable<(int, T)> WithIndex<T>(this IEnumerable<T> input)
+        {
+            int index = 0;
+
+            foreach(var i in input)
+            {
+                yield return (index, i);
+                index++;
             }
         }
 

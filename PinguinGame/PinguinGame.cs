@@ -22,21 +22,7 @@ namespace PinguinGame
         private InputService inputService;
         private PlayerService playerService;
 
-        private Screen _screen;
-
-        public Screen Screen
-        {
-            get => _screen;
-            set
-            {
-                if (_screen != value)
-                {
-                    _screen?.Destroy();
-                    _screen = value;
-                    _screen?.Init(GraphicsDevice, Content);
-                }
-            }
-        }
+        public ScreenManager Manager;
 
         public PinguinGame()
         {
@@ -49,19 +35,21 @@ namespace PinguinGame
         {
             base.Initialize();
 
-            //_graphics.PreferredBackBufferWidth = 1280;
-            //_graphics.PreferredBackBufferHeight = 720;
-            //_graphics.ApplyChanges();
-
-            _graphics.PreferredBackBufferWidth = 1440 * 16 / 9;
-            _graphics.PreferredBackBufferHeight = 1440;
-            _graphics.IsFullScreen = true;
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
             _graphics.ApplyChanges();
+
+            //_graphics.PreferredBackBufferWidth = 1440 * 16 / 9;
+            //_graphics.PreferredBackBufferHeight = 1440;
+            //_graphics.IsFullScreen = true;
+            //_graphics.ApplyChanges();
 
             inputService = new InputService();
             playerService = new PlayerService();
 
-            ShowPlayerSelectScreen();
+            Manager = new ScreenManager(GraphicsDevice, Content);
+
+            ShowSplashScreen();
         }
 
         protected override void LoadContent()
@@ -81,28 +69,52 @@ namespace PinguinGame
 
             inputService.Poll();
 
-            Screen.Update(delta);
+            Manager.Update(delta);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
 
-            Screen.Draw();
+            Manager.Draw();
         }
 
         public void ShowPlayerSelectScreen()
         {
-            Screen = new PlayerSelectScreen(this, playerService, inputService);
+            Manager.Screen = new PlayerSelectScreen(this, playerService, inputService);
         }
-        public void ShowInGameScreen()
+        public void ShowInGameScreen(PlayerInfo[] players)
         {
-            Screen = new InGameScreen(this, playerService, inputService);
+            Manager.Screen = new InGameScreen(this, inputService, players);
         }
 
         public void ShowResultScreen(Fight fight)
         {
-            Screen = new ResultsScreen(this, inputService, fight);
+            Manager.Screen = new ResultsScreen(this, inputService, fight);
+        }
+
+        public void ShowTitleScreen()
+        {
+            Manager.Screen = new TitleScreen(this, inputService);
+        }
+
+        public void ShowMenuScreen()
+        {
+            Manager.Screen = new MenuScreen(this, inputService);
+        }
+        public void ShowSplashScreen()
+        {
+            Manager.Screen = new SplashScreen(this);
+        }
+
+        public new void Exit()
+        {
+            base.Exit();
+        }
+
+        public void ShowMapSelectScreen(PlayerInfo[] players)
+        {
+            Manager.Screen = new MapSelectScreen(this, inputService, players);
         }
     }
 }

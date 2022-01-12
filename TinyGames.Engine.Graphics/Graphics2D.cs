@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Xna.Framework;
@@ -23,8 +24,10 @@ namespace TinyGames.Engine.Graphics
         private DepthStencilState DefaultDepthStencilState;
         private BlendState DefaultBlendState;
 
-        private Matrix ViewMatrix;
         private Matrix ProjectionMatrix;
+
+        private Stack<Matrix> TransformStack;
+        private Matrix Matrix;
 
         private Texture2D[] Textures;
 
@@ -46,6 +49,8 @@ namespace TinyGames.Engine.Graphics
 
             Pixel = new Texture2D(device, 1, 1);
             Pixel.SetData(new Color[] { Color.White });
+
+            TransformStack = new Stack<Matrix>();
             
             DefaultDepthStencilState = new DepthStencilState
             {
@@ -170,14 +175,18 @@ namespace TinyGames.Engine.Graphics
         }
         public void DrawTextureRegion(Texture2D texture, Rectangle sourceRectangle, Vector2 position, Vector2 size, Color blend, float depth = 0)
         {
+            DrawTextureRegion(texture, AABB.Create(sourceRectangle), position, size, blend, depth);
+        }
+        public void DrawTextureRegion(Texture2D texture, AABB sourceRectangle, Vector2 position, Vector2 size, Color blend, float depth = 0)
+        {
             if (VertexIndex >= Vertices.Length - 6) Flush();
 
             SetTexture(texture);
 
-            float u0 = sourceRectangle.Left / (float)texture.Width;
-            float u1 = sourceRectangle.Right / (float)texture.Width;
-            float v0 = sourceRectangle.Top / (float)texture.Height;
-            float v1 = sourceRectangle.Bottom / (float)texture.Height;
+            float u0 = sourceRectangle.Left / texture.Width;
+            float u1 = sourceRectangle.Right / texture.Width;
+            float v0 = sourceRectangle.Top / texture.Height;
+            float v1 = sourceRectangle.Bottom / texture.Height;
 
             // Clockwise
             // TL--- TR
@@ -331,18 +340,53 @@ namespace TinyGames.Engine.Graphics
             Drawing = true;
             VertexIndex = 0;
 
-            ViewMatrix = m;
-            ProjectionMatrix = Matrix.Identity; //Matrix.CreateOrthographicOffCenter(0, Device.PresentationParameters.BackBufferWidth, Device.PresentationParameters.BackBufferHeight, 0, -100, 100);
+            TransformStack.Clear();
+            Matrix = Matrix.Identity;
+            ProjectionMatrix = m; //Matrix.CreateOrthographicOffCenter(0, Device.PresentationParameters.BackBufferWidth, Device.PresentationParameters.BackBufferHeight, 0, -100, 100);
+        }
+
+        public void PushMatrix()
+        {
+            Flush();
+            TransformStack.Push(Matrix);
+        }
+
+        public void Translate(Vector2 v)
+        {
+            Translate(v.X, v.Y);
+        }
+
+        public void Translate(float x, float y)
+        {
+            Flush();
+            Matrix = Matrix.CreateTranslation(x, y, 0) * Matrix;
+        }
+
+        public void Scale(Vector2 v)
+        {
+            Scale(v.X, v.Y);
+        }
+
+        public void Scale(float x, float y)
+        {
+            Flush();
+            Matrix = Matrix.CreateScale(x, y, 1) * Matrix;
+        }
+
+        public void PopMatrix()
+        {
+            Flush();
+            Matrix = TransformStack.Pop();
         }
 
         public Matrix GetMatrix()
         {
-            return ViewMatrix;
+            return Matrix;
         }
 
         public void SetMatrix(Matrix matrix)
         {
-            ViewMatrix = matrix;
+            Matrix = matrix;
         }
 
         public void End()
@@ -393,16 +437,16 @@ namespace TinyGames.Engine.Graphics
 
             if (effect != null)
             {
-                effect.View = ViewMatrix;
-                effect.World = ProjectionMatrix;
+                effect.View = ProjectionMatrix;
+                effect.World = Matrix;
                 effect.Texture = Textures[0];
                 effect.TextureEnabled = true;
                 effect.VertexColorEnabled = true;
             }
             if (alphaTest != null)
             {
-                alphaTest.View = ViewMatrix;
-                alphaTest.World = ProjectionMatrix;
+                alphaTest.View = ProjectionMatrix;
+                alphaTest.World = Matrix;
                 alphaTest.Texture = Textures[0];
                 alphaTest.VertexColorEnabled = true;
             }

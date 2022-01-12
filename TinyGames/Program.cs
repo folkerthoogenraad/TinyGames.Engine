@@ -7,7 +7,7 @@ namespace TinyGames
         [STAThread]
         static void Main()
         {
-            using (var game = new DepthTestingGame())
+            using (var game = new AnimationTestGame())
                 game.Run();
         }
     }

@@ -18,7 +18,7 @@ namespace PinguinGame.Screens
 {
     public class InGameScreen : Screen
     {
-        private readonly PlayerService _playerService;
+        private readonly PlayerInfo[] _players;
         private readonly InputService _inputService;
         private readonly IScreenService _screens;
 
@@ -41,9 +41,9 @@ namespace PinguinGame.Screens
             }
         }
 
-        public InGameScreen(IScreenService screens, PlayerService players, InputService inputService)
+        public InGameScreen(IScreenService screens, InputService inputService, PlayerInfo[] players)
         {
-            _playerService = players;
+            _players = players;
             _inputService = inputService;
             _screens = screens;
 
@@ -57,7 +57,7 @@ namespace PinguinGame.Screens
 
             var background = new Sprite(content.Load<Texture2D>("Sprites/World")).CenterOrigin();
 
-            World = new PenguinWorld(background, _playerService.Players.ToArray(), _inputService);
+            World = new PenguinWorld(background, _players, _inputService);
             World.Camera = Camera;
 
             Skin = new GameUISkin();
@@ -67,9 +67,9 @@ namespace PinguinGame.Screens
             State = new PreGameState();
         }
 
-        public override void Update(float delta)
+        public override void UpdateSelf(float delta)
         {
-            base.Update(delta);
+            base.UpdateSelf(delta);
 
             State = State.Update(delta);
 

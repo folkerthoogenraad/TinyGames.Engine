@@ -3,10 +3,13 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PinguinGame.Input;
 using PinguinGame.Player;
+using PinguinGame.Screens.Resources;
+using PinguinGame.Screens.UI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using TinyGames.Engine.Graphics;
 using TinyGames.Engine.Graphics.Fonts;
 using TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators;
 
@@ -18,46 +21,86 @@ namespace PinguinGame.Screens
         private readonly InputService _inputService;
         private readonly IScreenService _screens;
 
-        private Font Font;
-        private Font Outline;
+        private HashSet<PlayerInfo> _readyPlayers;
+        private UISelectPlayers _ui;
 
         public PlayerSelectScreen(IScreenService screens, PlayerService players, InputService inputService)
         {
             _playerService = players;
             _inputService = inputService;
             _screens = screens;
+
+            _readyPlayers = new HashSet<PlayerInfo>();
         }
 
         public override void Init(GraphicsDevice device, ContentManager content)
         {
             base.Init(device, content);
 
-            _playerService.UnJoinAll();
+            _ui = new UISelectPlayers(new PlayerSelectResources(content));
+            _ui.UpdateLayout(Camera.Bounds);
 
-            Font = content.LoadFont("Fonts/Font8x10");
-            Outline = FontOutline.Create(device, Font);
+            _ui.SetModel(new UISelectPlayersModel()
+            {
+                PlayerStates = _playerService.AllPlayers.Select(x => PlayerInfoToState(x)).ToArray(),
+                ShowContinueButton = false,
+            });
         }
 
-        public override void Update(float delta)
+        public override void UpdateSelf(float delta)
         {
-            base.Update(delta);
+            base.UpdateSelf(delta);
 
-            foreach(var input in _inputService.InputStates)
+            bool fadeForward = false;
+            bool fadeBackwards = false;
+
+            foreach (var input in _inputService.InputStates)
             {
-                if (input.ActionPressed)
+                var isJoined = _playerService.IsPlayerJoinedByInputDevice(input.Device);
+                var player = _playerService.GetPlayerByInputDevice(input.Device);
+
+                if (!isJoined && input.ActionPressed)
                 {
                     _playerService.GetOrJoinPlayerByInputDevice(input.Device);
                 }
-            }
-
-
-            foreach (var input in _inputService.InputStates.Where(x => _playerService.IsPlayerJoinedByInputDevice(x.Device)))
-            {
-                if (input.StartPressed)
+                else if (isJoined && input.ActionPressed && !_readyPlayers.Contains(player))
                 {
-                    _screens.ShowInGameScreen();
+                    _readyPlayers.Add(player);
                 }
+                else if (isJoined && input.ActionPressed && _readyPlayers.Contains(player) && CanStart)
+                {
+                    _screens.ShowMapSelectScreen(_playerService.Players.ToArray());
+                    fadeForward = true;
+                }
+                else if (isJoined && input.BackPressed && !_readyPlayers.Contains(player))
+                {
+                    player.Joined = false;
+                }
+                else if (isJoined && input.BackPressed && _readyPlayers.Contains(player))
+                {
+                    _readyPlayers.Remove(player);
+                }
+                else if(!isJoined && input.BackPressed)
+                {
+                    _screens.ShowMenuScreen();
+                    fadeBackwards = true;
+                }
+
             }
+
+            _ui.SetModel(new UISelectPlayersModel()
+            {
+                PlayerStates = _playerService.AllPlayers.Select(x => PlayerInfoToState(x)).ToArray(),
+                ShowContinueButton = CanStart,
+                FadeFoward = fadeForward,
+                FadeBackwards = fadeBackwards
+            });
+        }
+        public override void UpdateAnimation(float delta)
+        {
+            base.UpdateAnimation(delta);
+
+            _ui.Update(delta);
         }
 
         public override void Draw()
@@ -68,10 +111,28 @@ namespace PinguinGame.Screens
 
             Graphics.Begin(Camera.GetMatrix());
 
-            Graphics.DrawString(Outline, "Players: " + _playerService.PlayerCount, Camera.Position, Color.Black, FontHAlign.Center);
-            Graphics.DrawString(Font, "Players: " + _playerService.PlayerCount, Camera.Position, Color.White, FontHAlign.Center);
+            _ui.Draw(Graphics);
 
             Graphics.End();
         }
+
+        private UISelectPlayersModel.PlayerState PlayerInfoToState(PlayerInfo info)
+        {
+            if (info.Joined)
+            {
+                if (_readyPlayers.Contains(info))
+                {
+                    return UISelectPlayersModel.PlayerState.Ready;
+                }
+                return UISelectPlayersModel.PlayerState.Joined;
+            }
+            else
+            {
+                return UISelectPlayersModel.PlayerState.UnJoined;
+            }
+        }
+
+        public bool AllReady => _playerService.Players.All(x => _readyPlayers.Contains(x));
+        public bool CanStart => _playerService.PlayerCount >= 2 && AllReady;
     }
 }

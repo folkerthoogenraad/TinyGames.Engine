@@ -12,6 +12,7 @@ namespace PinguinGame.Player
     {
         private PlayerInfo[] _players;
 
+        public IEnumerable<PlayerInfo> AllPlayers => _players;
         public IEnumerable<PlayerInfo> Players => _players.Where(x => x.Joined);
         public int PlayerCount => Players.Count();
 

@@ -413,6 +413,22 @@ namespace TinyGames.Engine.Maths
             };
         }
 
+        public override bool Equals(object obj)
+        {
+            if(obj is AABB)
+            {
+                var a = (AABB)obj;
+
+                if (a.Left != Left) return false;
+                if (a.Right != Right) return false;
+                if (a.Top != Top) return false;
+                if (a.Bottom != Bottom) return false;
+
+                return true;
+            }
+            return false;
+        }
+
         public Rectangle ToRectangle()
         {
             int left = (int)Left;
@@ -447,6 +463,10 @@ namespace TinyGames.Engine.Maths
         public static AABB Create(Vector2 position, Vector2 size)
         {
             return Create(position.X, position.Y, size.X, size.Y);
+        }
+        public static AABB Create(Rectangle rectangle)
+        {
+            return Create(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
         }
 
         public static AABB CreateCentered(Vector2 position, Vector2 size)

@@ -1,4 +1,5 @@
-﻿using PinguinGame.Screens;
+﻿using PinguinGame.Player;
+using PinguinGame.Screens;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,8 +8,14 @@ namespace PinguinGame
 {
     public interface IScreenService
     {
+        public void Exit();
+
+        public void ShowSplashScreen();
+        public void ShowTitleScreen();
+        public void ShowMenuScreen();
+        public void ShowMapSelectScreen(PlayerInfo[] players);
         public void ShowPlayerSelectScreen();
-        public void ShowInGameScreen();
+        public void ShowInGameScreen(PlayerInfo[] players);
         public void ShowResultScreen(Fight fight);
     }
 }

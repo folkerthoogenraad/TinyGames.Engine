@@ -18,13 +18,23 @@ namespace PinguinGame.Screens
         public virtual void Init(GraphicsDevice device, ContentManager content)
         {
             Graphics = new Graphics2D(device);
-            Camera = new Camera(360, 16.0f / 9.0f);
+            Camera = new Camera(360 / 2, 16.0f / 9.0f);
 
             Content = content;
             Device = device;
         }
 
         public virtual void Update(float delta)
+        {
+            UpdateSelf(delta);
+            UpdateAnimation(delta);
+        }
+
+        public virtual void UpdateSelf(float delta)
+        {
+
+        }
+        public virtual void UpdateAnimation(float delta)
         {
 
         }
