@@ -56,7 +56,7 @@ namespace PinguinGame.Screens
                     }
                     else if(Selected == 1)
                     {
-
+                        _screens.ShowResultScreen(new Fight(new PlayerInfo[] { new PlayerInfo() { Index = 0, InputDevice = InputDevice.Keyboard0 } }));
                     }
                     else if(Selected == 2)
                     {

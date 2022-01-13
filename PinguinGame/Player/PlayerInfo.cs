@@ -24,5 +24,7 @@ namespace PinguinGame.Player
 
             return Color.Black;
         }
+
+        public string Name => $"Player { Index + 1}";
     }
 }

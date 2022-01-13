@@ -22,7 +22,7 @@ namespace PinguinGame.Screens
         private PlayerInfo[] _players { get; }
 
         private UIMapSelectScreen _ui;
-        private int SelectedIndex = 0;
+        private int _selectedIndex = 0;
         private bool _ready = false;
 
         public MapSelectScreen(IScreenService screens, InputService inputService, PlayerInfo[] players)
@@ -38,7 +38,14 @@ namespace PinguinGame.Screens
             base.Init(device, content);
 
             _ui = new UIMapSelectScreen(new MapSelectResources(content));
+
             _ui.UpdateLayout(Camera.Bounds);
+            _ui.SetModel(new UIMapSelectModel()
+            {
+                Maps = GetMaps().ToArray(),
+                Ready = _ready,
+                SelectedIndex = _selectedIndex
+            }, false);
         }
 
         public override void UpdateSelf(float delta)
@@ -65,15 +72,13 @@ namespace PinguinGame.Screens
                     {
                         _ready = true;
                     }
-                    if (input.MenuLeftPressed && SelectedIndex > 0)
+                    if (input.MenuLeftPressed && _selectedIndex > 0)
                     {
-                        SelectedIndex--;
-                        _ui.SetSelected(SelectedIndex);
+                        _selectedIndex--;
                     }
-                    if (input.MenuRightPressed && SelectedIndex < 3)
+                    if (input.MenuRightPressed && _selectedIndex < 3)
                     {
-                        SelectedIndex++;
-                        _ui.SetSelected(SelectedIndex);
+                        _selectedIndex++;
                     }
 
                     if (input.BackPressed)
@@ -84,7 +89,12 @@ namespace PinguinGame.Screens
                 }
             }
 
-            _ui.SetReady(_ready);
+            _ui.SetModel(new UIMapSelectModel()
+            {
+                Maps = GetMaps().ToArray(),
+                Ready = _ready,
+                SelectedIndex = _selectedIndex
+            });
         }
         public override void UpdateAnimation(float delta)
         {
@@ -104,6 +114,14 @@ namespace PinguinGame.Screens
             _ui.Draw(Graphics);
 
             Graphics.End();
+        }
+
+        public IEnumerable<UIMapModel> GetMaps()
+        {
+            yield return new UIMapModel() { Locked = false, Text = "Default level" };
+            yield return new UIMapModel() { Locked = true, Text = "Locked" };
+            yield return new UIMapModel() { Locked = true, Text = "Locked" };
+            yield return new UIMapModel() { Locked = true, Text = "Locked" };
         }
     }
 }

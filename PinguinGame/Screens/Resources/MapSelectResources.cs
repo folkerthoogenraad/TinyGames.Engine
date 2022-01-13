@@ -17,6 +17,7 @@ namespace PinguinGame.Screens.Resources
         public Texture2D BackgroundOverlay { get; private set; }
 
         public Sprite TitleMap { get; private set; }
+        public Sprite LevelReady { get; private set; }
         public Sprite LevelSelected { get; private set; }
         public Sprite LevelUnselected { get; private set; }
 
@@ -26,6 +27,9 @@ namespace PinguinGame.Screens.Resources
         public NineSideSprite ButtonSelected { get; private set; }
         public NineSideSprite ButtonPressed { get; private set; }
 
+        public Sprite LevelIcon { get; private set; }
+        public Sprite LevelIconLocked { get; private set; }
+
         public MapSelectResources(ContentManager content)
         {
             BackgroundOverlay = content.Load<Texture2D>("Sprites/UI/BackgroundPenguins");
@@ -33,6 +37,7 @@ namespace PinguinGame.Screens.Resources
             TitleMap = new Sprite(content.Load<Texture2D>("Sprites/UI/TitleMap")).CenterOrigin();
             LevelSelected = new Sprite(content.Load<Texture2D>("Sprites/UI/ButtonLevelSelect"), new Rectangle(0, 0, 32, 32)).CenterOrigin();
             LevelUnselected = new Sprite(content.Load<Texture2D>("Sprites/UI/ButtonLevelSelect"), new Rectangle(0, 32, 32, 32)).CenterOrigin();
+            LevelReady = new Sprite(content.Load<Texture2D>("Sprites/UI/ButtonLevelSelect"), new Rectangle(32, 0, 32, 32)).CenterOrigin();
 
             Font = content.LoadFont("Fonts/SansSerifFont");
 
@@ -42,6 +47,8 @@ namespace PinguinGame.Screens.Resources
             ButtonUnselected = new NineSideSprite(buttonTexture, new Rectangle(0, 16, 16, 16), 6, 6, 6, 6);
             ButtonPressed = new NineSideSprite(buttonTexture, new Rectangle(32, 16, 16, 16), 6, 6, 6, 6);
 
+            LevelIconLocked = new Sprite(content.Load<Texture2D>("Sprites/UI/MapIcons"), new Rectangle(0, 0, 16, 16)).CenterOrigin();
+            LevelIcon = new Sprite(content.Load<Texture2D>("Sprites/UI/MapIcons"), new Rectangle(16, 0, 16, 16)).CenterOrigin();
         }
     }
 }

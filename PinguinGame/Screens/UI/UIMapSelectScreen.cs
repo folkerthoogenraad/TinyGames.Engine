@@ -15,13 +15,38 @@ using TinyGames.Engine.Util;
 
 namespace PinguinGame.Screens.UI
 {
+    public class UIMapModel
+    {
+        public string Text = "";
+        public bool Locked = false;
+    }
+
+    public class UIMapSelectModel
+    {
+        public UIMapModel[] Maps;
+        public bool Ready = false;
+        public int SelectedIndex = 0;
+    }
+
+
+    public class UIMapButton : UIComponent
+    {
+        public Sprite Outline { get; set; }
+        public Sprite Sprite { get; set; }
+
+        public override void DrawSelf(Graphics2D graphics, AABB bounds)
+        {
+            graphics.DrawSprite(Outline, bounds.Center);
+            graphics.DrawSprite(Sprite, bounds.Center);
+        }
+    }
 
     public class UIMapSelectScreen : UIComponent
     {
         public UIBackground Background { get; set; }
         public UISprite Title { get; set; }
 
-        public UISprite[] MapOutlines { get; set; }
+        public UIMapButton[] MapButtons { get; set; }
 
         public UIButton OkButton { get; set; }
         public UIButton TextBox { get; set; }
@@ -29,14 +54,7 @@ namespace PinguinGame.Screens.UI
 
         private MapSelectResources _resources;
 
-        private string[] _text = new string[] {
-            "This is a nice map for the game",
-            "Locked",
-            "Locked",
-            "Locked",
-        };
-        private bool _ready = false;
-        private int _selectedIndex = -1;
+        private UIMapSelectModel _currentModel;
 
         public UIMapSelectScreen(MapSelectResources resources)
         {
@@ -56,7 +74,7 @@ namespace PinguinGame.Screens.UI
             TextBox = new UIButton()
             {
                 Font = resources.Font,
-                Text = _text[0],
+                Text = "",
                 Background = resources.ButtonUnselected
             };
 
@@ -68,18 +86,17 @@ namespace PinguinGame.Screens.UI
                 Background = resources.ButtonSelected
             };
 
-            MapOutlines = new UISprite[4];
+            MapButtons = new UIMapButton[4];
 
-            for(int i = 0; i < MapOutlines.Length; i++)
+            for(int i = 0; i < MapButtons.Length; i++)
             {
-                MapOutlines[i] = new UISprite() { 
-                    Sprite = resources.LevelUnselected,
+                MapButtons[i] = new UIMapButton() { 
+                    Sprite = resources.LevelIconLocked,
+                    Outline = resources.LevelUnselected,
                 };
             }
 
-            SetSelected(0);
-
-            foreach(var map in MapOutlines)
+            foreach(var map in MapButtons)
             {
                 map.SetAnimation(new UITransformAnimation(new Vector2(0, -64), new Vector2(1, 1)));
             }
@@ -93,50 +110,74 @@ namespace PinguinGame.Screens.UI
             AddComponent(TextBox);
             AddComponent(OkButton);
 
-            foreach (var map in MapOutlines)
+            foreach (var map in MapButtons)
             {
                 AddComponent(map);
             }
         }
 
-        public void SetSelected(int index)
+        public void SetModel(UIMapSelectModel model, bool animate = true)
         {
-            if (index == _selectedIndex) return;
 
-            _selectedIndex = index;
-
-            foreach(var (i, outline) in MapOutlines.WithIndex())
+            foreach (var (i, button) in MapButtons.WithIndex())
             {
-                if(_selectedIndex == i)
+                var map = model.Maps[i];
+
+                button.Sprite = map.Locked ? _resources.LevelIconLocked : _resources.LevelIcon;
+            }
+
+            SetSelected(model.SelectedIndex, model.Maps[model.SelectedIndex].Text, animate);
+            SetReady(model.Ready, model.SelectedIndex, animate);
+
+            _currentModel = model;
+        }
+
+        private void SetSelected(int index, string text, bool animate = true)
+        {
+            if (_currentModel != null && index == _currentModel.SelectedIndex) return;
+
+            foreach(var (i, button) in MapButtons.WithIndex())
+            {
+                if(index == i)
                 {
-                    outline.Sprite = _resources.LevelSelected;
-                    outline.SetAnimation(new UITransformAnimation(new Vector2(0, 0), new Vector2(1.1f, 1.1f)));
+                    button.Outline = _resources.LevelSelected;
+
+                    if (animate)
+                    {
+                        button.SetAnimation(new UITransformAnimation(new Vector2(0, 0), new Vector2(1.1f, 1.1f)));
+                    }
                 }
                 else
                 {
-                    outline.Sprite = _resources.LevelUnselected;
+                    button.Outline = _resources.LevelUnselected;
                 }
             }
 
-            SetText(_text[_selectedIndex]);
+            SetText(text, animate);
         }
 
-        private void SetText(string text)
+        private void SetText(string text, bool animate = true)
         {
             TextBox.Text = text;
-            TextBox.SetAnimation(new UITransformAnimation(new Vector2(0, 0), new Vector2(1.1f, 1.1f)));
+
+            if (animate)
+            {
+                TextBox.SetAnimation(new UITransformAnimation(new Vector2(0, 0), new Vector2(1.1f, 1.1f)));
+            }
         }
 
-        public void SetReady(bool ready)
+        private void SetReady(bool ready, int index, bool animate = true)
         {
-            if (ready == _ready) return;
+            if (_currentModel != null && ready == _currentModel.Ready) return;
 
-            _ready = ready;
+            MapButtons[index].Outline = ready ? _resources.LevelReady : _resources.LevelSelected;
+            OkButton.Visible = ready;
 
-            OkButton.Visible = _ready;
-            OkButton.SetAnimation(new UITransformAnimation(new Vector2(0, 0), new Vector2(1.4f, 1.4f)));
-
-            MapOutlines[_selectedIndex].SetAnimation(new UITransformAnimation(new Vector2(0, 0), new Vector2(1.4f, 1.4f)));
+            if (animate)
+            {
+                OkButton.SetAnimation(new UITransformAnimation(new Vector2(0, 0), new Vector2(1.4f, 1.4f)));
+                MapButtons[index].SetAnimation(new UITransformAnimation(new Vector2(0, 0), new Vector2(1.4f, 1.4f)));
+            }
         }
 
         public void AcceptAnimation()
@@ -166,9 +207,9 @@ namespace PinguinGame.Screens.UI
             Title.UpdateLayout(AABB.Create(bounds.TopCenter + new Vector2(0, 32), Vector2.Zero));
 
             float widthPerItem = 32 + 8;
-            float offset = -widthPerItem * (MapOutlines.Length - 1) / 2;
+            float offset = -widthPerItem * (MapButtons.Length - 1) / 2;
 
-            foreach(var map in MapOutlines)
+            foreach(var map in MapButtons)
             {
                 map.UpdateLayout(AABB.CreateCentered(bounds.Center + new Vector2(offset, -16), new Vector2(32, 32)));
 

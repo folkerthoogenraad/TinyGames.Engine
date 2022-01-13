@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PinguinGame.Input;
 using PinguinGame.Player;
+using PinguinGame.Screens.UI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,44 +18,49 @@ namespace PinguinGame.Screens
         private readonly InputService _inputService;
         private readonly IScreenService _screens;
 
-        public string Text { get; set; }
+        private PlayerInfo _winner;
+        private Fight _fight;
 
-        private Font Font;
-        private Font Outline;
+        public UIResultScreen _ui;
+
 
         public ResultsScreen(IScreenService screens, InputService inputService, Fight fight)
         {
             _inputService = inputService;
             _screens = screens;
-
-            var winner = fight.Scoreboard.First().Player;
-
-            Text = $"Player {winner.Index + 1} wins the game!";
+            _fight = fight;
+            _winner = _fight.Scoreboard.First().Player;
         }
 
         public override void Init(GraphicsDevice device, ContentManager content)
         {
             base.Init(device, content);
 
-            Font = content.LoadFont("Fonts/Font8x10");
-            Outline = FontOutline.Create(device, Font);
+            var winner = _winner;
+            var text = winner.Name;
+            var color = winner.Color;
+
+            _ui = new UIResultScreen(new Resources.ResultsResources(content), text, color);
+            _ui.UpdateLayout(Camera.Bounds);
         }
 
         public override void UpdateSelf(float delta)
         {
             base.UpdateSelf(delta);
 
-            foreach(var input in _inputService.InputStates)
+            var state = _inputService.GetInputStateForDevice(_winner.InputDevice);
+
+            if (state.ActionPressed)
             {
-                if (input.StartPressed)
-                {
-                    _screens.ShowTitleScreen();
-                }
+                _ui.FadeOut();
+                _screens.ShowTitleScreen();
             }
         }
         public override void UpdateAnimation(float delta)
         {
             base.UpdateAnimation(delta);
+
+            _ui.Update(delta);
         }
 
         public override void Draw()
@@ -65,8 +71,7 @@ namespace PinguinGame.Screens
 
             Graphics.Begin(Camera.GetMatrix());
 
-            Graphics.DrawString(Outline, Text, Camera.Position, Color.Black, FontHAlign.Center);
-            Graphics.DrawString(Font, Text, Camera.Position, Color.White, FontHAlign.Center);
+            _ui.Draw(Graphics);
 
             Graphics.End();
         }
