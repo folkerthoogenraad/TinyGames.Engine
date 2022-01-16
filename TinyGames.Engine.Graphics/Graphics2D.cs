@@ -389,6 +389,23 @@ namespace TinyGames.Engine.Graphics
             Matrix = matrix;
         }
 
+        public void DrawRaw(IEnumerable<VertexPositionColorTexture> vertices)
+        {
+            DrawRaw(vertices, Pixel);
+        }
+
+        public void DrawRaw(IEnumerable<VertexPositionColorTexture> vertices, Texture2D texture)
+        {
+            SetTexture(texture);
+
+            if (VerticesLeftUntilFlush() < vertices.Count()) Flush();
+
+            foreach(var vertex in vertices)
+            {
+                Vertex(vertex.Position, vertex.TextureCoordinate, vertex.Color);
+            }
+        }
+
         public void End()
         {
             Flush();

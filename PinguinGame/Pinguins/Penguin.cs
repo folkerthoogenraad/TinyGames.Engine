@@ -56,10 +56,12 @@ namespace PinguinGame.Pinguins
             State = State.Update(this, input, delta);
         }
 
-        public void Draw(Graphics2D graphics, PenguinGraphics penguinGraphics)
+        public void Draw(Graphics2D graphics, PenguinGraphics penguinGraphics, float height)
         {
+            Physics.Position += new Vector2(0, -height);
             penguinGraphics.DrawShadow(graphics, Position);
             State.Draw(graphics, this, penguinGraphics);
+            Physics.Position += new Vector2(0, height);
         }
 
         public void Bonk(Vector2 velocity)

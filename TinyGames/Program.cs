@@ -7,7 +7,7 @@ namespace TinyGames
         [STAThread]
         static void Main()
         {
-            using (var game = new AnimationTestGame())
+            using (var game = new ShapesTestGame())
                 game.Run();
         }
     }

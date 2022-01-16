@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PinguinGame.Audio;
 using PinguinGame.Input;
 using PinguinGame.Player;
 using PinguinGame.Screens.Resources;
@@ -20,17 +21,19 @@ namespace PinguinGame.Screens
         private readonly PlayerService _playerService;
         private readonly InputService _inputService;
         private readonly IScreenService _screens;
+        private readonly IMusicService _musicService;
 
         private HashSet<PlayerInfo> _readyPlayers;
         private UISelectPlayers _ui;
 
-        public PlayerSelectScreen(IScreenService screens, PlayerService players, InputService inputService)
+        public PlayerSelectScreen(IScreenService screens, PlayerService players, InputService inputService, IMusicService music)
         {
             _playerService = players;
             _inputService = inputService;
             _screens = screens;
 
             _readyPlayers = new HashSet<PlayerInfo>();
+            _musicService = music;
         }
 
         public override void Init(GraphicsDevice device, ContentManager content)
@@ -45,6 +48,8 @@ namespace PinguinGame.Screens
                 PlayerStates = _playerService.AllPlayers.Select(x => PlayerInfoToState(x)).ToArray(),
                 ShowContinueButton = false,
             });
+
+            _musicService.PlayMenuMusic();
         }
 
         public override void UpdateSelf(float delta)

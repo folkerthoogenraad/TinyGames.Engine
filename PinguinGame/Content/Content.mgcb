@@ -43,6 +43,33 @@
 /processorParam:TextureFormat=Color
 /build:Fonts/SansSerifFont.png
 
+#begin Levels/level0.json
+/copy:Levels/level0.json
+
+#begin Songs/InGame.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/InGame.mp3
+
+#begin Songs/Menu.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/Menu.mp3
+
+#begin Songs/Title.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/Title.mp3
+
+#begin Songs/Victory.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/Victory.mp3
+
 #begin Sprites/PinguinSheet.png
 /importer:TextureImporter
 /processor:TextureProcessor

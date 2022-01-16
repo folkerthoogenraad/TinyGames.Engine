@@ -32,6 +32,16 @@ namespace TinyGames.Engine.Graphics
                 Matrix.CreateOrthographicOffCenter(- Width / 2, Width / 2, Height / 2, -Height / 2, -1000, 1000);
         }
 
+        public Matrix GetHeightDepthMatrix()
+        {
+            var matrix = GetMatrix();
+
+            matrix.M32 = -matrix.M22;
+            matrix.M23 = matrix.M33;
+
+            return matrix;
+        }
+
         private AABB GetBounds()
         {
             return new AABB()

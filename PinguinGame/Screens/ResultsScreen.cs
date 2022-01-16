@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PinguinGame.Audio;
 using PinguinGame.Input;
 using PinguinGame.Player;
 using PinguinGame.Screens.UI;
@@ -17,6 +18,7 @@ namespace PinguinGame.Screens
     {
         private readonly InputService _inputService;
         private readonly IScreenService _screens;
+        private readonly IMusicService _musicService;
 
         private PlayerInfo _winner;
         private Fight _fight;
@@ -24,12 +26,13 @@ namespace PinguinGame.Screens
         public UIResultScreen _ui;
 
 
-        public ResultsScreen(IScreenService screens, InputService inputService, Fight fight)
+        public ResultsScreen(IScreenService screens, InputService inputService, IMusicService musicService, Fight fight)
         {
             _inputService = inputService;
             _screens = screens;
             _fight = fight;
             _winner = _fight.Scoreboard.First().Player;
+            _musicService = musicService;
         }
 
         public override void Init(GraphicsDevice device, ContentManager content)
@@ -42,6 +45,8 @@ namespace PinguinGame.Screens
 
             _ui = new UIResultScreen(new Resources.ResultsResources(content), text, color);
             _ui.UpdateLayout(Camera.Bounds);
+
+            _musicService.PlayVictoryMusic();
         }
 
         public override void UpdateSelf(float delta)

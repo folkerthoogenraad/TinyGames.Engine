@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PinguinGame.Audio;
 using PinguinGame.Input;
 using PinguinGame.Player;
 using PinguinGame.Screens.Resources;
@@ -18,14 +19,16 @@ namespace PinguinGame.Screens
     public class TitleScreen : Screen
     {
         private readonly InputService _inputService;
+        private readonly IMusicService _musicService;
         private readonly IScreenService _screens;
 
         private UITitleScreen _ui;
 
-        public TitleScreen(IScreenService screens, InputService inputService)
+        public TitleScreen(IScreenService screens, InputService inputService, IMusicService music)
         {
             _inputService = inputService;
             _screens = screens;
+            _musicService = music;
         }
 
         public override void Init(GraphicsDevice device, ContentManager content)
@@ -34,6 +37,8 @@ namespace PinguinGame.Screens
 
             _ui = new UITitleScreen(new TitleResources(content));
             _ui.UpdateLayout(Camera.Bounds);
+
+            _musicService.PlayTitleMusic();
         }
 
         public override void UpdateSelf(float delta)

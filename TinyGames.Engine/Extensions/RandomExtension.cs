@@ -41,5 +41,13 @@ namespace TinyGames.Engine.Extensions
 
             return Tools.AngleVector(angle) * r;
         }
+        public static Vector2 RandomPointInDonut(this Random random, float minRadius, float maxRadius)
+        {
+            float percentage = minRadius / maxRadius;
+            float r = MathF.Sqrt(percentage + (1 - percentage) * random.NextFloat()) * maxRadius;
+            float angle = random.NextFloat() * MathF.PI * 2;
+
+            return Tools.AngleVector(angle) * r;
+        }
     }
 }

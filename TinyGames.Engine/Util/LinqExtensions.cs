@@ -60,6 +60,16 @@ namespace TinyGames.Engine.Util
                 index++;
             }
         }
+        public static T Random<T>(this IEnumerable<T> input)
+        {
+            return input.Random(new Random());
+        }
+        public static T Random<T>(this IEnumerable<T> input, Random random)
+        {
+            var list = input.ToArray();
+
+            return list[random.Next(list.Length)];
+        }
 
     }
 }

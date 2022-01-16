@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PinguinGame.Audio;
 using PinguinGame.Input;
 using PinguinGame.Player;
 using PinguinGame.Screens.Resources;
@@ -19,15 +20,17 @@ namespace PinguinGame.Screens
     {
         private readonly InputService _inputService;
         private readonly IScreenService _screens;
+        private readonly IMusicService _musicService;
 
         private UIMenuScreen _ui;
 
         private int Selected = 0;
 
-        public MenuScreen(IScreenService screens, InputService inputService)
+        public MenuScreen(IScreenService screens, InputService inputService, IMusicService music)
         {
             _inputService = inputService;
             _screens = screens;
+            _musicService = music;
         }
 
         public override void Init(GraphicsDevice device, ContentManager content)
@@ -36,6 +39,8 @@ namespace PinguinGame.Screens
 
             _ui = new UIMenuScreen(new MenuResources(content));
             _ui.UpdateLayout(Camera.Bounds);
+
+            _musicService.PlayMenuMusic();
         }
 
         public override void UpdateSelf(float delta)

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using PinguinGame.Input;
 using PinguinGame.Player;
 using PinguinGame.Screens;
+using PinguinGame.Audio;
 
 namespace PinguinGame
 {
@@ -21,6 +22,7 @@ namespace PinguinGame
 
         private InputService inputService;
         private PlayerService playerService;
+        private MusicService musicService;
 
         public ScreenManager Manager;
 
@@ -46,9 +48,14 @@ namespace PinguinGame
 
             inputService = new InputService();
             playerService = new PlayerService();
+            musicService = new MusicService(Content);
 
             Manager = new ScreenManager(GraphicsDevice, Content);
 
+            //ShowInGameScreen(new PlayerInfo[] {
+            //    new PlayerInfo() { Index = 0, InputDevice = InputDevice.Keyboard0 },
+            //    new PlayerInfo() { Index = 1, InputDevice = InputDevice.Keyboard1 },
+            //});
             ShowSplashScreen();
         }
 
@@ -81,26 +88,26 @@ namespace PinguinGame
 
         public void ShowPlayerSelectScreen()
         {
-            Manager.Screen = new PlayerSelectScreen(this, playerService, inputService);
+            Manager.Screen = new PlayerSelectScreen(this, playerService, inputService, musicService);
         }
         public void ShowInGameScreen(PlayerInfo[] players)
         {
-            Manager.Screen = new InGameScreen(this, inputService, players);
+            Manager.Screen = new InGameScreen(this, inputService, musicService, players);
         }
 
         public void ShowResultScreen(Fight fight)
         {
-            Manager.Screen = new ResultsScreen(this, inputService, fight);
+            Manager.Screen = new ResultsScreen(this, inputService, musicService, fight);
         }
 
         public void ShowTitleScreen()
         {
-            Manager.Screen = new TitleScreen(this, inputService);
+            Manager.Screen = new TitleScreen(this, inputService, musicService);
         }
 
         public void ShowMenuScreen()
         {
-            Manager.Screen = new MenuScreen(this, inputService);
+            Manager.Screen = new MenuScreen(this, inputService, musicService);
         }
         public void ShowSplashScreen()
         {
@@ -114,7 +121,7 @@ namespace PinguinGame
 
         public void ShowMapSelectScreen(PlayerInfo[] players)
         {
-            Manager.Screen = new MapSelectScreen(this, inputService, players);
+            Manager.Screen = new MapSelectScreen(this, inputService, musicService, players);
         }
     }
 }

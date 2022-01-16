@@ -8,7 +8,7 @@ namespace PinguinGame.Pinguins
 
     public class PenguinPhysics
     {
-        public Vector2 Position { get; private set; }
+        public Vector2 Position { get; set; }
         public Vector2 Velocity { get; private set; }
         public Vector2 Facing { get; private set; }
 

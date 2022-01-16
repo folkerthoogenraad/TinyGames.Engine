@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PinguinGame.Audio;
 using PinguinGame.Input;
 using PinguinGame.Pinguins;
+using PinguinGame.Pinguins.Levels.Loader;
 using PinguinGame.Player;
 using PinguinGame.Screens.States;
 using PinguinGame.Screens.UI;
@@ -21,6 +23,7 @@ namespace PinguinGame.Screens
         private readonly PlayerInfo[] _players;
         private readonly InputService _inputService;
         private readonly IScreenService _screens;
+        private readonly IMusicService _musicService;
 
         private GameUISkin Skin;
 
@@ -41,11 +44,12 @@ namespace PinguinGame.Screens
             }
         }
 
-        public InGameScreen(IScreenService screens, InputService inputService, PlayerInfo[] players)
+        public InGameScreen(IScreenService screens, InputService inputService, IMusicService music, PlayerInfo[] players)
         {
             _players = players;
             _inputService = inputService;
             _screens = screens;
+            _musicService = music;
 
         }
 
@@ -55,9 +59,7 @@ namespace PinguinGame.Screens
 
             Camera.Height = 180;
 
-            var background = new Sprite(content.Load<Texture2D>("Sprites/World")).CenterOrigin();
-
-            World = new PenguinWorld(background, _players, _inputService);
+            World = new PenguinWorld(device, content.LoadLevel("Levels/level0"), _players, _inputService);
             World.Camera = Camera;
 
             Skin = new GameUISkin();
@@ -65,6 +67,8 @@ namespace PinguinGame.Screens
             Skin.FontOutline = FontOutline.Create(device, Skin.Font);
 
             State = new PreGameState();
+
+            _musicService.PlayInGameMusic();
         }
 
         public override void UpdateSelf(float delta)
@@ -83,7 +87,6 @@ namespace PinguinGame.Screens
         {
             base.Draw();
 
-            Graphics.Clear(new Color(125, 170, 207));
 
             Graphics.Begin(Camera.GetMatrix());
 
