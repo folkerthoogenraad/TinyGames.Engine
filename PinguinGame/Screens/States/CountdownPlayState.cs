@@ -25,7 +25,6 @@ namespace PinguinGame.Screens.States
         {
             base.Init(world, device, content, skin);
 
-            var graphics = new PenguinGraphics(content.Load<Texture2D>("Sprites/PinguinSheet"));
 
             Timer = TickTime * 3;
 
@@ -36,6 +35,11 @@ namespace PinguinGame.Screens.States
             foreach (var player in world.Players)
             {
                 Vector2 pos = Tools.AngleVector(angle) * 16;
+
+                var texture = player.Index == 0 ? "Sprites/PinguinSheet" : "Sprites/TigerSheet";
+
+                var graphics = new PenguinGraphics(content.Load<Texture2D>(texture));
+
                 var penguin = new Penguin(player, graphics, pos + new Vector2(0, 4));
                 penguin.Physics = penguin.Physics.SetFacing(-pos);
 

@@ -52,11 +52,11 @@ namespace PinguinGame
 
             Manager = new ScreenManager(GraphicsDevice, Content);
 
-            //ShowInGameScreen(new PlayerInfo[] {
-            //    new PlayerInfo() { Index = 0, InputDevice = InputDevice.Keyboard0 },
-            //    new PlayerInfo() { Index = 1, InputDevice = InputDevice.Keyboard1 },
-            //});
-            ShowSplashScreen();
+            ShowInGameScreen(new PlayerInfo[] {
+                new PlayerInfo() { Index = 0, InputDevice = InputDevice.Keyboard0 },
+                new PlayerInfo() { Index = 1, InputDevice = InputDevice.Keyboard1 },
+            });
+            // ShowSplashScreen();
         }
 
         protected override void LoadContent()

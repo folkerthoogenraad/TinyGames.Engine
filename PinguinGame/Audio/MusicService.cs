@@ -50,7 +50,7 @@ namespace PinguinGame.Audio
             MediaPlayer.Stop(); 
 
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(song);
+            //MediaPlayer.Play(song);
 
             CurrentSong = song;
         }
