@@ -37,14 +37,15 @@ namespace PinguinGame
         {
             base.Initialize();
 
-            _graphics.PreferredBackBufferWidth = 1920;
-            _graphics.PreferredBackBufferHeight = 1080;
+            // _graphics.PreferredBackBufferWidth = 1024;
+            // _graphics.PreferredBackBufferHeight = 768;
+            // _graphics.ApplyChanges();
+
+            _graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
-            //_graphics.PreferredBackBufferWidth = 1440 * 16 / 9;
-            //_graphics.PreferredBackBufferHeight = 1440;
-            //_graphics.IsFullScreen = true;
-            //_graphics.ApplyChanges();
 
             inputService = new InputService();
             playerService = new PlayerService();
