@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PinguinGame.Pinguins;
+using PinguinGame.Screens.Resources;
 using PinguinGame.Screens.UI;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,11 @@ namespace PinguinGame.Screens.States
         public float Timer = 3;
         public int Tick = 3;
 
-        public CenterTextUI _ui;
+        public UICountdownScreen _ui;
 
         public override void Init(PenguinWorld world, GraphicsDevice device, ContentManager content, GameUISkin skin)
         {
             base.Init(world, device, content, skin);
-
 
             Timer = TickTime * 3;
 
@@ -48,17 +48,16 @@ namespace PinguinGame.Screens.States
                 angle += anglePerPlayer;
             }
 
-            _ui = new CenterTextUI(skin, "");
+            _ui = new UICountdownScreen(new CountDownResources(content));
+            _ui.UpdateLayout(World.Camera.Bounds);
         }
 
         public override GameState Update(float delta)
         {
             Timer -= delta;
 
-            Tick = (int)(Timer / TickTime) + 1;
-
-            _ui.Update(delta, World.Camera.Bounds);
-            _ui.Text = "" + Tick;
+            _ui.SetCurrentSecond((int)(Timer / TickTime) + 1);
+            _ui.Update(delta);
 
             if (Timer < 0)
             {
