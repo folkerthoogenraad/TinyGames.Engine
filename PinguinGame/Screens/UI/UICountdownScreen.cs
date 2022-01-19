@@ -15,7 +15,6 @@ using TinyGames.Engine.Util;
 
 namespace PinguinGame.Screens.UI
 {
-
     public class UICountdownScreen : UIComponent
     {
         private CountDownResources _resources;

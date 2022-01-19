@@ -37,8 +37,8 @@ namespace PinguinGame
         {
             base.Initialize();
 
-            // _graphics.PreferredBackBufferWidth = 1024;
-            // _graphics.PreferredBackBufferHeight = 768;
+            // _graphics.PreferredBackBufferWidth = 1280;
+            // _graphics.PreferredBackBufferHeight = 720;
             // _graphics.ApplyChanges();
 
             _graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
@@ -53,11 +53,13 @@ namespace PinguinGame
 
             Manager = new ScreenManager(GraphicsDevice, Content);
 
-            ShowInGameScreen(new PlayerInfo[] {
-                new PlayerInfo() { Index = 0, InputDevice = InputDevice.Keyboard0 },
-                new PlayerInfo() { Index = 1, InputDevice = InputDevice.Keyboard1 },
-            });
-            // ShowSplashScreen();
+            //ShowInGameScreen(new PlayerInfo[] {
+            //    //new PlayerInfo() { Index = 0, InputDevice = InputDevice.Keyboard0 },
+            //    //new PlayerInfo() { Index = 1, InputDevice = InputDevice.Keyboard1 },
+            //    new PlayerInfo() { Index = 0, InputDevice = InputDevice.Gamepad0 },
+            //    new PlayerInfo() { Index = 1, InputDevice = InputDevice.Gamepad1 },
+            //});
+            ShowSplashScreen();
         }
 
         protected override void LoadContent()
@@ -93,7 +95,8 @@ namespace PinguinGame
         }
         public void ShowInGameScreen(PlayerInfo[] players)
         {
-            Manager.Screen = new InGameScreen(this, inputService, musicService, players);
+            Manager.Screen = new InGameIceScreen(this, inputService, musicService, players);
+            //Manager.Screen = new InGameMinecartScreen(this, inputService, musicService, players);
         }
 
         public void ShowResultScreen(Fight fight)

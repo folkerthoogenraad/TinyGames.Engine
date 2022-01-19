@@ -42,6 +42,36 @@ namespace TinyGames.Engine.Graphics
             return matrix;
         }
 
+        public void ClampInBounds(AABB bounds)
+        {
+            bounds.Left += Width / 2;
+            bounds.Right -= Width / 2;
+
+            bounds.Top += Height / 2;
+            bounds.Bottom -= Height / 2;
+
+            ClampPositionInBounds(bounds);
+        }
+
+        public void ClampPositionInBounds(AABB bounds)
+        {
+            if (Position.X < bounds.Left) Position.X = bounds.Left;
+            if (Position.X > bounds.Right) Position.X = bounds.Right;
+
+            if (Position.Y < bounds.Top) Position.Y = bounds.Top;
+            if (Position.Y > bounds.Bottom) Position.Y = bounds.Bottom;
+
+            if (bounds.Width < 0)
+            {
+                Position.X = bounds.Center.X;
+            }
+            if (bounds.Height < 0)
+            {
+                Position.Y = bounds.Center.Y;
+            }
+
+        }
+
         private AABB GetBounds()
         {
             return new AABB()
