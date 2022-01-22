@@ -473,5 +473,10 @@ namespace TinyGames.Engine.Maths
         {
             return CreateCentered(position.X, position.Y, size.X, size.Y);
         }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Left, Right, Top, Bottom);
+        }
     }
 }

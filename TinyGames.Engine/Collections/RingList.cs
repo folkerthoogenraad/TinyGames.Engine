@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace TinyGames.Engine.Util
+namespace TinyGames.Engine.Collections
 {
     public class RingList<T> : IEnumerable<T>
     {
