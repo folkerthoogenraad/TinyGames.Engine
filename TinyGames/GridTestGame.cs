@@ -106,9 +106,9 @@ namespace TinyGames
         public Graphics2D Graphics;
         public Camera Camera;
 
-        public World World;
+        public PhysicsWorld World;
 
-        public Body MouseBody;
+        public PhysicsBody MouseBody;
 
         public Vector2 GridSize = new Vector2(4, 4);
 
@@ -145,7 +145,7 @@ namespace TinyGames
             var effect = Content.Load<Effect>("Effects/StandardEffect");
 
             Graphics = new Graphics2D(GraphicsDevice, effect);
-            World = new World();
+            World = new PhysicsWorld();
 
             Camera = new Camera(1080, 16f / 9f);
 

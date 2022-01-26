@@ -7,27 +7,27 @@ using TinyGames.Engine.Collisions.Solvers;
 
 namespace TinyGames.Engine.Collisions
 {
-    public class World
+    public class PhysicsWorld
     {
-        public IEnumerable<Body> Bodies => _bodies;
+        public IEnumerable<PhysicsBody> Bodies => _bodies;
 
         private IDetector _detector;
         private ISolver _solver;
-        private List<Body> _bodies;
+        private List<PhysicsBody> _bodies;
 
-        public World()
+        public PhysicsWorld()
         {
-            _bodies = new List<Body>();
+            _bodies = new List<PhysicsBody>();
             _solver = new DefaultSolver();
             _detector = new SweepAndPruneDetector();
         }
 
-        public void AddBody(Body body)
+        public void AddBody(PhysicsBody body)
         {
             _bodies.Add(body);
         }
 
-        public void RemoveBody(Body body)
+        public void RemoveBody(PhysicsBody body)
         {
             _bodies.Remove(body);
         }
@@ -43,14 +43,14 @@ namespace TinyGames.Engine.Collisions
             }
 
             // Solve the collisions
-            var collisions = _detector.Solve(_bodies);
+            var collisions = _detector.Detect(_bodies);
             _solver.Solve(collisions);
 
             // Get the unstuck motion
             foreach(var collision in collisions.CollisionIndices)
             {
-                var from = collisions.Bounds[collision.BodyA];
-                var to = collisions.Bounds[collision.BodyB];
+                var from = collision.BodyA;
+                var to = collision.BodyB;
 
                 from.Body.Position = from.Position + from.UnstuckMotion;
                 to.Body.Position = to.Position + to.UnstuckMotion;

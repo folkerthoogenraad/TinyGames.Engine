@@ -30,7 +30,7 @@ namespace TinyGames
         public Sprite UIGameOver;
         public Sprite UIDone;
 
-        public Body PlayerBody;
+        public PhysicsBody PlayerBody;
         public Vector2 Position;
         public Vector2 Velocity;
         public float GroundHeight = 300;
@@ -52,10 +52,10 @@ namespace TinyGames
         public SpriteNumbers SpriteNumbers;
 
         private Vector2[] Stars;
-        private Body[] Spikes;
-        private Body[] Coins;
+        private PhysicsBody[] Spikes;
+        private PhysicsBody[] Coins;
 
-        private World World;
+        private PhysicsWorld World;
 
         public Color ForegroundColor = Color.White;
         public Color BackgroundColor = new Color(15, 24, 32);
@@ -115,13 +115,13 @@ namespace TinyGames
             var bounds = Camera.Bounds;
             var random = new Random();
 
-            World = new World();
+            World = new PhysicsWorld();
 
-            Spikes = new Body[0];
-            Coins = new Body[0];
+            Spikes = new PhysicsBody[0];
+            Coins = new PhysicsBody[0];
             Stars = new Vector2[64].Select(x => bounds.TopLeft + new Vector2(bounds.Width * (float)random.NextDouble(), bounds.Height * (float)random.NextDouble())).ToArray();
 
-            PlayerBody = new Body(Position, new Collider(AABB.CreateCentered(Vector2.Zero, new Vector2(16, 16))));
+            PlayerBody = new PhysicsBody(Position, new BoxCollider(AABB.CreateCentered(Vector2.Zero, new Vector2(16, 16))));
 
             World.AddBody(PlayerBody);
         }
@@ -310,7 +310,7 @@ namespace TinyGames
             Done = false;
 
 
-            World = new World();
+            World = new PhysicsWorld();
 
             Spikes = GenerateSpikes();
             Coins = GenerateCoins();
@@ -320,10 +320,10 @@ namespace TinyGames
             World.AddBody(PlayerBody);
         }
 
-        public Body[] GenerateSpikes()
+        public PhysicsBody[] GenerateSpikes()
         {
             var random = new Random();
-            var spikes = new List<Body>();
+            var spikes = new List<PhysicsBody>();
             int skip = 0;
             for (int i = -10; i < 10; i++)
             {
@@ -336,17 +336,17 @@ namespace TinyGames
                 {
                     skip = (int)(random.NextFloat() * 2) + 2;
                 }
-                spikes.Add(new Body(
+                spikes.Add(new PhysicsBody(
                     new Vector2(i * 16, GroundHeight - 16),
-                    new Collider(AABB.Create(0, 0, 16, 16)),
+                    new BoxCollider(AABB.Create(0, 0, 16, 16)),
                     true));
             }
             return spikes.ToArray();
         }
-        public Body[] GenerateCoins()
+        public PhysicsBody[] GenerateCoins()
         {
             var random = new Random();
-            var coins = new List<Body>();
+            var coins = new List<PhysicsBody>();
 
             float center = 0;
             int count = 3;
@@ -359,7 +359,7 @@ namespace TinyGames
                 center += random.NextFloat() * 128 - 64;
                 yPos += offsetY;
 
-                coins.Add(new Body(new Vector2(center, yPos), new Collider(AABB.CreateCentered(Vector2.Zero, new Vector2(16, 16)))));
+                coins.Add(new PhysicsBody(new Vector2(center, yPos), new BoxCollider(AABB.CreateCentered(Vector2.Zero, new Vector2(16, 16)))));
             }
 
             return coins.ToArray();

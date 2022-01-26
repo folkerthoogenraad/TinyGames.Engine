@@ -34,7 +34,7 @@ namespace TinyGames
 
         public Sprite Sprite;
 
-        public World World;
+        public PhysicsWorld World;
 
         public List<Coin> Coins;
 
@@ -81,7 +81,7 @@ namespace TinyGames
             var texture = Content.Load<Texture2D>("Sprites/Sheet");
 
             Graphics = new Graphics2D(GraphicsDevice, new AlphaTestEffect(GraphicsDevice));
-            World = new World();
+            World = new PhysicsWorld();
 
             Camera = new Camera(180, 16f / 9f);
 

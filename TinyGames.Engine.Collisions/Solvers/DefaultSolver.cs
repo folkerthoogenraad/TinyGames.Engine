@@ -14,22 +14,19 @@ namespace TinyGames.Engine.Collisions.Solvers
         {
             foreach(var collision in set.CollisionIndices)
             {
-                var boundsA = set.Bounds[collision.BodyA];
-                var boundsB = set.Bounds[collision.BodyB];
+                var boundsA = collision.BodyA;
+                var boundsB = collision.BodyB;
 
                 if (!boundsA.Solid && !boundsB.Solid) continue;
 
-                var aabbA = boundsA.Bounds.Translated(boundsA.UnstuckMotion);
-                var aabbB = boundsB.Bounds.Translated(boundsB.UnstuckMotion);
+                var relativePosition = (boundsB.Position + boundsB.UnstuckMotion) - (boundsA.Position + boundsA.UnstuckMotion);
 
-                var minkow = AABB.MinkowskiDifference(aabbA, aabbB);
+                if (!ColliderOverlaps.Overlaps(boundsA.Collider, boundsB.Collider, relativePosition)) continue;
 
-                Vector2 unstuck = -minkow.Unstuck(Vector2.Zero);
+                Vector2 unstuck = ColliderPenetration.Penetration(boundsA.Collider, boundsB.Collider, relativePosition);
 
                 float length = unstuck.LengthSquared();
                 if (length <= 0) continue;
-
-                Vector2 normal = -unstuck / length;
 
                 float totalMass = boundsA.Mass + boundsB.Mass;
 
@@ -42,9 +39,6 @@ namespace TinyGames.Engine.Collisions.Solvers
 
                 boundsA.UnstuckMotion += unstuck * balance;
                 boundsB.UnstuckMotion += -unstuck * (1 - balance);
-
-                //boundsA.Body.Velocity -= normal * Vector2.Dot(boundsA.Body.Velocity, normal);
-                //boundsB.Body.Velocity -= -normal * Vector2.Dot(boundsB.Body.Velocity, -normal);
             }
         }
     }

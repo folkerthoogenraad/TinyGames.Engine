@@ -8,10 +8,12 @@ namespace TinyGames.Engine.Collisions.Contracts
 {
     public class BodyBounds
     {
-        public Body Body;
+        public PhysicsBody Body;
         public Vector2 Position;
         public Vector2 Velocity;
-        
+
+        public Collider Collider;
+
         public AABB Bounds;
         public float Mass;
 

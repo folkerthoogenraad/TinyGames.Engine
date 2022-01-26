@@ -19,9 +19,9 @@ namespace TinyGames
         public Graphics2D Graphics;
         public Camera Camera;
 
-        public World World;
+        public PhysicsWorld World;
 
-        public Body MouseBody;
+        public PhysicsBody MouseBody;
 
         Vector2 MousePosition;
         Vector2 OriginPosition;
@@ -48,31 +48,41 @@ namespace TinyGames
 
         protected override void LoadContent()
         {
-            var effect = Content.Load<Effect>("Effects/StandardEffect");
+            Graphics = new Graphics2D(GraphicsDevice);
+            World = new PhysicsWorld();
 
-            Graphics = new Graphics2D(GraphicsDevice, effect);
-            World = new World();
+            Camera = new Camera(720, 16f / 9f);
 
-            Camera = new Camera(360, 16f / 9f);
-
-            MouseBody = new Body(new Vector2(0, 0), new Collider(AABB.Create(-16, -16, 32, 32))) { Solid = true };
+            MouseBody = new PhysicsBody(new Vector2(0, 0), new BoxCollider(AABB.Create(-16, -16, 32, 32))) { Solid = false };
 
             World.AddBody(MouseBody);
 
-            Random random = new Random(12);
+            //Random random = new Random(12);
+            Random random = new Random(4);
 
-            for(int i = 0; i < 10; i++)
+            for (int i = 0; i < 20; i++)
             {
-                World.AddBody(new Body(new Vector2((random.NextFloat() * 2 - 1) * 180, (random.NextFloat() * 2 - 1) * 180), new Collider(AABB.CreateCentered(0, 0, random.NextFloat() * 64 + 8, random.NextFloat() * 64 + 8))) { 
+                World.AddBody(new PhysicsBody(new Vector2((random.NextFloat() * 2 - 1) * 180, (random.NextFloat() * 2 - 1) * 180), new BoxCollider(AABB.CreateCentered(0, 0, random.NextFloat() * 64 + 8, random.NextFloat() * 64 + 8)))
+                {
                     Solid = true
                 });
             }
 
-            for(int i = 0; i < 0; i++)
+            for (int i = 0; i < 200; i++)
             {
-                World.AddBody(new Body(new Vector2(i * 16 - 128, 0), new Collider(AABB.CreateCentered(0, 0, 16, 16)))
+                World.AddBody(new PhysicsBody(new Vector2((random.NextFloat() * 2 - 1) * 180, (random.NextFloat() * 2 - 1) * 180), 
+                    new CircleCollider(new Circle(random.RandomPointInCircle() * 128, random.NextFloatRange(8, 32))))
                 {
                     Solid = true
+                });
+            }
+
+            for (int i = 0; i < 0; i++)
+            {
+                World.AddBody(new PhysicsBody(new Vector2(i * 16 - 128, 0), new BoxCollider(AABB.CreateCentered(0, 0, 16, 16)))
+                {
+                    Solid = true,
+                    Static = true
                 });
             }
         }
@@ -152,19 +162,19 @@ namespace TinyGames
 
         }
 
-        public void DrawWorld(World world)
+        public void DrawWorld(PhysicsWorld world)
         {
             foreach (var body in world.Bodies)
             {
                 DrawBody(body, Color.Green);
             }
 
-            if (_collisions != null)
+            if (_collisions != null && false)
             {
                 foreach (var collision in _collisions.CollisionIndices)
                 {
-                    var a = _collisions.Bounds[collision.BodyA];
-                    var b = _collisions.Bounds[collision.BodyB];
+                    var a = collision.BodyA;
+                    var b = collision.BodyB;
 
                     //DrawAABB(a.Bounds, Color.Red);
                     DrawAABB(a.Bounds.Translated(a.UnstuckMotion), Color.Red);
@@ -174,11 +184,21 @@ namespace TinyGames
             }
         }
 
-        public void DrawBody(Body body, Color color)
+        public void DrawBody(PhysicsBody body, Color color)
         {
-            AABB bounds = body.Collider.Bounds.Translated(body.Position);
+            if(body.Collider is BoxCollider)
+            {
+                AABB bounds = body.Collider.Bounds.Translated(body.Position);
 
-            DrawAABB(bounds, color);
+                Graphics.DrawRectangle(bounds, color);
+            }
+            if(body.Collider is CircleCollider)
+            {
+                var circleCollider = body.Collider as CircleCollider;
+                var circle = circleCollider.Circle.Translated(body.Position);
+
+                Graphics.DrawCircle(circle.Position, circle.Radius, color);
+            }
         }
         public void DrawAABB(AABB bounds, Color color)
         {

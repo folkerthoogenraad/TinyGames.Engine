@@ -7,6 +7,6 @@ namespace TinyGames.Engine.Collisions.Detectors
 {
     public interface IDetector
     {
-        public BodyCollisionSet Solve(IEnumerable<Body> bodies);
+        public BodyCollisionSet Detect(IEnumerable<PhysicsBody> bodies);
     }
 }

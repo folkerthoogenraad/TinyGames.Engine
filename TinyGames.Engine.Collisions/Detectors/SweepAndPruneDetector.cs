@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using TinyGames.Engine.Collisions.Contracts;
+using TinyGames.Engine.Maths;
+using System.Diagnostics;
 
 namespace TinyGames.Engine.Collisions.Detectors
 {
     public class SweepAndPruneDetector : IDetector
     {
-        public BodyCollisionSet Solve(IEnumerable<Body> bodies)
+        public BodyCollisionSet Detect(IEnumerable<PhysicsBody> bodies)
         {
             var bodyBounds = bodies.Select(x => new BodyBounds()
             {
                 Body = x,
                 Position = x.Position,
                 Velocity = x.Velocity,
+                Collider = x.Collider,
                 Bounds = x.Collider.Bounds.Translated(x.Position),
                 Mass = 1,
                 Static = x.Static,
@@ -26,22 +29,28 @@ namespace TinyGames.Engine.Collisions.Detectors
             BodyCollisionSet result = new BodyCollisionSet();
             result.Bounds = bodyBounds;
             result.CollisionIndices = collisions;
+
+            var possibleCollisions = new HashSet<BodyBounds>();
             
             for(int i = 0; i < bodyBounds.Count; i++)
             {
-                var boundsA = bodyBounds[i];
+                var self = bodyBounds[i];
+                
+                // Remove everything to the left of current body
+                possibleCollisions.RemoveWhere(x => AABB.IsOnLeft(self.Bounds, x.Bounds));
 
-                for(int j = i + 1; j < bodyBounds.Count; j++)
+                // This can be one linq expression probably
+
+                foreach (var other in possibleCollisions
+                    .Where(x => !(x.Static && self.Static))
+                    .Where(x => AABB.Overlaps(x.Bounds, self.Bounds))
+                    .Where(x => self.Collider.Overlaps(x.Collider, x.Position - self.Position)) // TODO Save the normal in a select or something
+                    )
                 {
-                    var boundsB = bodyBounds[j];
-
-                    if (boundsA.Static && boundsB.Static) continue;
-
-                    if (boundsA.Bounds.Overlaps(boundsB.Bounds))
-                    {
-                        collisions.Add(new BodyCollisionIndices(i, j));
-                    }
+                    collisions.Add(new BodyCollisionIndices(self, other));
                 }
+
+                possibleCollisions.Add(self);
             }
 
             return result;

@@ -6,10 +6,10 @@ namespace TinyGames.Engine.Collisions.Contracts
 {
     public struct BodyCollisionIndices
     {
-        public int BodyA;
-        public int BodyB;
+        public BodyBounds BodyA;
+        public BodyBounds BodyB;
 
-        public BodyCollisionIndices(int a, int b)
+        public BodyCollisionIndices(BodyBounds a, BodyBounds b)
         {
             BodyA = a;
             BodyB = b;

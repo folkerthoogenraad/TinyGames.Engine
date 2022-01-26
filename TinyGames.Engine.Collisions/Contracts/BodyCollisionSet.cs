@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
+using System.Linq;
+using System.Diagnostics;
+
 namespace TinyGames.Engine.Collisions.Contracts
 {
     public class BodyCollisionSet
@@ -15,8 +18,8 @@ namespace TinyGames.Engine.Collisions.Contracts
         {
             foreach(var collision in CollisionIndices)
             {
-                var from = Bounds[collision.BodyA];
-                var to = Bounds[collision.BodyB];
+                var from = collision.BodyA;
+                var to = collision.BodyB;
 
                 var velocity = from.Velocity + to.Velocity;
 
