@@ -13,21 +13,21 @@ using System.Collections.Generic;
 
 namespace TinyGames
 {
-    public class Point
+    public class SpringPoint
     {
         public Vector2 Position { get; set; }
         public Vector2 Velocity { get; set; }
         public bool Pinned { get; set; }
-        public List<Point> Connections { get; set; }
+        public List<SpringPoint> Connections { get; set; }
 
-        public Point(Vector2 position, bool pinned = false)
+        public SpringPoint(Vector2 position, bool pinned = false)
         {
             Position = position;
-            Connections = new List<Point>();
+            Connections = new List<SpringPoint>();
             Pinned = pinned;
         }
 
-        public Point AddConnection(Point other, bool addToOther = true)
+        public SpringPoint AddConnection(SpringPoint other, bool addToOther = true)
         {
             Connections.Add(other);
 
@@ -48,9 +48,9 @@ namespace TinyGames
         public Camera Camera;
 
         Vector2 MousePosition;
-        Point SelectedPoint = null;
+        SpringPoint SelectedPoint = null;
 
-        public List<Point> Points;
+        public List<SpringPoint> Points;
 
         public SpringTestGame()
         {
@@ -68,12 +68,54 @@ namespace TinyGames
             // graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
-            var p1 = new Point(new Vector2(0, -64));
-            var p2 = new Point(new Vector2(0, 0));
-            var p3 = new Point(new Vector2(16, 16));
+            Points = new List<SpringPoint>();
 
-            p1.AddConnection(p2);
-            p2.AddConnection(p3);
+            float s = 64;
+
+            var p11 = new SpringPoint(new Vector2(-s, -s), true);
+            var p12 = new SpringPoint(new Vector2(-s, 0));
+            var p13 = new SpringPoint(new Vector2(-s, s));
+
+            var p21 = new SpringPoint(new Vector2(0, -s), true);
+            var p22 = new SpringPoint(new Vector2(0, 0));
+            var p23 = new SpringPoint(new Vector2(0, s));
+
+            var p31 = new SpringPoint(new Vector2(s, -s), true);
+            var p32 = new SpringPoint(new Vector2(s, 0));
+            var p33 = new SpringPoint(new Vector2(s, s));
+
+            // Vertical connections
+            p11.AddConnection(p12);
+            p12.AddConnection(p13);
+
+            p21.AddConnection(p22);
+            p22.AddConnection(p23);
+            
+            p31.AddConnection(p32);
+            p32.AddConnection(p33);
+
+            // Horizontal connections
+            //p11.AddConnection(p21);
+            //p21.AddConnection(p31);
+
+            //p12.AddConnection(p22);
+            //p22.AddConnection(p32);
+            
+            //p13.AddConnection(p23);
+            //p23.AddConnection(p33);
+
+            // Add the points
+            Points.Add(p11);
+            Points.Add(p12);
+            Points.Add(p13);
+
+            Points.Add(p21);
+            Points.Add(p22);
+            Points.Add(p23);
+
+            Points.Add(p31);
+            Points.Add(p32);
+            Points.Add(p33);
         }
 
         protected override void LoadContent()
@@ -89,16 +131,70 @@ namespace TinyGames
 
         protected override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+            
             float delta = gameTime.GetDeltaInSeconds();
             var keyState = Keyboard.GetState();
             var mouseState = Mouse.GetState();
 
-            Vector2 targetPosition = Camera.TransformMousePosition(
+            MousePosition = Camera.TransformMousePosition(
                 new Vector2(((float)mouseState.X / _graphics.PreferredBackBufferWidth), ((float)mouseState.Y / _graphics.PreferredBackBufferHeight)));
 
-            MousePosition = targetPosition;
+            if(mouseState.LeftButton == ButtonState.Pressed)
+            {
+                if(SelectedPoint == null)
+                {
+                    SelectedPoint = GetClosestPoint(MousePosition);
+                }
 
-            base.Update(gameTime);
+                if(SelectedPoint != null)
+                {
+                    SelectedPoint.Position = MousePosition;
+                    SelectedPoint.Velocity = Vector2.Zero;
+                }
+            }
+            else
+            {
+                if(SelectedPoint != null)
+                {
+                    SelectedPoint.Velocity = Vector2.Zero;
+                }
+                SelectedPoint = null;
+            }
+
+            int iterations = 40;
+            delta /= iterations;
+
+            for(int i = 0; i < iterations; i++)
+            {
+                foreach (var point in Points.Where(x => !x.Pinned))
+                {
+                    point.Velocity += new Vector2(0, 128) * delta;
+
+                    foreach(var connection in point.Connections)
+                    {
+                        Vector2 direction = connection.Position - point.Position;
+
+                        float springLength = 64;
+                        float length = direction.Length();
+                        float stretch = length - springLength;
+                        float k = 10f;
+                        float d = 0.1f;
+
+                        direction /= length;
+
+                        point.Velocity += direction * stretch * k;
+                        point.Velocity -= direction * Vector2.Dot(direction, point.Velocity) * d;
+                    }
+                }
+
+
+                foreach (var point in Points.Where(x => !x.Pinned))
+                {
+                    point.Position += point.Velocity * delta;
+                }
+
+            }
         }
 
         protected override void Draw(GameTime gameTime)
@@ -109,12 +205,23 @@ namespace TinyGames
 
             Graphics.Begin(Camera.GetMatrix());
 
-            Points.ForEach(p => Graphics.DrawCircle(p.Position, 4, Color.Red));
+            foreach (var point in Points)
+            {
+                foreach (var connection in point.Connections)
+                {
+                    Graphics.DrawLine(point.Position, connection.Position, 2, 0, Color.Black);
+                }
+            }
+
+            foreach (var point in Points)
+            {
+                Graphics.DrawCircle(point.Position, 4, Color.Red);
+            }
 
             Graphics.End();
         }
 
-        public Point GetClosestPoint(Vector2 p, float maxDistance = 16)
+        public SpringPoint GetClosestPoint(Vector2 p, float maxDistance = 16)
         {
             return Points
                 .Select(x => (x, Vector2.Distance(x.Position, p)))
