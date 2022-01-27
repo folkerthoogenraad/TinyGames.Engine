@@ -41,5 +41,25 @@ namespace TinyGames.Engine.Maths
 
             return Lines.Select(x => new Triangle(x.From, x.To, center));
         }
+
+        public void Reverse()
+        {
+            Points = Points.Reverse().ToArray();
+        }
+
+        public bool IsClockwise()
+        {
+            return GetWindingNumber() < 0;
+        }
+        public bool IsCounterClockwise()
+        {
+            return !IsClockwise();
+        }
+
+        public float GetWindingNumber()
+        {
+            // (x2 - x1) * (y2 + y1)
+            return Points.Loop().Select(t => (t.Item2.X - t.Item1.X) * (t.Item2.Y + t.Item1.Y)).Sum();
+        }
     }
 }

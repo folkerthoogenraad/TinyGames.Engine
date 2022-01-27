@@ -11,7 +11,7 @@ using TinyGames.Engine.Util;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    public class PenguinWorld
+    public class IceWorld
     {
         public Camera Camera { get; set; }
         public InputService InputService { get; private set; }
@@ -25,7 +25,7 @@ namespace PinguinGame.MiniGames.Ice
         public Camera LevelCamera { get; private set; }
         public IceLevelGraphics LevelGraphics { get; private set; }
 
-        public PenguinWorld(GraphicsDevice device, IceLevel level, PlayerInfo[] players, InputService inputService) // Probably should have a levelservice or something
+        public IceWorld(GraphicsDevice device, IceLevel level, PlayerInfo[] players, InputService inputService) // Probably should have a levelservice or something
         {
             _penguins = new List<Penguin>();
             InputService = inputService;
@@ -86,17 +86,8 @@ namespace PinguinGame.MiniGames.Ice
                 
                 if(block == null || !block.Solid)
                 {
-                    p.DrownTimer += delta;
-                    
-                    if(p.DrownTimer > 0.1f)
-                    {
-                        p.Drown();
-                        result.Add(p);
-                    }
-                }
-                else
-                {
-                    p.DrownTimer = 0;
+                    p.Drown();
+                    result.Add(p);
                 }
             }
 
@@ -119,7 +110,7 @@ namespace PinguinGame.MiniGames.Ice
                 block.Update(delta);
             }
 
-            if ((new Random()).NextDouble() < 10.005f){
+            if ((new Random()).NextDouble() < 0){
                 var avail = Level.Blocks.Where(x => x.State is IceBlockIdleState && x.Sinkable);
                 if(avail.Count() > 0)
                 {

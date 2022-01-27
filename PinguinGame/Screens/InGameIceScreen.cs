@@ -27,7 +27,7 @@ namespace PinguinGame.Screens
 
         private GameUISkin Skin;
 
-        public PenguinWorld World;
+        public IceWorld World;
 
         private GameState _gameState;
         public GameState State
@@ -59,7 +59,7 @@ namespace PinguinGame.Screens
 
             Camera.Height = 180;
 
-            World = new PenguinWorld(device, content.LoadIceLevel("Levels/level0"), _players, _inputService);
+            World = new IceWorld(device, content.LoadIceLevel("Levels/level0"), _players, _inputService);
             World.Camera = Camera;
 
             Skin = new GameUISkin();

@@ -9,7 +9,7 @@ using TinyGames.Engine.Maths;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    internal class CharacterGraphicsForFacing
+    internal class PenguinGraphicsForFacing
     {
         public Animation Idle;
         public Animation IdleOverlay;
@@ -21,7 +21,7 @@ namespace PinguinGame.MiniGames.Ice
         public Animation DrownOverlay;
     }
 
-    public class CharacterGraphics
+    public class PenguinGraphics
     {
         public enum Facing
         {
@@ -31,12 +31,12 @@ namespace PinguinGame.MiniGames.Ice
             Right
         }
 
-        private Dictionary<Facing, CharacterGraphicsForFacing> _graphics;
+        private Dictionary<Facing, PenguinGraphicsForFacing> _graphics;
         private Sprite _shadow;
 
-        public CharacterGraphics(Texture2D texture)
+        public PenguinGraphics(Texture2D texture)
         {
-            _graphics = new Dictionary<Facing, CharacterGraphicsForFacing>();
+            _graphics = new Dictionary<Facing, PenguinGraphicsForFacing>();
 
             _graphics.Add(Facing.Down, GetGraphicsWithOffset(texture, 0));
             _graphics.Add(Facing.Right, GetGraphicsWithOffset(texture, 16));
@@ -84,43 +84,43 @@ namespace PinguinGame.MiniGames.Ice
             RawDrawDrownOverlay(graphics, _graphics[facing], position, animationTime, color);
         }
 
-        private void RawDrawWalk(Graphics2D graphics, CharacterGraphicsForFacing facing, Vector2 position, float animationTime)
+        private void RawDrawWalk(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime)
         {
             graphics.DrawSprite(facing.Walk.GetSpriteForTime(animationTime), position);
         }
-        private void RawDrawSlide(Graphics2D graphics, CharacterGraphicsForFacing facing, Vector2 position, float animationTime)
+        private void RawDrawSlide(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime)
         {
             graphics.DrawSprite(facing.Slide.GetSpriteForTime(animationTime), position);
         }
-        private void RawDrawIdle(Graphics2D graphics, CharacterGraphicsForFacing facing, Vector2 position, float animationTime)
+        private void RawDrawIdle(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime)
         {
             graphics.DrawSprite(facing.Idle.GetSpriteForTime(animationTime), position);
         }
-        private void RawDrawDrown(Graphics2D graphics, CharacterGraphicsForFacing facing, Vector2 position, float animationTime)
+        private void RawDrawDrown(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime)
         {
             graphics.DrawSprite(facing.Drown.GetSpriteForTime(animationTime), position);
         }
 
-        private void RawDrawSlideOverlay(Graphics2D graphics, CharacterGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
+        private void RawDrawSlideOverlay(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
         {
             graphics.DrawSprite(facing.SlideOverlay.GetSpriteForTime(animationTime), position, 0, 0, color);
         }
-        private void RawDrawWalkOverlay(Graphics2D graphics, CharacterGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
+        private void RawDrawWalkOverlay(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
         {
             graphics.DrawSprite(facing.WalkOverlay.GetSpriteForTime(animationTime), position, 0, 0, color);
         }
-        private void RawDrawIdleOverlay(Graphics2D graphics, CharacterGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
+        private void RawDrawIdleOverlay(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
         {
             graphics.DrawSprite(facing.IdleOverlay.GetSpriteForTime(animationTime), position, 0, 0, color);
         }
-        private void RawDrawDrownOverlay(Graphics2D graphics, CharacterGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
+        private void RawDrawDrownOverlay(Graphics2D graphics, PenguinGraphicsForFacing facing, Vector2 position, float animationTime, Color color)
         {
             graphics.DrawSprite(facing.DrownOverlay.GetSpriteForTime(animationTime), position, 0, 0, color);
         }
 
-        private CharacterGraphicsForFacing GetGraphicsWithOffset(Texture2D texture, int xoffset)
+        private PenguinGraphicsForFacing GetGraphicsWithOffset(Texture2D texture, int xoffset)
         {
-            return new CharacterGraphicsForFacing()
+            return new PenguinGraphicsForFacing()
             {
                 Idle = Animation.FromSprites(6,
                     new Sprite(texture, new Rectangle(xoffset, 0, 16, 16)).SetOrigin(8, 16)

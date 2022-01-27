@@ -34,6 +34,11 @@
                         }],
                  "properties":[
                         {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"Sinkable",
                          "type":"bool",
                          "value":true
@@ -67,6 +72,11 @@
                          "y":16
                         }],
                  "properties":[
+                        {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"Sinkable",
                          "type":"bool",
@@ -126,6 +136,11 @@
                         }],
                  "properties":[
                         {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"Sinkable",
                          "type":"bool",
                          "value":false
@@ -160,6 +175,11 @@
                         }],
                  "properties":[
                         {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"Sinkable",
                          "type":"bool",
                          "value":true
@@ -191,12 +211,13 @@
                         {
                          "x":-16,
                          "y":24
-                        }, 
-                        {
-                         "x":0,
-                         "y":0
                         }],
                  "properties":[
+                        {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"Sinkable",
                          "type":"bool",
@@ -236,6 +257,11 @@
                         }],
                  "properties":[
                         {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"Sinkable",
                          "type":"bool",
                          "value":true
@@ -269,6 +295,11 @@
                          "y":8
                         }],
                  "properties":[
+                        {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"Sinkable",
                          "type":"bool",
@@ -304,6 +335,11 @@
                         }],
                  "properties":[
                         {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"Sinkable",
                          "type":"bool",
                          "value":true
@@ -338,6 +374,11 @@
                         }],
                  "properties":[
                         {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"Sinkable",
                          "type":"bool",
                          "value":true
@@ -369,12 +410,13 @@
                         {
                          "x":-16,
                          "y":-16
-                        }, 
-                        {
-                         "x":0,
-                         "y":0
                         }],
                  "properties":[
+                        {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"Sinkable",
                          "type":"bool",
@@ -410,6 +452,11 @@
                         }],
                  "properties":[
                         {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"Sinkable",
                          "type":"bool",
                          "value":true
@@ -444,6 +491,11 @@
                         }],
                  "properties":[
                         {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"Sinkable",
                          "type":"bool",
                          "value":true
@@ -470,7 +522,7 @@
                         }, 
                         {
                          "x":-32,
-                         "y":16
+                         "y":24
                         }, 
                         {
                          "x":-16,
@@ -485,6 +537,11 @@
                          "y":16
                         }],
                  "properties":[
+                        {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"Sinkable",
                          "type":"bool",
@@ -524,6 +581,11 @@
                         }],
                  "properties":[
                         {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"Sinkable",
                          "type":"bool",
                          "value":true
@@ -558,6 +620,11 @@
                         }],
                  "properties":[
                         {
+                         "name":"Disabled",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"Sinkable",
                          "type":"bool",
                          "value":true
@@ -576,7 +643,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":16,
+ "nextobjectid":18,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.3",

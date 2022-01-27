@@ -22,7 +22,7 @@ namespace PinguinGame.MiniGames.Ice.GameStates
 
         public UICountdownScreen _ui;
 
-        public override void Init(PenguinWorld world, GraphicsDevice device, ContentManager content, GameUISkin skin)
+        public override void Init(IceWorld world, GraphicsDevice device, ContentManager content, GameUISkin skin)
         {
             base.Init(world, device, content, skin);
 
@@ -38,7 +38,7 @@ namespace PinguinGame.MiniGames.Ice.GameStates
 
                 var texture = player.Index == 0 ? "Sprites/ParakeetSheet" : "Sprites/FoxSheet";
 
-                var graphics = new CharacterGraphics(content.Load<Texture2D>(texture));
+                var graphics = new PenguinGraphics(content.Load<Texture2D>(texture));
 
                 var penguin = new Penguin(player, graphics, pos + new Vector2(0, 4));
                 penguin.Physics = penguin.Physics.SetFacing(-pos);

@@ -30,19 +30,17 @@ namespace PinguinGame.MiniGames.Ice
         public bool IsWalking => State is PenguinWalkState;
         public bool IsDrowning => State is PenguinDrownState;
 
-        public float DrownTimer { get; set; } = 0;
-
         public PlayerInfo Player { get; private set; }
         public PenguinPhysics Physics { get; set; }
         public PenguinSettings Settings { get; private set; }
         public PenguinBounce Bounce { get; private set; }
-        public CharacterGraphics Graphics { get; private set; }
+        public PenguinGraphics Graphics { get; private set; }
 
         public Vector2 Position => Physics.Position;
         public Vector2 DrawPosition => Physics.Position + Bounce.Offset;
         public Vector2 Facing => Physics.Facing;
 
-        public Penguin(PlayerInfo player, CharacterGraphics graphics, Vector2 position)
+        public Penguin(PlayerInfo player, PenguinGraphics graphics, Vector2 position)
         {
             Player = player;
             Physics = new PenguinPhysics(position); // TODO make this not immutable, its kinda a pain and completely useless atm
@@ -59,7 +57,7 @@ namespace PinguinGame.MiniGames.Ice
             State = State.Update(this, input, delta);
         }
 
-        public void Draw(Graphics2D graphics, CharacterGraphics penguinGraphics, float height)
+        public void Draw(Graphics2D graphics, PenguinGraphics penguinGraphics, float height)
         {
             Physics.Position += new Vector2(0, -height);
             penguinGraphics.DrawShadow(graphics, Position);

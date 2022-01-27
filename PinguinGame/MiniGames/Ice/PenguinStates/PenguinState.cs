@@ -12,7 +12,7 @@ namespace PinguinGame.MiniGames.Ice.PenguinStates
         public virtual void Destroy() { }
         public abstract PenguinState Update(Penguin penguin, PenguinInput input, float delta);
 
-        public virtual void Draw(Graphics2D graphics, Penguin penguin, CharacterGraphics penguinGraphics)
+        public virtual void Draw(Graphics2D graphics, Penguin penguin, PenguinGraphics penguinGraphics)
         {
 
         }

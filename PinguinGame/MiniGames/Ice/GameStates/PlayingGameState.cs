@@ -12,7 +12,7 @@ namespace PinguinGame.MiniGames.Ice.GameStates
     {
         private List<PlayerInfo> _deathOrder;
 
-        public override void Init(PenguinWorld world, GraphicsDevice device, ContentManager content, GameUISkin skin)
+        public override void Init(IceWorld world, GraphicsDevice device, ContentManager content, GameUISkin skin)
         {
             base.Init(world, device, content, skin);
 

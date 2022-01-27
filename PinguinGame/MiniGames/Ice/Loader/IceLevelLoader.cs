@@ -31,9 +31,12 @@ namespace PinguinGame.MiniGames.Ice.PenguinStates
 
                 foreach(var obj in layer.Objects){
                     if (obj.Type != "IceBlock") continue;
+                    if (obj.GetBoolProperty("Disabled", false)) continue;
 
                     var position = new Vector2(obj.X, obj.Y);
                     var polygon = new Polygon(obj.Polygon.Select(x => position + x.ToVector2() - center).ToArray());
+
+                    if (polygon.IsCounterClockwise()) polygon.Reverse();
 
                     var block = new IceBlock(polygon);
 

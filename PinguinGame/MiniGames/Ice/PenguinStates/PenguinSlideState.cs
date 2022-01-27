@@ -50,9 +50,9 @@ namespace PinguinGame.MiniGames.Ice.PenguinStates
             return this;
         }
 
-        public override void Draw(Graphics2D graphics, Penguin penguin, CharacterGraphics penguinGraphics)
+        public override void Draw(Graphics2D graphics, Penguin penguin, PenguinGraphics penguinGraphics)
         {
-            var facing = CharacterGraphics.GetFacingFromVector(penguin.Facing);
+            var facing = PenguinGraphics.GetFacingFromVector(penguin.Facing);
             var color = penguin.Player.Color;
 
             penguinGraphics.DrawSlide(graphics, facing, penguin.DrawPosition, SlideTimer);
