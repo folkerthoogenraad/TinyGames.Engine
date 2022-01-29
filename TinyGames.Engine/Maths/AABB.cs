@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace TinyGames.Engine.Maths
 {
@@ -472,6 +473,19 @@ namespace TinyGames.Engine.Maths
         public static AABB CreateCentered(Vector2 position, Vector2 size)
         {
             return CreateCentered(position.X, position.Y, size.X, size.Y);
+        }
+
+        public static AABB CreateBoundingBox(params AABB[] bounds)
+        {
+            if (bounds.Length < 0) throw new ArgumentException("Need at least 1 bounds to succeed");
+
+            return new AABB()
+            {
+                Left = bounds.Min(x => x.Left),
+                Right = bounds.Max(x => x.Right),
+                Top = bounds.Min(x => x.Top),
+                Bottom = bounds.Max(x => x.Bottom)
+            };
         }
 
         public override int GetHashCode()
