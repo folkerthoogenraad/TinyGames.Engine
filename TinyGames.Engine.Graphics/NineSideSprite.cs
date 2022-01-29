@@ -32,6 +32,11 @@ namespace TinyGames.Engine.Graphics
 
         public void Draw(Graphics2D graphics, Vector2 position, Vector2 size)
         {
+            Draw(graphics, position, size, Color.White);
+        }
+
+        public void Draw(Graphics2D graphics, Vector2 position, Vector2 size, Color color)
+        {
             var horizontal = GetHorizontalSegmentLengths(size.X).ToArray();
             var vertical = GetVerticalSegmentLengths(size.Y).ToArray();
 
@@ -45,11 +50,11 @@ namespace TinyGames.Engine.Graphics
                 offset.Y = position.Y;
                 textureOffset.Y = SourceRectangle.Location.Y;
 
-                for(int j = 0; j < vertical.Length; j++)
+                for (int j = 0; j < vertical.Length; j++)
                 {
                     var v = vertical[j];
 
-                    graphics.DrawTextureRegion(Texture, AABB.Create(textureOffset.X, textureOffset.Y, h.TextureWidth, v.TextureHeight), offset, new Vector2(h.SegmentWidth, v.SegmentHeight), Color.White);
+                    graphics.DrawTextureRegion(Texture, AABB.Create(textureOffset.X, textureOffset.Y, h.TextureWidth, v.TextureHeight), offset, new Vector2(h.SegmentWidth, v.SegmentHeight), color);
 
                     offset.Y += v.SegmentHeight;
                     textureOffset.Y += v.TextureHeight;

@@ -126,9 +126,8 @@ namespace PinguinGame.Screens.UI
                 else
                 {
                     ui.Text = $"Player {index + 1}";
-                    ui.Icon = _resources.PenguinIcon;
-                    ui.IconOverlay = _resources.PenguinIconOverlay;
-                    ui.IconOverlayColor = _resources.PlayerColors[index];
+                    ui.Icon = null;
+                    ui.IconOverlay = null;
                 }
             }
 

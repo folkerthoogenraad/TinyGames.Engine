@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text.Json;
 using TinyGames.Engine.Maths;
 
-namespace PinguinGame.MiniGames.Ice.PenguinStates
+namespace PinguinGame.MiniGames.Ice.CharacterStates
 {
     public static class IceLevelLoader
     {

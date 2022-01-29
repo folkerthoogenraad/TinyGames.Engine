@@ -22,25 +22,23 @@ namespace PinguinGame.MiniGames.Ice.GameStates
 
         public UICountdownScreen _ui;
 
-        public override void Init(IceWorld world, GraphicsDevice device, ContentManager content, GameUISkin skin)
+        public override void Init(IceGame game, GraphicsDevice device, ContentManager content)
         {
-            base.Init(world, device, content, skin);
+            base.Init(game, device, content);
 
             Timer = TickTime * 3;
 
 
             float angle = 0;
-            float anglePerPlayer = (MathF.PI * 2) / world.Fight.Players.Length;
+            float anglePerPlayer = (MathF.PI * 2) / game.Fight.Players.Length;
 
-            foreach (var player in world.Players)
+            foreach (var player in game.Players)
             {
                 Vector2 pos = Tools.AngleVector(angle) * 16;
 
-                var texture = player.Index == 0 ? "Sprites/ParakeetSheet" : "Sprites/FoxSheet";
+                var graphics = player.CharacterInfo.Graphics;
 
-                var graphics = new PenguinGraphics(content.Load<Texture2D>(texture));
-
-                var penguin = new Penguin(player, graphics, pos + new Vector2(0, 4));
+                var penguin = new Character(game, player, graphics, pos + new Vector2(0, 4));
                 penguin.Physics = penguin.Physics.SetFacing(-pos);
 
                 World.AddPenguin(penguin);
@@ -48,7 +46,9 @@ namespace PinguinGame.MiniGames.Ice.GameStates
                 angle += anglePerPlayer;
             }
 
-            _ui = new UICountdownScreen(new CountDownResources(content));
+            World.PlaceCharactersOnGround();
+
+            _ui = new UICountdownScreen(new InGameResources(content));
             _ui.UpdateLayout(World.Camera.Bounds);
         }
 

@@ -12,30 +12,19 @@ namespace PinguinGame.MiniGames.Ice.GameStates
     {
         private List<PlayerInfo> _deathOrder;
 
-        public override void Init(IceWorld world, GraphicsDevice device, ContentManager content, GameUISkin skin)
+        public override void Init(IceGame world, GraphicsDevice device, ContentManager content)
         {
-            base.Init(world, device, content, skin);
+            base.Init(world, device, content);
 
             _deathOrder = new List<PlayerInfo>();
         }
 
         public override GameState Update(float delta)
         {
-            World.UpdatePenguinsWithInput(delta, x => {
-                var raw = World.InputService.GetInputStateForDevice(x.Player.InputDevice);
-
-                return new PenguinInput()
-                {
-                    MoveDirection = raw.MoveDirection,
-                    SlideStart = raw.ActionPressed,
-                    SlideHold = raw.Action
-                };
-            });
-
-            World.BonkPenguins();
-
-            var results = World.DrownPenguins(delta);
-
+            World.Update(delta);
+            World.TryBonkCharacters();
+            var results = World.TryDrownCharacters();
+            
             _deathOrder.AddRange(results.Select(x => x.Player));
 
             if(_deathOrder.Count > World.Fight.Players.Length - 2)

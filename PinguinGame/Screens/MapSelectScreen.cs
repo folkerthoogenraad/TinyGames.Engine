@@ -88,7 +88,7 @@ namespace PinguinGame.Screens
 
                     if (input.BackPressed)
                     {
-                        _screens.ShowPlayerSelectScreen();
+                        _screens.ShowCharacterSelectScreen(_players);
                         _ui.BackAnimation();
                     }
                 }

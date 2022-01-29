@@ -19,19 +19,40 @@ namespace TinyGames.Engine.UI
 
         public Font Font { get; set; }
         public NineSideSprite Background { get; set; }
+        public Color BackgroundColor { get; set; } = Color.White;
 
         public override void DrawSelf(Graphics2D graphics, AABB bounds)
         {
-            graphics.DrawNineSideSprite(Background, bounds.Position, bounds.Size);
-
-            var innerBounds = bounds.Shrink(8);
-
-            graphics.DrawString(Font, Text, innerBounds.RightCenter, Color.White, FontHAlign.Right, FontVAlign.Center);
-            graphics.DrawSprite(Icon, innerBounds.LeftCenter + new Vector2(Icon.Width / 2, 0));
-
-            if (IconOverlay != null)
+            if(Background != null)
             {
-                graphics.DrawSprite(IconOverlay, innerBounds.LeftCenter + new Vector2(Icon.Width / 2, 0), 0, 0, IconOverlayColor);
+                graphics.DrawNineSideSprite(Background, bounds.Position, bounds.Size, BackgroundColor);
+            }
+
+            if(Icon != null)
+            {
+                var innerBounds = bounds.Shrink(8);
+
+                var iconPosition = innerBounds.Center;
+
+                if (Text.Length > 0)
+                {
+                    iconPosition = innerBounds.LeftCenter + new Vector2(Icon.Width / 2, 0);
+                    graphics.DrawString(Font, Text, innerBounds.RightCenter, Color.White, FontHAlign.Right, FontVAlign.Center);
+                }
+
+                graphics.DrawSprite(Icon, iconPosition);
+
+                if (IconOverlay != null)
+                {
+                    graphics.DrawSprite(IconOverlay, iconPosition, 0, 0, IconOverlayColor);
+                }
+            }
+            else
+            {
+                if (Text.Length > 0)
+                {
+                    graphics.DrawString(Font, Text, bounds.Center, Color.White, FontHAlign.Center, FontVAlign.Center);
+                }
             }
         }
     }

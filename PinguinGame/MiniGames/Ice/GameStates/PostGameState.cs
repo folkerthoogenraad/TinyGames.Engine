@@ -30,19 +30,10 @@ namespace PinguinGame.MiniGames.Ice.GameStates
         {
             Timer += delta;
 
-            World.UpdatePenguinsWithInput(delta, x => {
-                var raw = World.InputService.GetInputStateForDevice(x.Player.InputDevice);
+            World.Update(delta);
 
-                return new PenguinInput()
-                {
-                    MoveDirection = raw.MoveDirection,
-                    SlideStart = raw.ActionPressed,
-                    SlideHold = raw.Action
-                };
-            });
-
-            World.BonkPenguins();
-            World.DrownPenguins(delta);
+            World.TryBonkCharacters();
+            World.TryDrownCharacters();
 
             if (Timer > 1)
             {

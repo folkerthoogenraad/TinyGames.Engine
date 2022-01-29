@@ -13,8 +13,9 @@ namespace PinguinGame
         public void ShowSplashScreen();
         public void ShowTitleScreen();
         public void ShowMenuScreen();
-        public void ShowMapSelectScreen(PlayerInfo[] players);
         public void ShowPlayerSelectScreen();
+        public void ShowCharacterSelectScreen(PlayerInfo[] players);
+        public void ShowMapSelectScreen(PlayerInfo[] players);
         public void ShowInGameScreen(PlayerInfo[] players);
         public void ShowResultScreen(Fight fight);
     }

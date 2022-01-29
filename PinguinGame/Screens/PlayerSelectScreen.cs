@@ -61,12 +61,12 @@ namespace PinguinGame.Screens
 
             foreach (var input in _inputService.InputStates)
             {
-                var isJoined = _playerService.IsPlayerJoinedByInputDevice(input.Device);
-                var player = _playerService.GetPlayerByInputDevice(input.Device);
+                var isJoined = _playerService.IsPlayerJoinedByInputDevice(input.Type);
+                var player = _playerService.GetPlayerByInputDevice(input.Type);
 
                 if (!isJoined && input.ActionPressed)
                 {
-                    _playerService.GetOrJoinPlayerByInputDevice(input.Device);
+                    _playerService.GetOrJoinPlayerByInputDevice(input.Type);
                 }
                 else if (isJoined && input.ActionPressed && !_readyPlayers.Contains(player))
                 {
@@ -74,7 +74,7 @@ namespace PinguinGame.Screens
                 }
                 else if (isJoined && input.ActionPressed && _readyPlayers.Contains(player) && CanStart)
                 {
-                    _screens.ShowMapSelectScreen(_playerService.Players.ToArray());
+                    _screens.ShowCharacterSelectScreen(_playerService.Players.ToArray());
                     fadeForward = true;
                 }
                 else if (isJoined && input.BackPressed && !_readyPlayers.Contains(player))

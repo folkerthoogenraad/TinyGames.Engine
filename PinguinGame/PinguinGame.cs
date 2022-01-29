@@ -13,6 +13,7 @@ using PinguinGame.Input;
 using PinguinGame.Player;
 using PinguinGame.Screens;
 using PinguinGame.Audio;
+using TinyGames.Engine.IO;
 
 namespace PinguinGame
 {
@@ -23,6 +24,7 @@ namespace PinguinGame
         private InputService inputService;
         private PlayerService playerService;
         private MusicService musicService;
+        private ICharactersService charactersService;
 
         public ScreenManager Manager;
 
@@ -37,29 +39,35 @@ namespace PinguinGame
         {
             base.Initialize();
 
-            _graphics.PreferredBackBufferWidth = 1280;
-            _graphics.PreferredBackBufferHeight = 720;
-            _graphics.ApplyChanges();
-
-            //_graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-            //_graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            //_graphics.IsFullScreen = true;
+            //_graphics.PreferredBackBufferWidth = 1280;
+            //_graphics.PreferredBackBufferHeight = 720;
             //_graphics.ApplyChanges();
+
+            _graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            _graphics.IsFullScreen = true;
+            _graphics.ApplyChanges();
 
 
             inputService = new InputService();
             playerService = new PlayerService();
             musicService = new MusicService(Content);
+            charactersService = new CharactersService(new StorageSystem(new DiskStorageProvider(Content.RootDirectory)), Content);
 
             Manager = new ScreenManager(GraphicsDevice, Content);
 
-            ShowInGameScreen(new PlayerInfo[] {
-                new PlayerInfo() { Index = 0, InputDevice = InputDevice.Keyboard0 },
-                new PlayerInfo() { Index = 1, InputDevice = InputDevice.Keyboard1 },
-                //new PlayerInfo() { Index = 0, InputDevice = InputDevice.Gamepad0 },
-                //new PlayerInfo() { Index = 1, InputDevice = InputDevice.Gamepad1 },
-            });
-            //ShowSplashScreen();
+            var players = new PlayerInfo[] {
+                new PlayerInfo() { Index = 0, InputDevice = InputDeviceType.Gamepad0 },
+                new PlayerInfo() { Index = 1, InputDevice = InputDeviceType.Keyboard1 },
+            };
+
+            foreach (var player in players.Where(x => x.CharacterInfo == null))
+            {
+                player.CharacterInfo = charactersService.GetDefaultForPlayer(player);
+            }
+
+            //ShowInGameScreen(players);
+            ShowSplashScreen();
         }
 
         protected override void LoadContent()
@@ -126,6 +134,11 @@ namespace PinguinGame
         public void ShowMapSelectScreen(PlayerInfo[] players)
         {
             Manager.Screen = new MapSelectScreen(this, inputService, musicService, players);
+        }
+
+        public void ShowCharacterSelectScreen(PlayerInfo[] players)
+        {
+            Manager.Screen = new CharacterSelectScreen(this, inputService, musicService, players, charactersService);
         }
     }
 }

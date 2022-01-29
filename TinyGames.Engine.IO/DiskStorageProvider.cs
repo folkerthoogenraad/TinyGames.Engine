@@ -22,6 +22,8 @@ namespace TinyGames.Engine.IO
             var path = ConvertToPath(file);
             var directory = Directory.GetParent(path);
 
+            var absolute = Path.GetFullPath(path);
+
             if (!directory.Exists)
             {
                 directory.Create();
@@ -32,7 +34,11 @@ namespace TinyGames.Engine.IO
 
         private string ConvertToPath(string file)
         {
-            return RootDirectory + Path.DirectorySeparatorChar + file;
+            if(RootDirectory.Length > 0)
+            {
+                return RootDirectory + Path.DirectorySeparatorChar + file;
+            }
+            else {  return file; }
         }
     }
 }

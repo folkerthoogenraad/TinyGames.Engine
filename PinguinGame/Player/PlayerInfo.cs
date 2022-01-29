@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using PinguinGame.Input;
+using PinguinGame.MiniGames.Generic;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,10 +10,9 @@ namespace PinguinGame.Player
     public class PlayerInfo
     {
         public int Index = 0;
-
         public bool Joined { get; set; } = false;
-        public InputDevice InputDevice { get; set; }
-
+        public InputDeviceType InputDevice { get; set; }
+        public CharacterInfo CharacterInfo { get; set; }
         public Color Color => GetColorFromIndex(Index);
 
         protected static Color GetColorFromIndex(int index)

@@ -19,7 +19,7 @@ namespace PinguinGame.MiniGames.Generic
             return GetInputForInputDevice(player.InputDevice);
         }
 
-        public T GetInputForInputDevice(InputDevice device)
+        public T GetInputForInputDevice(InputDeviceType device)
         {
             return Convert(_inputService.GetInputStateForDevice(device));
         }

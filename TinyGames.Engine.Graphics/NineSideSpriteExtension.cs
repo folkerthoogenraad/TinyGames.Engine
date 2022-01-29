@@ -12,5 +12,9 @@ namespace TinyGames.Engine.Graphics
         {
             sprite.Draw(graphics, position, size);
         }
+        public static void DrawNineSideSprite(this Graphics2D graphics, NineSideSprite sprite, Vector2 position, Vector2 size, Color color)
+        {
+            sprite.Draw(graphics, position, size, color);
+        }
     }
 }

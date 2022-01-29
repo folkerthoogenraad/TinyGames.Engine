@@ -114,7 +114,6 @@ namespace PinguinGame.MiniGames.Ice
                 Graphics.DrawRaw(list);
             }
         }
-
         public void DrawSnow(IceLevel level)
         {
             var vertex = new VertexPositionColorTexture()

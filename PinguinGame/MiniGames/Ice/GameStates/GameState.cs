@@ -11,17 +11,15 @@ namespace PinguinGame.MiniGames.Ice.GameStates
 {
     public abstract class GameState
     {
-        public IceWorld World { get; private set; }
+        public IceGame World { get; private set; }
         public ContentManager Content { get; private set; }
         public GraphicsDevice GraphicsDevice { get; private set; }
-        public GameUISkin Skin { get; private set; }
 
-        public virtual void Init(IceWorld world, GraphicsDevice device, ContentManager content, GameUISkin skin)
+        public virtual void Init(IceGame world, GraphicsDevice device, ContentManager content)
         {
             World = world;
             Content = content;
             GraphicsDevice = device;
-            Skin = skin;
         }
 
         public abstract GameState Update(float delta);

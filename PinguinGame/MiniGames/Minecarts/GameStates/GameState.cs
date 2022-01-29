@@ -14,7 +14,6 @@ namespace PinguinGame.MiniGames.Minecarts.GameStates
         public MinecartGame Game { get; private set; }
         public ContentManager Content { get; private set; }
         public GraphicsDevice GraphicsDevice { get; private set; }
-        public GameUISkin Skin { get; private set; }
 
         public virtual void Init(MinecartGame game, GraphicsDevice device, ContentManager content)
         {

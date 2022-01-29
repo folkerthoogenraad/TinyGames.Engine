@@ -15,8 +15,6 @@ namespace PinguinGame.MiniGames.Ice.GameStates
     {
         public RoundResults Results;
 
-        public CenterTextUI _ui;
-
         public float Timer = 0;
 
         public ResultsGameState(RoundResults results)
@@ -24,13 +22,13 @@ namespace PinguinGame.MiniGames.Ice.GameStates
             Results = results;
         }
 
-        public override void Init(IceWorld world, GraphicsDevice device, ContentManager content, GameUISkin skin)
+        public override void Init(IceGame world, GraphicsDevice device, ContentManager content)
         {
-            base.Init(world, device, content, skin);
+            base.Init(world, device, content);
             
             var result = $"Player {Results.Winner.Index + 1} wins!";
 
-            _ui = new CenterTextUI(skin, result);
+            // TODO UI!
         }
 
         public override GameState Update(float delta)
@@ -44,7 +42,7 @@ namespace PinguinGame.MiniGames.Ice.GameStates
                 return new PreGameState();
             }
 
-            _ui.Update(delta, World.Camera.Bounds);
+            // _ui.Update(delta, World.Camera.Bounds);
 
             return this;
         }
@@ -53,7 +51,7 @@ namespace PinguinGame.MiniGames.Ice.GameStates
         {
             base.Draw(graphics);
 
-            _ui.Draw(graphics);
+            // _ui.Draw(graphics);
         }
     }
 }

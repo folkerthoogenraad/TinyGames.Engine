@@ -8,8 +8,7 @@ namespace PinguinGame.Input
 {
     public class InputState
     {
-        // Maybe this shouldn't be an enum but w/e. It should probably be an interface which then can be implemented by different stuff to have dependency inversion and whatnot
-        public InputDevice Device { get; private set; }
+        public InputDeviceType Type { get; private set; }
 
         public Vector2 MoveDirection { get; private set; } = new Vector2(0, 0);
         public bool Action { get; private set; } = false;
@@ -29,14 +28,14 @@ namespace PinguinGame.Input
         public bool MenuLeftPressed { get; private set; }
         public bool MenuRightPressed { get; private set; }
 
-        public InputState(InputDevice device)
+        public InputState(InputDeviceType device)
         {
-            Device = device;
+            Type = device;
         }
 
         public static InputState UpdateState(InputState previous, InputFrame frame)
         {
-            return new InputState(previous.Device)
+            return new InputState(previous.Type)
             {
                 Action = frame.Action,
                 ActionPressed = frame.Action && !previous.Action,
@@ -77,12 +76,12 @@ namespace PinguinGame.Input
         public InputService()
         {
             _inputStates = new InputState[] { 
-                new InputState(InputDevice.Gamepad0),
-                new InputState(InputDevice.Gamepad1),
-                new InputState(InputDevice.Gamepad2),
-                new InputState(InputDevice.Gamepad3),
-                new InputState(InputDevice.Keyboard0),
-                new InputState(InputDevice.Keyboard1),
+                new InputState(InputDeviceType.Gamepad0),
+                new InputState(InputDeviceType.Gamepad1),
+                new InputState(InputDeviceType.Gamepad2),
+                new InputState(InputDeviceType.Gamepad3),
+                new InputState(InputDeviceType.Keyboard0),
+                new InputState(InputDeviceType.Keyboard1),
             };
         }
 
@@ -92,22 +91,22 @@ namespace PinguinGame.Input
             {
                 // Update the frame/state
                 var state = _inputStates[i];
-                var frame = GetInputFrameForDevice(state.Device);
+                var frame = GetInputFrameForDevice(state.Type);
 
                 _inputStates[i] = InputState.UpdateState(state, frame);
             }
         }
 
-        private InputFrame GetInputFrameForDevice(InputDevice device)
+        private InputFrame GetInputFrameForDevice(InputDeviceType device)
         {
             switch (device)
             {
-                case InputDevice.Keyboard0: return GetInputFrameFromKeyboard(Keyboard.GetState(), 0);
-                case InputDevice.Keyboard1: return GetInputFrameFromKeyboard(Keyboard.GetState(), 1);
-                case InputDevice.Gamepad0: return GetInputFrameFromGamepadState(GamePad.GetState(0));
-                case InputDevice.Gamepad1: return GetInputFrameFromGamepadState(GamePad.GetState(1));
-                case InputDevice.Gamepad2: return GetInputFrameFromGamepadState(GamePad.GetState(2));
-                case InputDevice.Gamepad3: return GetInputFrameFromGamepadState(GamePad.GetState(3));
+                case InputDeviceType.Keyboard0: return GetInputFrameFromKeyboard(Keyboard.GetState(), 0);
+                case InputDeviceType.Keyboard1: return GetInputFrameFromKeyboard(Keyboard.GetState(), 1);
+                case InputDeviceType.Gamepad0: return GetInputFrameFromGamepadState(GamePad.GetState(0));
+                case InputDeviceType.Gamepad1: return GetInputFrameFromGamepadState(GamePad.GetState(1));
+                case InputDeviceType.Gamepad2: return GetInputFrameFromGamepadState(GamePad.GetState(2));
+                case InputDeviceType.Gamepad3: return GetInputFrameFromGamepadState(GamePad.GetState(3));
 
                 default: throw new NotImplementedException();
             }
@@ -163,9 +162,9 @@ namespace PinguinGame.Input
             }
         }
 
-        public InputState GetInputStateForDevice(InputDevice device)
+        public InputState GetInputStateForDevice(InputDeviceType device)
         {
-            return _inputStates.Where(x => x.Device == device).FirstOrDefault();
+            return _inputStates.Where(x => x.Type == device).FirstOrDefault();
         }
     }
 }

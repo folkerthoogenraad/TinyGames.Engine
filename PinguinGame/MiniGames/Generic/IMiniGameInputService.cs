@@ -9,6 +9,6 @@ namespace PinguinGame.MiniGames.Generic
     public interface IMiniGameInputService<T>
     {
         public T GetInputForPlayer(PlayerInfo player);
-        public T GetInputForInputDevice(InputDevice device);
+        public T GetInputForInputDevice(InputDeviceType device);
     }
 }

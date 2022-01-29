@@ -17,12 +17,12 @@ namespace PinguinGame.Screens.UI
 {
     public class UICountdownScreen : UIComponent
     {
-        private CountDownResources _resources;
+        private InGameResources _resources;
 
         private UISprite Countdown;
         private int CurrentSecond = 3;
 
-        public UICountdownScreen(CountDownResources resources)
+        public UICountdownScreen(InGameResources resources)
         {
             _resources = resources;
 

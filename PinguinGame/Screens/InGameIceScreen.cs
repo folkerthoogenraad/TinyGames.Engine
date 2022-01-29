@@ -5,7 +5,7 @@ using PinguinGame.Audio;
 using PinguinGame.Input;
 using PinguinGame.MiniGames.Ice;
 using PinguinGame.MiniGames.Ice.GameStates;
-using PinguinGame.MiniGames.Ice.PenguinStates;
+using PinguinGame.MiniGames.Ice.CharacterStates;
 using PinguinGame.Player;
 using PinguinGame.Screens.UI;
 using System;
@@ -25,9 +25,7 @@ namespace PinguinGame.Screens
         private readonly IScreenService _screens;
         private readonly IMusicService _musicService;
 
-        private GameUISkin Skin;
-
-        public IceWorld World;
+        public IceGame World;
 
         private GameState _gameState;
         public GameState State
@@ -39,7 +37,7 @@ namespace PinguinGame.Screens
                 {
                     _gameState?.Destroy();
                     _gameState = value;
-                    _gameState?.Init(World, Device, Content, Skin);
+                    _gameState?.Init(World, Device, Content);
                 }
             }
         }
@@ -50,7 +48,6 @@ namespace PinguinGame.Screens
             _inputService = inputService;
             _screens = screens;
             _musicService = music;
-
         }
 
         public override void Init(GraphicsDevice device, ContentManager content)
@@ -59,12 +56,8 @@ namespace PinguinGame.Screens
 
             Camera.Height = 180;
 
-            World = new IceWorld(device, content.LoadIceLevel("Levels/level0"), _players, _inputService);
+            World = new IceGame(content, device, content.LoadIceLevel("Levels/level0"), _players, new IceInput(_inputService));
             World.Camera = Camera;
-
-            Skin = new GameUISkin();
-            Skin.Font = content.LoadFont("Fonts/Font8x10");
-            Skin.FontOutline = FontOutline.Create(device, Skin.Font);
 
             State = new PreGameState();
 
@@ -86,7 +79,6 @@ namespace PinguinGame.Screens
         public override void Draw()
         {
             base.Draw();
-
 
             Graphics.Begin(Camera.GetMatrix());
 

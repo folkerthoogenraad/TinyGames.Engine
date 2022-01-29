@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PinguinGame.Screens.Resources;
 using PinguinGame.Screens.UI;
 using System;
 using System.Collections.Generic;
@@ -13,17 +14,17 @@ namespace PinguinGame.MiniGames.Ice.GameStates
     {
         public float Timer = 0;
 
-        private PreGameUI _ui;
+        private UIPreGame _ui;
 
-        public override void Init(IceWorld world, GraphicsDevice device, ContentManager content, GameUISkin skin)
+        public override void Init(IceGame world, GraphicsDevice device, ContentManager content)
         {
-            base.Init(world, device, content, skin);
+            base.Init(world, device, content);
 
-            _ui = new PreGameUI(Skin, new PreGameUIModel() {
+            _ui = new UIPreGame(new InGameResources(content), new PreGameUIModel() {
                 Scores = world.Fight.Scores,
                 Colors = world.Fight.Players.Select(x => x.Color).ToArray(),
             });
-            _ui.Update(0, World.Camera.Bounds);
+            _ui.UpdateLayout(World.Camera.Bounds);
         }
 
         public override GameState Update(float delta)
@@ -35,7 +36,7 @@ namespace PinguinGame.MiniGames.Ice.GameStates
                 return new CountdownPlayState();
             }
 
-            _ui.Update(delta, World.Camera.Bounds);
+            _ui.Update(delta);
 
             return this;
         }

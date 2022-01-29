@@ -34,7 +34,7 @@ namespace PinguinGame.Player
             return _players[index];
         }
 
-        public PlayerInfo GetOrJoinPlayerByInputDevice(InputDevice controller)
+        public PlayerInfo GetOrJoinPlayerByInputDevice(InputDeviceType controller)
         {
             var result = GetPlayerByInputDevice(controller);
 
@@ -49,13 +49,13 @@ namespace PinguinGame.Player
 
             return result;
         }
-        public bool IsPlayerJoinedByInputDevice(InputDevice device)
+        public bool IsPlayerJoinedByInputDevice(InputDeviceType device)
         {
             var player = GetPlayerByInputDevice(device);
 
             return player != null && player.Joined == true;
         }
-        public PlayerInfo GetPlayerByInputDevice(InputDevice device)
+        public PlayerInfo GetPlayerByInputDevice(InputDeviceType device)
         {
             return Players.Where(x => x.InputDevice == device).FirstOrDefault();
         }
