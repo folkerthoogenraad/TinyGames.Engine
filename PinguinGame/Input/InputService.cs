@@ -6,68 +6,8 @@ using System.Linq;
 
 namespace PinguinGame.Input
 {
-    public class InputState
-    {
-        public InputDeviceType Type { get; private set; }
 
-        public Vector2 MoveDirection { get; private set; } = new Vector2(0, 0);
-        public bool Action { get; private set; } = false;
-        public bool ActionPressed { get; private set; } = false;
-        public bool ActionReleased { get; private set; } = false;
-
-        public bool Back { get; private set; } = false;
-        public bool BackPressed { get; private set; } = false;
-        public bool BackReleased { get; private set; } = false;
-
-        public bool Start { get; private set; } = false;
-        public bool StartPressed { get; private set; } = false;
-        public bool StartReleased { get; private set; } = false;
-
-        public bool MenuUpPressed { get; private set; }
-        public bool MenuDownPressed { get; private set; }
-        public bool MenuLeftPressed { get; private set; }
-        public bool MenuRightPressed { get; private set; }
-
-        public InputState(InputDeviceType device)
-        {
-            Type = device;
-        }
-
-        public static InputState UpdateState(InputState previous, InputFrame frame)
-        {
-            return new InputState(previous.Type)
-            {
-                Action = frame.Action,
-                ActionPressed = frame.Action && !previous.Action,
-                ActionReleased = !frame.Action && previous.Action,
-
-                Back = frame.Back,
-                BackPressed = frame.Back && !previous.Back,
-                BackReleased = !frame.Back && previous.Back,
-
-                Start = frame.Start,
-                StartPressed = frame.Start && !previous.Start,
-                StartReleased = !frame.Start && previous.Start,
-
-                MoveDirection = frame.MoveDirection,
-
-                MenuUpPressed = previous.MoveDirection.Y > -0.5f && frame.MoveDirection.Y <= -0.5f,
-                MenuDownPressed = previous.MoveDirection.Y < 0.5f && frame.MoveDirection.Y >= 0.5f,
-                MenuRightPressed = previous.MoveDirection.X < 0.5f && frame.MoveDirection.X >= 0.5f,
-                MenuLeftPressed = previous.MoveDirection.X > -0.5f && frame.MoveDirection.X <= -0.5f,
-            };
-        }
-    }
-
-    public class InputFrame
-    {
-        public Vector2 MoveDirection { get; set; } = new Vector2(0, 0);
-        public bool Action { get; set; } = false;
-        public bool Back { get; set; } = false;
-        public bool Start { get; set; } = false;
-    }
-
-    public class InputService
+    public class InputService : IInputService
     {
         private InputState[] _inputStates;
 
@@ -93,7 +33,7 @@ namespace PinguinGame.Input
                 var state = _inputStates[i];
                 var frame = GetInputFrameForDevice(state.Type);
 
-                _inputStates[i] = InputState.UpdateState(state, frame);
+                _inputStates[i] = InputState.CreateFromPreviousAndFrame(state, frame);
             }
         }
 
@@ -117,6 +57,7 @@ namespace PinguinGame.Input
             return new InputFrame
             {
                 Action = state.Buttons.A == ButtonState.Pressed,
+                ActionSecondary = state.Buttons.X == ButtonState.Pressed,
                 Back = state.Buttons.B == ButtonState.Pressed,
                 Start = state.Buttons.Start == ButtonState.Pressed,
                 MoveDirection = new Vector2(state.ThumbSticks.Left.X, -state.ThumbSticks.Left.Y)
@@ -138,6 +79,7 @@ namespace PinguinGame.Input
                 return new InputFrame
                 {
                     Action = state.IsKeyDown(Keys.Space),
+                    ActionSecondary = state.IsKeyDown(Keys.RightAlt),
                     Start = state.IsKeyDown(Keys.Enter),
                     Back = state.IsKeyDown(Keys.Back),
                     MoveDirection = dir
@@ -154,9 +96,10 @@ namespace PinguinGame.Input
 
                 return new InputFrame
                 {
-                    Start = state.IsKeyDown(Keys.C),
                     Action = state.IsKeyDown(Keys.X),
+                    ActionSecondary = state.IsKeyDown(Keys.C),
                     Back = state.IsKeyDown(Keys.Z),
+                    Start = state.IsKeyDown(Keys.Escape),
                     MoveDirection = dir
                 };
             }

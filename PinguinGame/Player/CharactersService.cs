@@ -13,8 +13,8 @@ namespace PinguinGame.Player
     // does the management. This should be seperated.
     public class CharactersService : ICharactersService
     {
-        private readonly string CharacterDataLocation = "Data\\Characters.json";
-        private readonly string CharacterUnlockDataLocation = "SaveData\\Characters.json";
+        private readonly string CharacterDataLocation = "Data/Characters.json";
+        private readonly string CharacterUnlockDataLocation = "SaveData/Characters.json";
 
         private IStorageSystem _storage;
 

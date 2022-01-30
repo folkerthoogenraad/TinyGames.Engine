@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    public class CharacterSnowball
+    public class CharacterSnowballGathering
     {
         private float _snowballTimer = 0;
         private float _maxGatherTime = 0.7f;

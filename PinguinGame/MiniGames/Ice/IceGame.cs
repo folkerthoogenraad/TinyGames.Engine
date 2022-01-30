@@ -88,8 +88,11 @@ namespace PinguinGame.MiniGames.Ice
                 var totalVelocity = (a.Physics.Velocity - b.Physics.Velocity).Length();
                 var bonkVelocity = Math.Max(1, totalVelocity);
 
-                BonkCharacters(a, b, bonkVelocity, -dir);
-                BonkCharacters(b, a, bonkVelocity, dir);
+                var bonkA = BonkCharacters(a, b, bonkVelocity, -dir);
+                var bonkB = BonkCharacters(b, a, bonkVelocity, dir);
+
+                a.Bonk(bonkA);
+                b.Bonk(bonkB);
             }
 
             foreach(var penguin in Penguins)
@@ -113,25 +116,25 @@ namespace PinguinGame.MiniGames.Ice
             }
         }
 
-        private void BonkCharacters(Character self, Character other, float bonkVelocity, Vector2 direction)
+        private Vector2 BonkCharacters(Character self, Character other, float bonkVelocity, Vector2 direction)
         {
             // Advantage
             if (self.IsSliding && other.IsGathering)
             {
-                self.Bonk(bonkVelocity * 0 * direction);
+                return bonkVelocity * 0 * direction;
             }
 
             // Disadvantage
             else if (self.IsGathering && other.IsSliding)
             {
-                self.Bonk(bonkVelocity * 1.5f * direction);
+                return bonkVelocity * 1.2f * direction;
             }
 
             // No advantage
             else
             {
                 // Divide equally
-                self.Bonk(bonkVelocity * 0.5f * direction);
+                return bonkVelocity * 0.5f * direction;
             }
         }
 
@@ -256,7 +259,7 @@ namespace PinguinGame.MiniGames.Ice
 
             foreach (var penguin in penguins)
             {
-                if (!penguin.CharacterSnowball.HasSnowball) continue;
+                if (!penguin.SnowballGathering.HasSnowball) continue;
 
                 graphics.DrawSprite(SnowballGraphics.Indicator, penguin.Position - new Vector2(0, 24 + penguin.Bounce.Height));
             }

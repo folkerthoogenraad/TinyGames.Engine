@@ -9,17 +9,17 @@ namespace PinguinGame.MiniGames.Ice
 {
     public class IceInput : MiniGameInputService<CharacterInput>
     {
-        public IceInput(InputService input) : base(input) { }
+        public IceInput(IInputService input) : base(input) { }
 
         public override CharacterInput Convert(InputState input)
         {
             return new CharacterInput()
             {
                 MoveDirection = input.MoveDirection,
-                SlideStart = input.ActionPressed,
-                SlideHold = input.Action,
-                GatherSnow = input.Back,
-                ThrowSnowball = input.BackPressed,
+                Action = input.Action,
+                ActionPressed = input.ActionPressed,
+                ActionSecondary = input.ActionSecondary,
+                ActionSecondaryPressed = input.ActionSecondaryPressed,
             };
         }
     }

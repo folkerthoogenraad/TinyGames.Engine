@@ -18,13 +18,13 @@ namespace PinguinGame.Screens
 {
     public class TitleScreen : Screen
     {
-        private readonly InputService _inputService;
+        private readonly IInputService _inputService;
         private readonly IMusicService _musicService;
         private readonly IScreenService _screens;
 
         private UITitleScreen _ui;
 
-        public TitleScreen(IScreenService screens, InputService inputService, IMusicService music)
+        public TitleScreen(IScreenService screens, IInputService inputService, IMusicService music)
         {
             _inputService = inputService;
             _screens = screens;

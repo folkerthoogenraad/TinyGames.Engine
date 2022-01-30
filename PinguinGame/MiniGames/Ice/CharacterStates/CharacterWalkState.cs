@@ -19,7 +19,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
 
             character.Physics = character.Physics.Move(delta, input.MoveDirection * character.Settings.MoveSpeed, character.Settings.Acceleration);
 
-            if (input.SlideStart)
+            if (input.ActionPressed)
             {
                 Vector2 direction = character.Physics.Velocity / character.Settings.MoveSpeed;
 
@@ -32,11 +32,11 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
                 return new CharacterSlideState(direction);
             }
 
-            if (input.ThrowSnowball)
+            if (input.ActionSecondaryPressed)
             {
-                if (character.CharacterSnowball.HasSnowball)
+                if (character.SnowballGathering.HasSnowball)
                 {
-                    character.CharacterSnowball.RemoveSnowball();
+                    character.SnowballGathering.RemoveSnowball();
 
                     Vector2 direction = input.MoveDirection;
 

@@ -18,17 +18,18 @@ namespace PinguinGame.Screens
 {
     public class PlayerSelectScreen : Screen
     {
-        private readonly PlayerService _playerService;
-        private readonly InputService _inputService;
+        private readonly PlayerCollection _playerCollection;
+
+        private readonly IInputService _inputService;
         private readonly IScreenService _screens;
         private readonly IMusicService _musicService;
 
         private HashSet<PlayerInfo> _readyPlayers;
         private UISelectPlayers _ui;
 
-        public PlayerSelectScreen(IScreenService screens, PlayerService players, InputService inputService, IMusicService music)
+        public PlayerSelectScreen(IScreenService screens, IInputService inputService, IMusicService music)
         {
-            _playerService = players;
+            _playerCollection = new PlayerCollection();
             _inputService = inputService;
             _screens = screens;
 
@@ -45,7 +46,7 @@ namespace PinguinGame.Screens
 
             _ui.SetModel(new UISelectPlayersModel()
             {
-                PlayerStates = _playerService.AllPlayers.Select(x => PlayerInfoToState(x)).ToArray(),
+                PlayerStates = _playerCollection.AllPlayers.Select(x => PlayerInfoToState(x)).ToArray(),
                 ShowContinueButton = false,
             });
 
@@ -61,12 +62,12 @@ namespace PinguinGame.Screens
 
             foreach (var input in _inputService.InputStates)
             {
-                var isJoined = _playerService.IsPlayerJoinedByInputDevice(input.Type);
-                var player = _playerService.GetPlayerByInputDevice(input.Type);
+                var isJoined = _playerCollection.IsPlayerJoinedByInputDevice(input.Type);
+                var player = _playerCollection.GetPlayerByInputDevice(input.Type);
 
                 if (!isJoined && input.ActionPressed)
                 {
-                    _playerService.GetOrJoinPlayerByInputDevice(input.Type);
+                    _playerCollection.GetOrJoinPlayerByInputDevice(input.Type);
                 }
                 else if (isJoined && input.ActionPressed && !_readyPlayers.Contains(player))
                 {
@@ -74,7 +75,7 @@ namespace PinguinGame.Screens
                 }
                 else if (isJoined && input.ActionPressed && _readyPlayers.Contains(player) && CanStart)
                 {
-                    _screens.ShowCharacterSelectScreen(_playerService.Players.ToArray());
+                    _screens.ShowCharacterSelectScreen(_playerCollection.Players.ToArray());
                     fadeForward = true;
                 }
                 else if (isJoined && input.BackPressed && !_readyPlayers.Contains(player))
@@ -95,7 +96,7 @@ namespace PinguinGame.Screens
 
             _ui.SetModel(new UISelectPlayersModel()
             {
-                PlayerStates = _playerService.AllPlayers.Select(x => PlayerInfoToState(x)).ToArray(),
+                PlayerStates = _playerCollection.AllPlayers.Select(x => PlayerInfoToState(x)).ToArray(),
                 ShowContinueButton = CanStart,
                 FadeFoward = fadeForward,
                 FadeBackwards = fadeBackwards
@@ -137,7 +138,7 @@ namespace PinguinGame.Screens
             }
         }
 
-        public bool AllReady => _playerService.Players.All(x => _readyPlayers.Contains(x));
-        public bool CanStart => _playerService.PlayerCount >= 2 && AllReady;
+        public bool AllReady => _playerCollection.Players.All(x => _readyPlayers.Contains(x));
+        public bool CanStart => _playerCollection.PlayerCount >= 2 && AllReady;
     }
 }

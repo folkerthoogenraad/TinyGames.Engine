@@ -18,7 +18,7 @@ namespace PinguinGame.Screens
 {
     public class CharacterSelectScreen : Screen
     {
-        private readonly InputService _inputService;
+        private readonly IInputService _inputService;
         private readonly IScreenService _screens;
         private readonly IMusicService _musicService;
         private readonly ICharactersService _characterService;
@@ -29,7 +29,7 @@ namespace PinguinGame.Screens
         private HashSet<PlayerInfo> _readyPlayers;
         private Dictionary<PlayerInfo, int> _playerIndices;
 
-        public CharacterSelectScreen(IScreenService screens, InputService inputService, IMusicService music, PlayerInfo[] players, ICharactersService characterService)
+        public CharacterSelectScreen(IScreenService screens, IInputService inputService, IMusicService music, ICharactersService characterService, PlayerInfo[] players)
         {
             _players = players;
             _inputService = inputService;

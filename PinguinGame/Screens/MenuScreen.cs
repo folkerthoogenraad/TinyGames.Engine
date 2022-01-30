@@ -18,7 +18,7 @@ namespace PinguinGame.Screens
 {
     public class MenuScreen : Screen
     {
-        private readonly InputService _inputService;
+        private readonly IInputService _inputService;
         private readonly IScreenService _screens;
         private readonly IMusicService _musicService;
 
@@ -26,7 +26,7 @@ namespace PinguinGame.Screens
 
         private int Selected = 0;
 
-        public MenuScreen(IScreenService screens, InputService inputService, IMusicService music)
+        public MenuScreen(IScreenService screens, IInputService inputService, IMusicService music)
         {
             _inputService = inputService;
             _screens = screens;

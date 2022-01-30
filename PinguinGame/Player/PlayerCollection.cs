@@ -8,7 +8,8 @@ namespace PinguinGame.Player
     // Join players?
     // This can be more of a factory where you can 
     // Do a "create players" to get a Players players; object.
-    public class PlayerService
+    // This shouldn't really be a service at all though
+    public class PlayerCollection
     {
         private PlayerInfo[] _players;
 
@@ -16,7 +17,7 @@ namespace PinguinGame.Player
         public IEnumerable<PlayerInfo> Players => _players.Where(x => x.Joined);
         public int PlayerCount => Players.Count();
 
-        public PlayerService()
+        public PlayerCollection()
         {
             _players = new PlayerInfo[4];
 

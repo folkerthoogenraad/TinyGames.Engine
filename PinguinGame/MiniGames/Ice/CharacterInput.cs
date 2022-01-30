@@ -8,10 +8,10 @@ namespace PinguinGame.MiniGames.Ice
     public class CharacterInput
     {
         public Vector2 MoveDirection { get; set; }
-        public bool SlideStart { get; set; }
-        public bool SlideHold { get; set; }
-        public bool GatherSnow { get; set; }
-        public bool ThrowSnowball { get; set; }
+        public bool ActionPressed { get; set; }
+        public bool Action { get; set; }
+        public bool ActionSecondary { get; set; }
+        public bool ActionSecondaryPressed { get; set; }
         public static CharacterInput Empty => new CharacterInput();
     }
 }

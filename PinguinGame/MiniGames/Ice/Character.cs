@@ -40,7 +40,7 @@ namespace PinguinGame.MiniGames.Ice
         public CharacterSettings Settings { get; private set; }
         public CharacterBounce Bounce { get; private set; } // TODO merge this with the groundheight thing
         public CharacterGraphics Graphics { get; private set; }
-        public CharacterSnowball CharacterSnowball { get; private set; }
+        public CharacterSnowballGathering SnowballGathering { get; private set; }
 
         public Vector2 Position => Physics.Position;
         public Vector2 DrawPosition => Physics.Position + Bounce.Offset + new Vector2(0, -GroundHeight);
@@ -54,7 +54,7 @@ namespace PinguinGame.MiniGames.Ice
             Physics = new CharacterPhysics(position);
             Settings = new CharacterSettings();
             Bounce = new CharacterBounce();
-            CharacterSnowball = new CharacterSnowball();
+            SnowballGathering = new CharacterSnowballGathering();
 
             State = new CharacterWalkState();
             Graphics = graphics;

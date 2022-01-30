@@ -21,7 +21,8 @@ namespace PinguinGame.Screens
     public class InGameIceScreen : Screen
     {
         private readonly PlayerInfo[] _players;
-        private readonly InputService _inputService;
+
+        private readonly IInputService _inputService;
         private readonly IScreenService _screens;
         private readonly IMusicService _musicService;
 
@@ -42,7 +43,7 @@ namespace PinguinGame.Screens
             }
         }
 
-        public InGameIceScreen(IScreenService screens, InputService inputService, IMusicService music, PlayerInfo[] players)
+        public InGameIceScreen(IScreenService screens, IInputService inputService, IMusicService music, PlayerInfo[] players)
         {
             _players = players;
             _inputService = inputService;

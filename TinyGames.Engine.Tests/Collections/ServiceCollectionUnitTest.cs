@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,31 +13,30 @@ namespace TinyGames.Engine.Tests.Collections
         [TestMethod]
         public void TestRegisterAndGet()
         {
-            var collection = new ServiceCollection();
+            var collection = new GameServiceContainer();
 
-            collection.RegisterService<TestServiceA>();
-            collection.RegisterService<TestServiceB>();
+            collection.AddService<TestServiceA>();
+            collection.AddService<TestServiceB>();
 
             Assert.IsNotNull(collection.GetService<TestServiceA>());
             Assert.IsNotNull(collection.GetService<TestServiceB>());
         }
         
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void TestGetAndThrowUnregistered()
+        public void TestGetShouldBeNull()
         {
-            var collection = new ServiceCollection();
+            var collection = new GameServiceContainer();
 
-            collection.GetService<TestServiceA>();
+            Assert.IsNull(collection.GetService<TestServiceA>());
         }
 
         [TestMethod]
         public void TestCreateInstance()
         {
-            var collection = new ServiceCollection();
+            var collection = new GameServiceContainer();
 
-            collection.RegisterService<TestServiceA>();
-            collection.RegisterService<TestServiceB>();
+            collection.AddService<TestServiceA>();
+            collection.AddService<TestServiceB>();
 
             Assert.IsNotNull(collection.CreateInstance<TestServiceC>());
         }
@@ -45,40 +45,20 @@ namespace TinyGames.Engine.Tests.Collections
         [ExpectedException(typeof(ArgumentException))]
         public void TestCreateInstanceAndThrow()
         {
-            var collection = new ServiceCollection();
+            var collection = new GameServiceContainer();
 
-            collection.RegisterService<TestServiceA>();
+            collection.AddService<TestServiceA>();
 
-            Assert.IsNotNull(collection.CreateInstance<TestServiceC>());
-        }
-
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void TestRegisterServiceDouble()
-        {
-            var collection = new ServiceCollection();
-
-            collection.RegisterService<TestServiceA>();
-            collection.RegisterService<TestServiceA>();
+            collection.CreateInstance<TestServiceC>(); // should throw
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void TestCreateInstanceAndThrowUncreateable()
         {
-            var collection = new ServiceCollection();
+            var collection = new GameServiceContainer();
 
             collection.CreateInstance<TestServiceC>();
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void TestRegisterAndThrowUncreateable()
-        {
-            var collection = new ServiceCollection();
-
-            collection.RegisterService<TestServiceC>();
         }
 
         public class TestServiceA

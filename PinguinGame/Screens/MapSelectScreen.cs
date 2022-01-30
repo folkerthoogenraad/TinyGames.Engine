@@ -18,7 +18,7 @@ namespace PinguinGame.Screens
 {
     public class MapSelectScreen : Screen
     {
-        private readonly InputService _inputService;
+        private readonly IInputService _inputService;
         private readonly IScreenService _screens;
         private readonly IMusicService _musicService;
         private PlayerInfo[] _players { get; }
@@ -27,7 +27,7 @@ namespace PinguinGame.Screens
         private int _selectedIndex = 0;
         private bool _ready = false;
 
-        public MapSelectScreen(IScreenService screens, InputService inputService, IMusicService music, PlayerInfo[] players)
+        public MapSelectScreen(IScreenService screens, IInputService inputService, IMusicService music, PlayerInfo[] players)
         {
             _inputService = inputService;
             _screens = screens;

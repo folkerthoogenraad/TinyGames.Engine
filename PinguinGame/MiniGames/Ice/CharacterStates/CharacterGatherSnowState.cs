@@ -14,21 +14,21 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
         {
             base.Init(penguin);
 
-            penguin.CharacterSnowball.RemoveSnowball();
+            penguin.SnowballGathering.RemoveSnowball();
         }
 
         public override CharacterState Update(Character penguin, CharacterInput input, float delta)
         {
             penguin.Physics = penguin.Physics.Move(delta, new Vector2(), penguin.Settings.Acceleration);
 
-            if (!input.GatherSnow)
+            if (!input.ActionSecondary)
             {
                 return new CharacterWalkState();
             }
 
-            penguin.CharacterSnowball.Update(delta, input.GatherSnow);
+            penguin.SnowballGathering.Update(delta, input.ActionSecondary);
 
-            if (penguin.CharacterSnowball.HasSnowball)
+            if (penguin.SnowballGathering.HasSnowball)
             {
                 penguin.Bounce.Height = 4;
                 return new CharacterWalkState();
@@ -46,7 +46,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             Vector2 barPosition = penguin.DrawPosition - new Vector2(0, 16);
 
             graphics.DrawRectangle(AABB.CreateCentered(barPosition, new Vector2(16, 6)), Color.Black);
-            graphics.DrawRectangle(AABB.CreateCentered(barPosition, new Vector2(14 * penguin.CharacterSnowball.GatherProgress, 4)), penguin.Player.Color);
+            graphics.DrawRectangle(AABB.CreateCentered(barPosition, new Vector2(14 * penguin.SnowballGathering.GatherProgress, 4)), penguin.Player.Color);
 
             // Draw some indicator?
         }

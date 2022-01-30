@@ -14,6 +14,7 @@ using PinguinGame.Player;
 using PinguinGame.Screens;
 using PinguinGame.Audio;
 using TinyGames.Engine.IO;
+using TinyGames.Engine.Collections;
 
 namespace PinguinGame
 {
@@ -21,12 +22,8 @@ namespace PinguinGame
     {
         private GraphicsDeviceManager _graphics;
 
-        private InputService inputService;
-        private PlayerService playerService;
-        private MusicService musicService;
-        private ICharactersService charactersService;
-
         public ScreenManager Manager;
+        public IInputService Input;
 
         public PinguinGame()
         {
@@ -39,20 +36,22 @@ namespace PinguinGame
         {
             base.Initialize();
 
-            //_graphics.PreferredBackBufferWidth = 1280;
-            //_graphics.PreferredBackBufferHeight = 720;
-            //_graphics.ApplyChanges();
-
-            _graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-            _graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            _graphics.IsFullScreen = true;
+            _graphics.PreferredBackBufferWidth = 1280;
+            _graphics.PreferredBackBufferHeight = 720;
             _graphics.ApplyChanges();
 
+            //_graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            //_graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            //_graphics.IsFullScreen = true;
+            //_graphics.ApplyChanges();
 
-            inputService = new InputService();
-            playerService = new PlayerService();
-            musicService = new MusicService(Content);
-            charactersService = new CharactersService(new StorageSystem(new DiskStorageProvider(Content.RootDirectory)), Content);
+            Services.AddService<IStorageSystem>(new StorageSystem(new DiskStorageProvider(Content.RootDirectory)));
+            Services.AddService<IInputService>(new InputService());
+            Services.AddService<IMusicService>(new MusicService(Content));
+            Services.AddService<ICharactersService>(new CharactersService(Services.GetService<IStorageSystem>(), Content));
+            Services.AddService<IScreenService>(this);
+
+            Input = Services.GetService<IInputService>();
 
             Manager = new ScreenManager(GraphicsDevice, Content);
 
@@ -63,11 +62,11 @@ namespace PinguinGame
 
             foreach (var player in players.Where(x => x.CharacterInfo == null))
             {
-                player.CharacterInfo = charactersService.GetDefaultForPlayer(player);
+                player.CharacterInfo = Services.GetService<ICharactersService>().GetDefaultForPlayer(player);
             }
 
-            //ShowInGameScreen(players);
-            ShowSplashScreen();
+            ShowInGameScreen(players);
+            //ShowSplashScreen();
         }
 
         protected override void LoadContent()
@@ -85,8 +84,7 @@ namespace PinguinGame
 
             float delta = gameTime.GetDeltaInSeconds();
 
-            inputService.Poll();
-
+            Input.Poll();
             Manager.Update(delta);
         }
 
@@ -99,46 +97,74 @@ namespace PinguinGame
 
         public void ShowPlayerSelectScreen()
         {
-            Manager.Screen = new PlayerSelectScreen(this, playerService, inputService, musicService);
+            Manager.Screen = new PlayerSelectScreen(
+                Services.GetService<IScreenService>(),
+                Services.GetService<IInputService>(),
+                Services.GetService<IMusicService>()
+                );
         }
+
+        public void ShowCharacterSelectScreen(PlayerInfo[] players)
+        {
+            Manager.Screen = new CharacterSelectScreen(
+                Services.GetService<IScreenService>(),
+                Services.GetService<IInputService>(),
+                Services.GetService<IMusicService>(),
+                Services.GetService<ICharactersService>(),
+                players);
+        }
+
         public void ShowInGameScreen(PlayerInfo[] players)
         {
-            Manager.Screen = new InGameIceScreen(this, inputService, musicService, players);
-            //Manager.Screen = new InGameMinecartScreen(this, inputService, musicService, players);
+            Manager.Screen = new InGameIceScreen(
+                Services.GetService<IScreenService>(),
+                Services.GetService<IInputService>(),
+                Services.GetService<IMusicService>(), 
+                players);
         }
 
         public void ShowResultScreen(Fight fight)
         {
-            Manager.Screen = new ResultsScreen(this, inputService, musicService, fight);
+            Manager.Screen = new ResultsScreen(
+                Services.GetService<IScreenService>(),
+                Services.GetService<IInputService>(),
+                Services.GetService<IMusicService>(),
+                fight);
         }
 
         public void ShowTitleScreen()
         {
-            Manager.Screen = new TitleScreen(this, inputService, musicService);
+            Manager.Screen = new TitleScreen(
+                Services.GetService<IScreenService>(),
+                Services.GetService<IInputService>(),
+                Services.GetService<IMusicService>());
         }
 
         public void ShowMenuScreen()
         {
-            Manager.Screen = new MenuScreen(this, inputService, musicService);
+            Manager.Screen = new MenuScreen(
+                Services.GetService<IScreenService>(),
+                Services.GetService<IInputService>(),
+                Services.GetService<IMusicService>());
         }
         public void ShowSplashScreen()
         {
-            Manager.Screen = new SplashScreen(this);
+            Manager.Screen = new SplashScreen(
+                Services.GetService<IScreenService>());
         }
 
-        public new void Exit()
+        public new void Exit() // Because of the screen service :) // This shouldn't be here probably
         {
             base.Exit();
         }
 
         public void ShowMapSelectScreen(PlayerInfo[] players)
         {
-            Manager.Screen = new MapSelectScreen(this, inputService, musicService, players);
+            Manager.Screen = new MapSelectScreen(
+                Services.GetService<IScreenService>(),
+                Services.GetService<IInputService>(),
+                Services.GetService<IMusicService>(), players);
         }
 
-        public void ShowCharacterSelectScreen(PlayerInfo[] players)
-        {
-            Manager.Screen = new CharacterSelectScreen(this, inputService, musicService, players, charactersService);
-        }
     }
 }

@@ -40,7 +40,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
         {
             SlideTimer += delta;
 
-            if(CanStopSlide && !input.SlideHold)
+            if(CanStopSlide && !input.Action)
             {
                 penguin.Bounce.Height = 3;
                 return new CharacterWalkState();
