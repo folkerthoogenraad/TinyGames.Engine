@@ -50,6 +50,7 @@ namespace Tinygames.Engine.Scenes
         {
             if (Initialized) throw new ArgumentException("Cannot add components at runtime.");
 
+            component.GameObject = this;
             _components.Add(component);
 
             return component;

@@ -10,11 +10,27 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
     internal class CharacterWalkState : CharacterState
     {
         private float AnimationTimer = 0;
-        private bool Walking = false;
+
+
+        private bool _walking = false;
+
+        private bool Walking
+        {
+            get { return _walking; }
+            set {
+                if (value == _walking) return;
+
+                if (value) Character?.Sound.StartWalking();
+                if (!value) Character?.Sound.StopWalking();
+                _walking = value; 
+            }
+        }
 
         public override CharacterState Update(Character character, CharacterInput input, float delta)
         {
             AnimationTimer += delta;
+            
+
             Walking = input.MoveDirection.LengthSquared() > 0;
 
             character.Physics = character.Physics.Move(delta, input.MoveDirection * character.Settings.MoveSpeed, character.Settings.Acceleration);
@@ -81,6 +97,12 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             {
                 penguinGraphics.DrawIdle(graphics, facing, penguin.DrawPosition, AnimationTimer);
             }
+        }
+
+        public override void Destroy()
+        {
+            base.Destroy();
+            Walking = false;
         }
     }
 }

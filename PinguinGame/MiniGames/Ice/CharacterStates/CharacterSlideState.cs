@@ -34,6 +34,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
 
             penguin.Physics = penguin.Physics.StartSlide(Direction * penguin.Settings.SlideSpeed);
             penguin.Bounce.Height = 4;
+            penguin.Sound.StartSlide();
         }
 
         public override CharacterState Update(Character penguin, CharacterInput input, float delta)
@@ -43,6 +44,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             if(CanStopSlide && !input.Action)
             {
                 penguin.Bounce.Height = 3;
+
                 return new CharacterWalkState();
             }
 
@@ -59,6 +61,13 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             penguinGraphics.DrawSlide(graphics, facing, penguin.DrawPosition, SlideTimer);
         }
 
+        public override void Destroy()
+        {
+            base.Destroy();
+            
+            Character.Sound.StopSlide();
+
+        }
         public bool CanStopSlide => SlideTimer > 0.3f;
     }
 }

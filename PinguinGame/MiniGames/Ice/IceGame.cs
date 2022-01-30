@@ -93,6 +93,8 @@ namespace PinguinGame.MiniGames.Ice
 
                 a.Bonk(bonkA);
                 b.Bonk(bonkB);
+
+                b.Sound.Bonk.Play();
             }
 
             foreach(var penguin in Penguins)

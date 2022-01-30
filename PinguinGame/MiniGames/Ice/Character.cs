@@ -41,28 +41,32 @@ namespace PinguinGame.MiniGames.Ice
         public CharacterBounce Bounce { get; private set; } // TODO merge this with the groundheight thing
         public CharacterGraphics Graphics { get; private set; }
         public CharacterSnowballGathering SnowballGathering { get; private set; }
+        public CharacterSound Sound { get; private set; }
 
         public Vector2 Position => Physics.Position;
         public Vector2 DrawPosition => Physics.Position + Bounce.Offset + new Vector2(0, -GroundHeight);
         public Vector2 Facing => Physics.Facing;
         public float GroundHeight { get; set; } = 0;
 
-        public Character(IceGame level, PlayerInfo player, CharacterGraphics graphics, Vector2 position)
+        public Character(IceGame level, PlayerInfo player, CharacterGraphics graphics, CharacterSound sound, Vector2 position)
         {
             Level = level;
             Player = player;
+            Graphics = graphics;
+            Sound = sound;
+
             Physics = new CharacterPhysics(position);
             Settings = new CharacterSettings();
             Bounce = new CharacterBounce();
             SnowballGathering = new CharacterSnowballGathering();
 
             State = new CharacterWalkState();
-            Graphics = graphics;
         }
 
         public void Update(CharacterInput input, float delta)
         {
             Bounce.Update(delta);
+            Sound.Update(delta);
             State = State.Update(this, input, delta);
         }
 

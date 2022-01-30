@@ -38,7 +38,9 @@ namespace PinguinGame.MiniGames.Ice.GameStates
 
                 var graphics = player.CharacterInfo.Graphics;
 
-                var penguin = new Character(game, player, graphics, pos + new Vector2(0, 4));
+                var sound = CharacterSound.CreateCharacterSound(content);
+
+                var penguin = new Character(game, player, graphics, sound, pos + new Vector2(0, 4));
                 penguin.Physics = penguin.Physics.SetFacing(-pos);
 
                 World.AddPenguin(penguin);

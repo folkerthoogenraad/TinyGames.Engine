@@ -76,6 +76,30 @@
 /processorParam:Quality=Best
 /build:Songs/Victory.mp3
 
+#begin SoundEffects/Characters/Bonk.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Characters/Bonk.ogg
+
+#begin SoundEffects/Characters/Footstep.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Characters/Footstep.ogg
+
+#begin SoundEffects/Characters/Slide.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Characters/Slide.ogg
+
+#begin SoundEffects/Characters/SlideHold.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Characters/SlideHold.ogg
+
 #begin Sprites/Characters/ElephantSheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
