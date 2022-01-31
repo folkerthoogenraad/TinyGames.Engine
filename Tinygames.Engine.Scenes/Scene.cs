@@ -9,11 +9,14 @@ namespace Tinygames.Engine.Scenes
         public bool Initialized { get; private set; }
 
         private List<GameObject> _gameObjects;
+        private int _lastIndex = 0;
+
         public IEnumerable<GameObject> GameObjects => _gameObjects.Where(x => !x.Destroyed && (x.Initialized || !Initialized));
 
         public Scene()
         {
             _gameObjects = new List<GameObject>();
+            _lastIndex = 0;
         }
 
         public virtual void Init()
@@ -53,6 +56,7 @@ namespace Tinygames.Engine.Scenes
         public void AddGameObject(GameObject obj)
         {
             obj.Scene = this;
+            obj.Id = _lastIndex++;
             _gameObjects.Add(obj);
         }
 
@@ -83,6 +87,11 @@ namespace Tinygames.Engine.Scenes
             }
 
             _gameObjects.RemoveAll(x => x.Destroyed);
+        }
+
+        public GameObject FindGameObjectById(int id)
+        {
+            return _gameObjects.Where(x => x.Id == id && !x.Destroyed).FirstOrDefault();
         }
     }
 }

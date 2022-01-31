@@ -143,5 +143,48 @@ namespace TinyGames.Engine.Scenes.Tests
 
             Assert.IsTrue(scene.GameObjects.Count() == 2);
         }
+
+
+        [TestMethod]
+        public void TestFindGameObjectById()
+        {
+            Scene scene = new Scene();
+
+            var a = new GameObject();
+            var b = new GameObject();
+            var c = new GameObject();
+
+            scene.AddGameObject(a);
+            scene.AddGameObject(b);
+            scene.AddGameObject(c);
+
+            Assert.AreEqual(a, scene.FindGameObjectById(a.Id));
+            Assert.AreEqual(b, scene.FindGameObjectById(b.Id));
+            Assert.AreEqual(c, scene.FindGameObjectById(c.Id));
+        }
+
+        [TestMethod]
+        public void TestFindGameObjectById_IsNull()
+        {
+            Scene scene = new Scene();
+
+            Assert.IsNull(scene.FindGameObjectById(1));
+        }
+
+        [TestMethod]
+        public void TestFindGameObjectById_Deleted()
+        {
+            Scene scene = new Scene();
+
+            var a = new GameObject();
+            
+            scene.AddGameObject(a);
+
+            scene.Init();
+
+            scene.RemoveGameObject(a);
+
+            Assert.IsNull(scene.FindGameObjectById(a.Id));
+        }
     }
 }

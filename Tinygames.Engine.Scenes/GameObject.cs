@@ -7,10 +7,10 @@ namespace Tinygames.Engine.Scenes
 {
     public class GameObject
     {
+        public int Id { get; set; }
         public bool Initialized { get; set; }
         public bool Destroyed { get; set; }
         public Scene Scene { get; set; }
-
         public IEnumerable<Component> Components => _components;
 
         private List<Component> _components;
