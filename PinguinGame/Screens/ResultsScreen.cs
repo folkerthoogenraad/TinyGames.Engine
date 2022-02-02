@@ -19,6 +19,7 @@ namespace PinguinGame.Screens
         private readonly IInputService _inputService;
         private readonly IScreenService _screens;
         private readonly IMusicService _musicService;
+        private readonly IUISoundService _uiSound;
 
         private PlayerInfo _winner;
         private Fight _fight;
@@ -26,13 +27,14 @@ namespace PinguinGame.Screens
         public UIResultScreen _ui;
 
 
-        public ResultsScreen(IScreenService screens, IInputService inputService, IMusicService musicService, Fight fight)
+        public ResultsScreen(IScreenService screens, IInputService inputService, IMusicService musicService, IUISoundService sound, Fight fight)
         {
             _inputService = inputService;
             _screens = screens;
             _fight = fight;
             _winner = _fight.Scoreboard.First().Player;
             _musicService = musicService;
+            _uiSound = sound;
         }
 
         public override void Init(GraphicsDevice device, ContentManager content)
@@ -57,6 +59,7 @@ namespace PinguinGame.Screens
 
             if (state.ActionPressed)
             {
+                _uiSound.PlayAccept();
                 _ui.FadeOut();
                 _screens.ShowTitleScreen();
             }

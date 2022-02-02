@@ -19,7 +19,7 @@ namespace PinguinGame.MiniGames.Ice
         {
             _timer += delta;
 
-            if(SinkDistance < -8)
+            if(SinkDistance >= 16)
             {
                 return new IceBlockSunkenState(Block);
             }

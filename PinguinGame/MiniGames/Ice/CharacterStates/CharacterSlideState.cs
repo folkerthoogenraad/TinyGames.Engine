@@ -34,7 +34,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
 
             penguin.Physics = penguin.Physics.StartSlide(Direction * penguin.Settings.SlideSpeed);
             penguin.Bounce.Height = 4;
-            penguin.Sound.StartSlide();
+            penguin.Sound.PlayStartSlide();
         }
 
         public override CharacterState Update(Character penguin, CharacterInput input, float delta)
@@ -65,7 +65,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
         {
             base.Destroy();
             
-            Character.Sound.StopSlide();
+            Character.Sound.PlayStopSlide();
 
         }
         public bool CanStopSlide => SlideTimer > 0.3f;

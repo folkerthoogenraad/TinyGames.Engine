@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Content;
-using PinguinGame.IO.Character;
+using PinguinGame.IO.Characters;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +12,7 @@ namespace PinguinGame.MiniGames
 {
     public interface IMiniGameLoader
     {
-        public List<MiniGames.Generic.CharacterInfo> LoadCharacterInfo(string file);
+        public List<MiniGames.Generic.CharacterInfo> LoadCharacterInfos(string file);
+        public List<MiniGames.Generic.LevelInfo> LoadLevelInfos(string file);
     }
 }

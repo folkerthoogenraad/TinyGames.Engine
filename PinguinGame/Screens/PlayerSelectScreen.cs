@@ -23,15 +23,17 @@ namespace PinguinGame.Screens
         private readonly IInputService _inputService;
         private readonly IScreenService _screens;
         private readonly IMusicService _musicService;
+        private readonly IUISoundService _uiSound;
 
         private HashSet<PlayerInfo> _readyPlayers;
         private UISelectPlayers _ui;
 
-        public PlayerSelectScreen(IScreenService screens, IInputService inputService, IMusicService music)
+        public PlayerSelectScreen(IScreenService screens, IInputService inputService, IMusicService music, IUISoundService uiSound)
         {
             _playerCollection = new PlayerCollection();
             _inputService = inputService;
             _screens = screens;
+            _uiSound = uiSound;
 
             _readyPlayers = new HashSet<PlayerInfo>();
             _musicService = music;
@@ -67,27 +69,34 @@ namespace PinguinGame.Screens
 
                 if (!isJoined && input.ActionPressed)
                 {
+                    _uiSound.PlayAccept();
                     _playerCollection.GetOrJoinPlayerByInputDevice(input.Type);
                 }
                 else if (isJoined && input.ActionPressed && !_readyPlayers.Contains(player))
                 {
+                    _uiSound.PlayAccept();
                     _readyPlayers.Add(player);
                 }
                 else if (isJoined && input.ActionPressed && _readyPlayers.Contains(player) && CanStart)
                 {
+                    _uiSound.PlayAccept();
                     _screens.ShowCharacterSelectScreen(_playerCollection.Players.ToArray());
                     fadeForward = true;
                 }
+
                 else if (isJoined && input.BackPressed && !_readyPlayers.Contains(player))
                 {
+                    _uiSound.PlayBack();
                     player.Joined = false;
                 }
                 else if (isJoined && input.BackPressed && _readyPlayers.Contains(player))
                 {
+                    _uiSound.PlayBack();
                     _readyPlayers.Remove(player);
                 }
                 else if(!isJoined && input.BackPressed)
                 {
+                    _uiSound.PlayBack();
                     _screens.ShowMenuScreen();
                     fadeBackwards = true;
                 }

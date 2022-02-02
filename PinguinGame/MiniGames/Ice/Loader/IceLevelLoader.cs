@@ -23,13 +23,14 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             var center = levelSize / 2;
 
             var blocks = new List<IceBlock>();
+            var spawns = new List<Vector2>();
 
-
-            foreach(var layer in levelIO.Layers)
+            foreach (var layer in levelIO.Layers)
             {
                 if (!layer.IsObjectLayer) continue;
 
-                foreach(var obj in layer.Objects){
+                foreach (var obj in layer.Objects)
+                {
                     if (obj.Type != "IceBlock") continue;
                     if (obj.GetBoolProperty("Disabled", false)) continue;
 
@@ -40,13 +41,24 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
 
                     var block = new IceBlock(polygon);
 
-                    block.Sinkable = obj.GetBoolProperty("Sinkable", true);
+                    block.Behaviour = obj.GetStringProperty("Behaviour", "None");
+                    block.TimerOffset = obj.GetFloatProperty("TimerOffset", 0);
+                    block.TimerTrigger = obj.GetFloatProperty("TimerTrigger", 0);
+                    block.TimerCycleDuration = obj.GetFloatProperty("TimerCycleDuration", 0);
+
+                    block.DriftDirection.X = obj.GetFloatProperty("DriftDirectionX", 0);
+                    block.DriftDirection.Y = obj.GetFloatProperty("DriftDirectionY", 0);
 
                     blocks.Add(block);
+                }
+                foreach (var obj in layer.Objects.Where(x => x.Type == "Spawn"))
+                {
+                    spawns.Add(obj.Position - center);
                 }
             }
 
             level.Blocks = blocks.ToArray();
+            level.Spawns = spawns.ToArray();
 
             return level;
             

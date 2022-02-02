@@ -16,6 +16,9 @@
 #begin Data/Characters.json
 /copy:Data/Characters.json
 
+#begin Data/Levels.json
+/copy:Data/Levels.json
+
 #begin Fonts/Font8x10.json
 /copy:Fonts/Font8x10.json
 
@@ -46,11 +49,17 @@
 /processorParam:TextureFormat=Color
 /build:Fonts/SansSerifFont.png
 
-#begin Levels/level0.json
-/copy:Levels/level0.json
+#begin Levels/Ice/Level0.json
+/copy:Levels/Ice/Level0.json
 
-#begin Levels/minecart_level0.json
-/copy:Levels/minecart_level0.json
+#begin Levels/Ice/Level1.json
+/copy:Levels/Ice/Level1.json
+
+#begin Levels/Ice/Level2.json
+/copy:Levels/Ice/Level2.json
+
+#begin Levels/Ice/Level3.json
+/copy:Levels/Ice/Level3.json
 
 #begin Songs/InGame.mp3
 /importer:Mp3Importer
@@ -99,6 +108,72 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:SoundEffects/Characters/SlideHold.ogg
+
+#begin SoundEffects/Characters/SnowballGather.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Characters/SnowballGather.ogg
+
+#begin SoundEffects/Characters/SnowballGatherDone.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Characters/SnowballGatherDone.ogg
+
+#begin SoundEffects/Characters/SnowballHit.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Characters/SnowballHit.ogg
+
+#begin SoundEffects/Characters/SnowballThrow.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Characters/SnowballThrow.ogg
+
+#begin SoundEffects/Characters/Splash.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Characters/Splash.ogg
+
+#begin SoundEffects/UI/Accept.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/UI/Accept.ogg
+
+#begin SoundEffects/UI/Back.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/UI/Back.ogg
+
+#begin SoundEffects/UI/Countdown_High.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/UI/Countdown_High.ogg
+
+#begin SoundEffects/UI/Countdown_Low.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/UI/Countdown_Low.ogg
+
+#begin SoundEffects/UI/Select.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/UI/Select.ogg
+
+#begin SoundEffects/UI/Start.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/UI/Start.ogg
 
 #begin Sprites/Characters/ElephantSheet.png
 /importer:TextureImporter

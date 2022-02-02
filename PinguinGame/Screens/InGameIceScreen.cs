@@ -15,6 +15,7 @@ using System.Linq;
 using TinyGames.Engine.Graphics;
 using TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators;
 using TinyGames.Engine.Util;
+using PinguinGame.MiniGames.Generic;
 
 namespace PinguinGame.Screens
 {
@@ -25,6 +26,8 @@ namespace PinguinGame.Screens
         private readonly IInputService _inputService;
         private readonly IScreenService _screens;
         private readonly IMusicService _musicService;
+        private readonly IUISoundService _uiSoundService;
+        private readonly LevelInfo _level;
 
         public IceGame World;
 
@@ -43,12 +46,14 @@ namespace PinguinGame.Screens
             }
         }
 
-        public InGameIceScreen(IScreenService screens, IInputService inputService, IMusicService music, PlayerInfo[] players)
+        public InGameIceScreen(IScreenService screens, IInputService inputService, IMusicService music, IUISoundService uiSoundService, PlayerInfo[] players, LevelInfo level)
         {
             _players = players;
             _inputService = inputService;
             _screens = screens;
             _musicService = music;
+            _uiSoundService= uiSoundService;
+            _level = level;
         }
 
         public override void Init(GraphicsDevice device, ContentManager content)
@@ -57,7 +62,7 @@ namespace PinguinGame.Screens
 
             Camera.Height = 180;
 
-            World = new IceGame(content, device, content.LoadIceLevel("Levels/level0"), _players, new IceInput(_inputService));
+            World = new IceGame(content, device, content.LoadIceLevel(_level.File), _players, new IceInput(_inputService), _uiSoundService);
             World.Camera = Camera;
 
             State = new PreGameState();

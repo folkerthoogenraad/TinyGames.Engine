@@ -11,6 +11,8 @@ using TinyGames.Engine.Graphics;
 using TinyGames.Engine.Graphics.Fonts;
 using TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators;
 using TinyGames.Engine.Maths;
+using System.Linq;
+using TinyGames.Engine.Util;
 
 namespace PinguinGame.MiniGames.Ice.GameStates
 {
@@ -28,13 +30,21 @@ namespace PinguinGame.MiniGames.Ice.GameStates
 
             Timer = TickTime * 3;
 
+            Vector2 spawnLocation = game.Level.Spawns.Where(x => {
+                var block = game.Level.GetIceBlockForPosition(x);
+
+                if (block == null) return false;
+
+                return block.IsIdle;
+            }).RandomOrDefault();
+
 
             float angle = 0;
             float anglePerPlayer = (MathF.PI * 2) / game.Fight.Players.Length;
 
             foreach (var player in game.Players)
             {
-                Vector2 pos = Tools.AngleVector(angle) * 16;
+                Vector2 pos = spawnLocation + Tools.AngleVector(angle) * 16;
 
                 var graphics = player.CharacterInfo.Graphics;
 
@@ -56,13 +66,29 @@ namespace PinguinGame.MiniGames.Ice.GameStates
 
         public override GameState Update(float delta)
         {
+            int oldTick = (int)(Timer / TickTime) + 1;
+
             Timer -= delta;
 
-            _ui.SetCurrentSecond((int)(Timer / TickTime) + 1);
+            int newTick = (int) (Timer / TickTime) + 1;
+
+            _ui.SetCurrentSecond(newTick);
             _ui.Update(delta);
+
+            if(oldTick != newTick)
+            {
+                if(newTick == 0)
+                {
+                }
+                else
+                {
+                    World.UISoundService.PlayCountdownLow();
+                }
+            }
 
             if (Timer < 0)
             {
+                World.UISoundService.PlayCountdownHigh();
                 return new PlayingGameState();
             }
 

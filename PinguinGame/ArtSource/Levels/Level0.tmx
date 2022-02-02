@@ -1,113 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="18">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="19">
  <editorsettings>
-  <export target="../../Content/Levels/level0.json" format="json"/>
+  <export target="../../Content/Levels/Ice/Level0.json" format="json"/>
  </editorsettings>
  <objectgroup id="2" name="IceBlocks">
   <object id="1" type="IceBlock" x="88" y="64">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="true"/>
+    <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 16,-16 40,0"/>
   </object>
   <object id="2" type="IceBlock" x="104" y="48">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="true"/>
+    <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 16,-16 48,8 24,16"/>
   </object>
   <object id="3" name="CenterIceBlock" type="IceBlock" x="120" y="56">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="false"/>
+    <property name="Behaviour" value="None"/>
    </properties>
    <polygon points="8,8 32,0 64,8 80,16 96,40 80,72 48,80 16,72 0,56 0,24"/>
   </object>
   <object id="4" type="IceBlock" x="120" y="32">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="true"/>
+    <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 32,-16 48,0 32,24"/>
   </object>
   <object id="5" type="IceBlock" x="168" y="32">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="true"/>
+    <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 32,0 16,32 -16,24"/>
   </object>
   <object id="6" type="IceBlock" x="200" y="32">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="true"/>
+    <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 32,8 32,32 0,40 -16,32"/>
   </object>
   <object id="7" type="IceBlock" x="232" y="64">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="true"/>
+    <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 16,32 -16,32 -32,8"/>
   </object>
   <object id="8" type="IceBlock" x="248" y="96">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="true"/>
+    <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 -8,32 -48,32 -32,0"/>
   </object>
   <object id="9" type="IceBlock" x="240" y="128">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="true"/>
+    <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 -8,16 -24,16 -40,0"/>
   </object>
   <object id="10" type="IceBlock" x="216" y="144">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="true"/>
+    <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 -16,16 -48,-8 -16,-16"/>
   </object>
   <object id="11" type="IceBlock" x="200" y="160">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="true"/>
+    <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 -32,16 -48,0 -32,-24"/>
   </object>
   <object id="12" type="IceBlock" x="152" y="160">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="true"/>
+    <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 -32,-16 -16,-32 16,-24"/>
   </object>
   <object id="13" type="IceBlock" x="120" y="112">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="true"/>
+    <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 -32,0 -32,24 -16,32 0,32 16,16"/>
   </object>
   <object id="14" type="IceBlock" x="88" y="112">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="true"/>
+    <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 -16,-16 0,-32 32,-32 32,0"/>
   </object>
   <object id="15" type="IceBlock" x="88" y="80">
    <properties>
-    <property name="Disabled" type="bool" value="false"/>
-    <property name="Sinkable" type="bool" value="true"/>
+    <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 0,-16 40,-16 32,0"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="3" name="Spawns">
+  <object id="18" type="Spawn" x="160" y="96">
+   <point/>
   </object>
  </objectgroup>
 </map>

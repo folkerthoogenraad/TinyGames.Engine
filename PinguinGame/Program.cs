@@ -1,4 +1,4 @@
-﻿using PinguinGame.IO.Character;
+﻿using PinguinGame.IO.Characters;
 using System;
 using TinyGames.Engine.IO;
 

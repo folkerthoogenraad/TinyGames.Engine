@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
+using PinguinGame.Settings;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,12 +16,16 @@ namespace PinguinGame.Audio
 
         public Song CurrentSong = null;
 
-        public MusicService(ContentManager content)
+        private readonly ISettingsService _settings;
+
+        public MusicService(ContentManager content, ISettingsService settings)
         {
             InGame = content.Load<Song>("Songs/InGame");
             Title = content.Load<Song>("Songs/Title");
             Menu = content.Load<Song>("Songs/Menu");
             Victory = content.Load<Song>("Songs/Victory");
+
+            _settings = settings;
         }
 
         public void PlayInGameMusic()
@@ -47,7 +52,9 @@ namespace PinguinGame.Audio
         {
             if (CurrentSong == song) return;
 
-            MediaPlayer.Stop(); 
+            MediaPlayer.Stop();
+
+            MediaPlayer.Volume = _settings.GetSoundSettings().MusicVolume;
 
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(song);

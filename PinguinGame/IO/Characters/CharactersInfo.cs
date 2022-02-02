@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PinguinGame.IO.Character
+namespace PinguinGame.IO.Characters
 {
     public class CharactersInfo
     {

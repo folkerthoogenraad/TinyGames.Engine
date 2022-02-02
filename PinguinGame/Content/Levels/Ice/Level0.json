@@ -4,7 +4,7 @@
      "export":
         {
          "format":"json",
-         "target":"level0.json"
+         "target":"Level0.json"
         }
     },
  "height":12,
@@ -34,14 +34,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":true
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"RandomSink"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -73,14 +68,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":true
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"RandomSink"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -136,14 +126,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":false
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"None"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -175,14 +160,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":true
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"RandomSink"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -214,14 +194,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":true
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"RandomSink"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -257,14 +232,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":true
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"RandomSink"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -296,14 +266,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":true
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"RandomSink"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -335,14 +300,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":true
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"RandomSink"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -374,14 +334,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":true
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"RandomSink"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -413,14 +368,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":true
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"RandomSink"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -452,14 +402,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":true
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"RandomSink"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -491,14 +436,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":true
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"RandomSink"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -538,14 +478,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":true
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"RandomSink"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -581,14 +516,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":true
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"RandomSink"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -620,14 +550,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"Disabled",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"Sinkable",
-                         "type":"bool",
-                         "value":true
+                         "name":"Behaviour",
+                         "type":"string",
+                         "value":"RandomSink"
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -641,9 +566,32 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":3,
+         "name":"Spawns",
+         "objects":[
+                {
+                 "height":0,
+                 "id":18,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "type":"Spawn",
+                 "visible":true,
+                 "width":0,
+                 "x":160,
+                 "y":96
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":3,
- "nextobjectid":18,
+ "nextlayerid":4,
+ "nextobjectid":19,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.3",

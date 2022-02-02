@@ -21,16 +21,18 @@ namespace PinguinGame.Screens
         private readonly IInputService _inputService;
         private readonly IScreenService _screens;
         private readonly IMusicService _musicService;
+        private readonly IUISoundService _uiSound;
 
         private UIMenuScreen _ui;
 
         private int Selected = 0;
 
-        public MenuScreen(IScreenService screens, IInputService inputService, IMusicService music)
+        public MenuScreen(IScreenService screens, IInputService inputService, IMusicService music, IUISoundService uiSound)
         {
             _inputService = inputService;
             _screens = screens;
             _musicService = music;
+            _uiSound = uiSound;
         }
 
         public override void Init(GraphicsDevice device, ContentManager content)
@@ -57,11 +59,12 @@ namespace PinguinGame.Screens
                     accepted = true;
                     if(Selected == 0)
                     {
+                        _uiSound.PlayAccept();
                         _screens.ShowPlayerSelectScreen();
                     }
                     else if(Selected == 1)
                     {
-                        _screens.ShowResultScreen(new Fight(new PlayerInfo[] { new PlayerInfo() { Index = 0, InputDevice = InputDeviceType.Keyboard0 } }));
+                        //_screens.ShowResultScreen(new Fight(new PlayerInfo[] { new PlayerInfo() { Index = 0, InputDevice = InputDeviceType.Keyboard0 } }));
                     }
                     else if(Selected == 2)
                     {
@@ -70,16 +73,19 @@ namespace PinguinGame.Screens
                 }
                 if (input.BackPressed)
                 {
+                    _uiSound.PlayBack();
                     _screens.ShowTitleScreen();
                     back = true;
                 }
 
                 if (input.MenuDownPressed)
                 {
+                    _uiSound.PlaySelect();
                     Selected++;
                 }
                 if (input.MenuUpPressed)
                 {
+                    _uiSound.PlaySelect();
                     Selected--;
                 }
             }

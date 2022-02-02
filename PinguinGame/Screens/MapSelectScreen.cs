@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PinguinGame.Audio;
 using PinguinGame.Input;
+using PinguinGame.Levels;
 using PinguinGame.Player;
 using PinguinGame.Screens.Resources;
 using PinguinGame.Screens.UI;
@@ -21,19 +22,23 @@ namespace PinguinGame.Screens
         private readonly IInputService _inputService;
         private readonly IScreenService _screens;
         private readonly IMusicService _musicService;
+        private readonly ILevelsService _levelsService;
+        private readonly IUISoundService _uiSound;
         private PlayerInfo[] _players { get; }
 
         private UIMapSelectScreen _ui;
         private int _selectedIndex = 0;
         private bool _ready = false;
 
-        public MapSelectScreen(IScreenService screens, IInputService inputService, IMusicService music, PlayerInfo[] players)
+        public MapSelectScreen(IScreenService screens, IInputService inputService, IMusicService music, ILevelsService levelsService, IUISoundService uiSound, PlayerInfo[] players)
         {
             _inputService = inputService;
             _screens = screens;
 
             _players = players;
             _musicService = music;
+            _levelsService = levelsService;
+            _uiSound = uiSound;
         }
 
         public override void Init(GraphicsDevice device, ContentManager content)
@@ -63,12 +68,15 @@ namespace PinguinGame.Screens
                 {
                     if (input.ActionPressed)
                     {
-                        _screens.ShowInGameScreen(_players);
+                        var level = _levelsService.GetLevels().Skip(_selectedIndex).FirstOrDefault();
+                        _screens.ShowInGameScreen(_players, level);
                         _ui.AcceptAnimation();
+                        _uiSound.PlayStart();
                     }
                     if (input.BackPressed)
                     {
                         _ready = false;
+                        _uiSound.PlayBack();
                     }
                 }
                 else
@@ -76,18 +84,22 @@ namespace PinguinGame.Screens
                     if (input.ActionPressed)
                     {
                         _ready = true;
+                        _uiSound.PlayAccept();
                     }
                     if (input.MenuLeftPressed && _selectedIndex > 0)
                     {
                         _selectedIndex--;
+                        _uiSound.PlaySelect();
                     }
-                    if (input.MenuRightPressed && _selectedIndex < 3)
+                    if (input.MenuRightPressed && _selectedIndex < _levelsService.GetLevels().Count() - 1)
                     {
                         _selectedIndex++;
+                        _uiSound.PlaySelect();
                     }
 
                     if (input.BackPressed)
                     {
+                        _uiSound.PlayBack();
                         _screens.ShowCharacterSelectScreen(_players);
                         _ui.BackAnimation();
                     }
@@ -123,10 +135,10 @@ namespace PinguinGame.Screens
 
         public IEnumerable<UIMapModel> GetMaps()
         {
-            yield return new UIMapModel() { Locked = false, Text = "Default level" };
-            yield return new UIMapModel() { Locked = true, Text = "Locked" };
-            yield return new UIMapModel() { Locked = true, Text = "Locked" };
-            yield return new UIMapModel() { Locked = true, Text = "Locked" };
+            foreach(var level in _levelsService.GetLevels())
+            {
+                yield return new UIMapModel() { Locked = false, Text = level.Description, Icon = level.Icon };
+            }
         }
     }
 }

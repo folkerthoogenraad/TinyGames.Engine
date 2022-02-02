@@ -15,6 +15,9 @@ using PinguinGame.Screens;
 using PinguinGame.Audio;
 using TinyGames.Engine.IO;
 using TinyGames.Engine.Collections;
+using PinguinGame.Levels;
+using PinguinGame.MiniGames.Generic;
+using PinguinGame.Settings;
 
 namespace PinguinGame
 {
@@ -36,19 +39,22 @@ namespace PinguinGame
         {
             base.Initialize();
 
-            _graphics.PreferredBackBufferWidth = 1280;
-            _graphics.PreferredBackBufferHeight = 720;
-            _graphics.ApplyChanges();
-
-            //_graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-            //_graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            //_graphics.IsFullScreen = true;
+            //_graphics.PreferredBackBufferWidth = 1280;
+            //_graphics.PreferredBackBufferHeight = 720;
             //_graphics.ApplyChanges();
 
+            _graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            _graphics.IsFullScreen = true;
+            _graphics.ApplyChanges();
+
             Services.AddService<IStorageSystem>(new StorageSystem(new DiskStorageProvider(Content.RootDirectory)));
+            Services.AddService<ISettingsService, SettingsService>();
             Services.AddService<IInputService>(new InputService());
-            Services.AddService<IMusicService>(new MusicService(Content));
+            Services.AddService<IMusicService>(new MusicService(Content, Services.GetService<ISettingsService>()));
+            Services.AddService<IUISoundService>(new UISoundService(Content));
             Services.AddService<ICharactersService>(new CharactersService(Services.GetService<IStorageSystem>(), Content));
+            Services.AddService<ILevelsService>(new LevelsService(Services.GetService<IStorageSystem>(), Content));
             Services.AddService<IScreenService>(this);
 
             Input = Services.GetService<IInputService>();
@@ -65,8 +71,9 @@ namespace PinguinGame
                 player.CharacterInfo = Services.GetService<ICharactersService>().GetDefaultForPlayer(player);
             }
 
-            ShowInGameScreen(players);
-            //ShowSplashScreen();
+            //ShowMapSelectScreen(players);
+            //ShowInGameScreen(players);
+            ShowSplashScreen();
         }
 
         protected override void LoadContent()
@@ -100,7 +107,8 @@ namespace PinguinGame
             Manager.Screen = new PlayerSelectScreen(
                 Services.GetService<IScreenService>(),
                 Services.GetService<IInputService>(),
-                Services.GetService<IMusicService>()
+                Services.GetService<IMusicService>(),
+                Services.GetService<IUISoundService>()
                 );
         }
 
@@ -111,16 +119,19 @@ namespace PinguinGame
                 Services.GetService<IInputService>(),
                 Services.GetService<IMusicService>(),
                 Services.GetService<ICharactersService>(),
+                Services.GetService<IUISoundService>(),
                 players);
         }
 
-        public void ShowInGameScreen(PlayerInfo[] players)
+        public void ShowInGameScreen(PlayerInfo[] players, LevelInfo info)
         {
             Manager.Screen = new InGameIceScreen(
                 Services.GetService<IScreenService>(),
                 Services.GetService<IInputService>(),
-                Services.GetService<IMusicService>(), 
-                players);
+                Services.GetService<IMusicService>(),
+                Services.GetService<IUISoundService>(),
+                players,
+                info);
         }
 
         public void ShowResultScreen(Fight fight)
@@ -129,6 +140,7 @@ namespace PinguinGame
                 Services.GetService<IScreenService>(),
                 Services.GetService<IInputService>(),
                 Services.GetService<IMusicService>(),
+                Services.GetService<IUISoundService>(),
                 fight);
         }
 
@@ -137,7 +149,8 @@ namespace PinguinGame
             Manager.Screen = new TitleScreen(
                 Services.GetService<IScreenService>(),
                 Services.GetService<IInputService>(),
-                Services.GetService<IMusicService>());
+                Services.GetService<IMusicService>(),
+                Services.GetService<IUISoundService>());
         }
 
         public void ShowMenuScreen()
@@ -145,7 +158,8 @@ namespace PinguinGame
             Manager.Screen = new MenuScreen(
                 Services.GetService<IScreenService>(),
                 Services.GetService<IInputService>(),
-                Services.GetService<IMusicService>());
+                Services.GetService<IMusicService>(),
+                Services.GetService<IUISoundService>());
         }
         public void ShowSplashScreen()
         {
@@ -163,7 +177,10 @@ namespace PinguinGame
             Manager.Screen = new MapSelectScreen(
                 Services.GetService<IScreenService>(),
                 Services.GetService<IInputService>(),
-                Services.GetService<IMusicService>(), players);
+                Services.GetService<IMusicService>(),
+                Services.GetService<ILevelsService>(),
+                Services.GetService<IUISoundService>(),
+                players);
         }
 
     }

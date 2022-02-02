@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PinguinGame.Audio;
 using PinguinGame.Input;
 using PinguinGame.MiniGames.Generic;
 using PinguinGame.Player;
@@ -26,14 +27,18 @@ namespace PinguinGame.MiniGames.Ice
         public SnowballGraphics SnowballGraphics { get; set; }
 
         public IMiniGameInputService<CharacterInput> InputService { get; set; }
+        public IUISoundService UISoundService { get; set; }
         
         private List<Character> _penguins;
         private List<Snowball> _snowballs;
+        private List<IceBlockBehaviour> _iceBlockBehaviour;
 
-        public IceGame(ContentManager content, GraphicsDevice device, IceLevel level, PlayerInfo[] players, IMiniGameInputService<CharacterInput> inputService) // Probably should have a levelservice or something
+        public IceGame(ContentManager content, GraphicsDevice device, IceLevel level, PlayerInfo[] players, IMiniGameInputService<CharacterInput> inputService, IUISoundService uiSoundService) // Probably should have a levelservice or something
         {
             _penguins = new List<Character>();
             _snowballs = new List<Snowball>();
+
+            UISoundService = uiSoundService;
 
             InputService = inputService;
 
@@ -46,6 +51,12 @@ namespace PinguinGame.MiniGames.Ice
                 Indicator = new Sprite(content.Load<Texture2D>("Sprites/Ice/IceGameplayElements"), new Rectangle(0, 0, 8, 8)).CenterOrigin(),
                 Sprite = new Sprite(content.Load<Texture2D>("Sprites/Ice/IceGameplayElements"), new Rectangle(8, 0, 8, 8)).CenterOrigin(),
                 Shadow = new Sprite(content.Load<Texture2D>("Sprites/Ice/IceGameplayElements"), new Rectangle(8, 8, 8, 8)).CenterOrigin(),
+            };
+
+            _iceBlockBehaviour = new List<IceBlockBehaviour>() { 
+                new RandomSinkIceBlockBehaviour(),
+                new TimedSinkIceBlockBehaviour(),
+                new TimedDriftIceBlockBehaviour(),
             };
         }
 
@@ -94,7 +105,7 @@ namespace PinguinGame.MiniGames.Ice
                 a.Bonk(bonkA);
                 b.Bonk(bonkB);
 
-                b.Sound.Bonk.Play();
+                b.Sound.PlayBonk();
             }
 
             foreach(var penguin in Penguins)
@@ -114,6 +125,7 @@ namespace PinguinGame.MiniGames.Ice
                     snowball.Collided = true;
 
                     penguin.Bonk(snowball.Velocity * 0.5f);
+                    penguin.Sound.PlaySnowHit();
                 }
             }
         }
@@ -179,6 +191,17 @@ namespace PinguinGame.MiniGames.Ice
                 penguin.Grounded = block != null && block.Solid;
             }
         }
+        public void MoveCharactersWithGround(float delta)
+        {
+            foreach (var penguin in _penguins)
+            {
+                IceBlock block = Level.GetIceBlockForPosition(penguin.Position);
+
+                if (block == null) continue;
+
+                penguin.Position += block.Velocity * delta;
+            }
+        }
 
         public void Update(float delta)
         {
@@ -186,27 +209,16 @@ namespace PinguinGame.MiniGames.Ice
             UpdateSnowballs(delta);
             UpdatePenguins(delta);
         }
-
-        private float SinkTimer = 3;
-
         public void UpdateLevel(float delta)
         {
+            foreach(var behaviour in _iceBlockBehaviour)
+            {
+                behaviour.Update(Level.Blocks, delta);
+            }
+
             foreach (var block in Level.Blocks)
             {
                 block.Update(delta);
-            }
-
-            SinkTimer -= delta;
-
-            if (SinkTimer < 0) {
-                SinkTimer += 1 + (float)(new Random().NextDouble()) * 3;
-
-                var avail = Level.Blocks.Where(x => x.State is IceBlockIdleState && x.Sinkable);
-                if(avail.Count() > 0)
-                {
-                    var block = avail.Random();
-                    block.State = new IceBlockSinkingState(block);
-                }
             }
         }
 
@@ -223,6 +235,7 @@ namespace PinguinGame.MiniGames.Ice
             }
 
             PlaceCharactersOnGround();
+            MoveCharactersWithGround(delta);
         }
         
         public void DrawWorld(Graphics2D graphics)

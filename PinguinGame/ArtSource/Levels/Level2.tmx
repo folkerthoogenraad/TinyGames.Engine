@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="8">
+ <editorsettings>
+  <export target="../../Content/Levels/Ice/Level2.json" format="json"/>
+ </editorsettings>
+ <objectgroup id="2" name="Objects">
+  <object id="4" type="IceBlock" x="72" y="64">
+   <properties>
+    <property name="Behaviour" value="TimedDrift"/>
+    <property name="Disabled" type="bool" value="false"/>
+    <property name="DriftDirectionX" type="float" value="-16"/>
+    <property name="DriftDirectionY" type="float" value="0"/>
+    <property name="TimerCycleDuration" type="float" value="12"/>
+    <property name="TimerOffset" type="float" value="0"/>
+    <property name="TimerTrigger" type="float" value="7"/>
+   </properties>
+   <polygon points="16,-8 48,-24 80,-16 88,80 56,88 8,56"/>
+  </object>
+  <object id="5" type="IceBlock" x="152" y="48">
+   <properties>
+    <property name="Behaviour" value="TimedDrift"/>
+    <property name="DriftDirectionX" type="float" value="16"/>
+    <property name="DriftDirectionY" type="float" value="0"/>
+    <property name="TimerCycleDuration" type="float" value="12"/>
+    <property name="TimerOffset" type="float" value="0"/>
+    <property name="TimerTrigger" type="float" value="7"/>
+   </properties>
+   <polygon points="0,0 48,8 72,40 72,88 32,104 8,96"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Spawns">
+  <object id="6" type="Spawn" x="120" y="104">
+   <point/>
+  </object>
+  <object id="7" type="Spawn" x="192" y="104">
+   <point/>
+  </object>
+ </objectgroup>
+</map>

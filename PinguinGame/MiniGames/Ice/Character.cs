@@ -43,7 +43,11 @@ namespace PinguinGame.MiniGames.Ice
         public CharacterSnowballGathering SnowballGathering { get; private set; }
         public CharacterSound Sound { get; private set; }
 
-        public Vector2 Position => Physics.Position;
+        public Vector2 Position
+        {
+            get => Physics.Position;
+            set => Physics.Position = value;
+        }
         public Vector2 DrawPosition => Physics.Position + Bounce.Offset + new Vector2(0, -GroundHeight);
         public Vector2 Facing => Physics.Facing;
         public float GroundHeight { get; set; } = 0;
@@ -66,7 +70,7 @@ namespace PinguinGame.MiniGames.Ice
         public void Update(CharacterInput input, float delta)
         {
             Bounce.Update(delta);
-            Sound.Update(delta);
+            Sound.Update(this, delta);
             State = State.Update(this, input, delta);
         }
 

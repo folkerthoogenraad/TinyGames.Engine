@@ -15,6 +15,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             base.Init(penguin);
 
             penguin.SnowballGathering.RemoveSnowball();
+            penguin.Sound.PlaySnowballGather();
         }
 
         public override CharacterState Update(Character penguin, CharacterInput input, float delta)
@@ -31,6 +32,8 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             if (penguin.SnowballGathering.HasSnowball)
             {
                 penguin.Bounce.Height = 4;
+
+                penguin.Sound.PlaySnowballGatherDone();
                 return new CharacterWalkState();
             }
 

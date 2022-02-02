@@ -11,15 +11,25 @@ namespace PinguinGame.MiniGames.Ice
     public class IceLevel
     {
         public IceBlock[] Blocks { get; set; }
+        public Vector2[] Spawns { get; set; }
 
         public IceLevel()
         {
 
         }
 
-        public IceBlock GetIceBlockForPosition(Vector2 position)
+        public IceBlock GetIceBlockForPosition(Vector2 position, float margin = 4)
         {
-            return Blocks.Where(x => x.PointInside(position)).FirstOrDefault();
+            var block = Blocks.Where(x => x.PointInside(position)).FirstOrDefault();
+
+            if(block != null)
+            {
+                return block;   
+            }
+
+            return Blocks.Where(x => 
+                x.DistanceTo(position) < margin
+                ).FirstOrDefault();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace PinguinGame.Player
     public class CharactersService : ICharactersService
     {
         private readonly string CharacterDataLocation = "Data/Characters.json";
-        private readonly string CharacterUnlockDataLocation = "SaveData/Characters.json";
+        //private readonly string CharacterUnlockDataLocation = "SaveData/Characters.json";
 
         private IStorageSystem _storage;
 
@@ -26,7 +26,7 @@ namespace PinguinGame.Player
 
             MiniGameLoader loader = new MiniGameLoader(storage, content);
 
-            _characters = loader.LoadCharacterInfo(CharacterDataLocation).ToArray();
+            _characters = loader.LoadCharacterInfos(CharacterDataLocation).ToArray();
         }
 
         public CharacterInfo[] GetCharacters()

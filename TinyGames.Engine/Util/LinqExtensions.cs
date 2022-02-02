@@ -64,9 +64,21 @@ namespace TinyGames.Engine.Util
         {
             return input.Random(new Random());
         }
+        public static T RandomOrDefault<T>(this IEnumerable<T> input)
+        {
+            return input.RandomOrDefault(new Random());
+        }
         public static T Random<T>(this IEnumerable<T> input, Random random)
         {
             var list = input.ToArray();
+
+            return list[random.Next(list.Length)];
+        }
+        public static T RandomOrDefault<T>(this IEnumerable<T> input, Random random)
+        {
+            var list = input.ToArray();
+
+            if(list.Length == 0) return default(T);
 
             return list[random.Next(list.Length)];
         }

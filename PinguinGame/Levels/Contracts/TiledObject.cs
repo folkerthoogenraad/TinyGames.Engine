@@ -36,5 +36,23 @@ namespace PinguinGame.Levels.Contracts
             }
             return def;
         }
+        public string GetStringProperty(string name, string def = null)
+        {
+            if (Properties != null)
+            {
+                return Properties.Where(x => x.Name == name).Select(x => x.GetValueAsString()).FirstOrDefault();
+            }
+
+            return def;
+        }
+        public float GetFloatProperty(string name, float def = 0)
+        {
+            if (Properties != null)
+            {
+                return Properties.Where(x => x.Name == name).Select(x => x.GetValueAsFloat()).FirstOrDefault();
+            }
+
+            return def;
+        }
     }
 }

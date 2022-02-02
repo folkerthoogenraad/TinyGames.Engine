@@ -11,8 +11,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using TinyGames.Engine.Graphics;
-using TinyGames.Engine.Graphics.Fonts;
-using TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators;
 
 namespace PinguinGame.Screens
 {
@@ -21,14 +19,16 @@ namespace PinguinGame.Screens
         private readonly IInputService _inputService;
         private readonly IMusicService _musicService;
         private readonly IScreenService _screens;
+        private readonly IUISoundService _uiSound;
 
         private UITitleScreen _ui;
 
-        public TitleScreen(IScreenService screens, IInputService inputService, IMusicService music)
+        public TitleScreen(IScreenService screens, IInputService inputService, IMusicService music, IUISoundService uiSound)
         {
             _inputService = inputService;
             _screens = screens;
             _musicService = music;
+            _uiSound = uiSound;
         }
 
         public override void Init(GraphicsDevice device, ContentManager content)
@@ -49,6 +49,7 @@ namespace PinguinGame.Screens
             {
                 if (input.ActionPressed)
                 {
+                    _uiSound.PlayAccept();
                     _ui.FadeOut();
                     _screens.ShowMenuScreen();
                 }

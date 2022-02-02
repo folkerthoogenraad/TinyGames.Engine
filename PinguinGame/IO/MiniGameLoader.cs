@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Content;
-using PinguinGame.IO.Character;
+using PinguinGame.IO.Characters;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using PinguinGame.MiniGames;
 using System.IO;
+using PinguinGame.IO.Levels;
 
 namespace PinguinGame.IO
 {
@@ -23,11 +24,31 @@ namespace PinguinGame.IO
             _storage = storage;
         }
 
-        public List<MiniGames.Generic.CharacterInfo> LoadCharacterInfo(string file)
+        public List<MiniGames.Generic.LevelInfo> LoadLevelInfos(string file)
+        {
+            var infos = _storage.Load<LevelsInfo>(file);
+
+            return infos.Levels.Select(x => ConvertInfo(x)).ToList();
+        }
+
+        public List<MiniGames.Generic.CharacterInfo> LoadCharacterInfos(string file)
         {
             var infos = _storage.Load<CharactersInfo>(file);
 
             return infos.Characters.Select(x => ConvertInfo(x)).ToList();
+        }
+
+        private MiniGames.Generic.LevelInfo ConvertInfo(LevelInfo data)
+        {
+            var info = new MiniGames.Generic.LevelInfo();
+
+            info.Name = data.Name;
+            info.Identifier = data.Identifier;
+            info.Description = data.Description;
+            info.File = data.File;
+            info.Icon = ConvertSprite(data.Icon);
+
+            return info;
         }
 
         private MiniGames.Generic.CharacterInfo ConvertInfo(CharacterInfo data)

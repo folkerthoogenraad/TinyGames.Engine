@@ -1,4 +1,5 @@
-﻿using PinguinGame.Player;
+﻿using PinguinGame.MiniGames.Generic;
+using PinguinGame.Player;
 using PinguinGame.Screens;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace PinguinGame
         public void ShowPlayerSelectScreen();
         public void ShowCharacterSelectScreen(PlayerInfo[] players);
         public void ShowMapSelectScreen(PlayerInfo[] players);
-        public void ShowInGameScreen(PlayerInfo[] players);
+        public void ShowInGameScreen(PlayerInfo[] players, LevelInfo level);
         public void ShowResultScreen(Fight fight);
     }
 }

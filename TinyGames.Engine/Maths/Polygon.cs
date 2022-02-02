@@ -25,6 +25,13 @@ namespace TinyGames.Engine.Maths
             return Lines.OrderBy(x => x.DistanceClamped(v)).Select(x => x.GetProjectedPointClamped(v)).First();
         }
 
+        public float DistanceTo(Vector2 v)
+        {
+            var closests = ClosestPoint(v);
+
+            return (v - closests).Length();
+        }
+
         public bool Inside(Vector2 v)
         {
             return Lines.All(x => x.IsOnRight(v));
@@ -40,6 +47,25 @@ namespace TinyGames.Engine.Maths
             var center = Center;
 
             return Lines.Select(x => new Triangle(x.From, x.To, center));
+        }
+
+        public Polygon Translated(Vector2 v)
+        {
+            return Clone().Translate(v);
+        }
+
+        public Polygon Translate(Vector2 v)
+        {
+            for(int i = 0; i < Points.Length; i++)
+            {
+                Points[i] = Points[i] + v;
+            }
+            return this;
+        }
+
+        public Polygon Clone()
+        {
+            return new Polygon(Points.ToArray());
         }
 
         public void Reverse()

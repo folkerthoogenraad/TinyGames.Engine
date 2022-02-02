@@ -20,8 +20,8 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             set {
                 if (value == _walking) return;
 
-                if (value) Character?.Sound.StartWalking();
-                if (!value) Character?.Sound.StopWalking();
+                if (value) Character?.Sound.PlayStartWalking();
+                if (!value) Character?.Sound.PlayStopWalking();
                 _walking = value; 
             }
         }
@@ -63,6 +63,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
                     {
                         direction.Normalize();
                     }
+                    character.Sound.PlaySnowballThrow();
 
                     // Throw snowball
                     character.Level.AddSnowball(new Snowball()

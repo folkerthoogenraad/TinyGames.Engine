@@ -17,6 +17,7 @@ namespace PinguinGame.Screens.UI
 {
     public class UIMapModel
     {
+        public Sprite Icon;
         public string Text = "";
         public bool Locked = false;
     }
@@ -123,7 +124,7 @@ namespace PinguinGame.Screens.UI
             {
                 var map = model.Maps[i];
 
-                button.Sprite = map.Locked ? _resources.LevelIconLocked : _resources.LevelIcon;
+                button.Sprite = map.Locked ? _resources.LevelIconLocked : map.Icon;
             }
 
             SetSelected(model.SelectedIndex, model.Maps[model.SelectedIndex].Text, animate);

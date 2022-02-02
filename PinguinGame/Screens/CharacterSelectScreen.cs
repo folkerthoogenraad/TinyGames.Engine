@@ -22,6 +22,7 @@ namespace PinguinGame.Screens
         private readonly IScreenService _screens;
         private readonly IMusicService _musicService;
         private readonly ICharactersService _characterService;
+        private readonly IUISoundService _uiSound;
 
         private PlayerInfo[] _players;
         private UICharacterSelect _ui;
@@ -29,7 +30,7 @@ namespace PinguinGame.Screens
         private HashSet<PlayerInfo> _readyPlayers;
         private Dictionary<PlayerInfo, int> _playerIndices;
 
-        public CharacterSelectScreen(IScreenService screens, IInputService inputService, IMusicService music, ICharactersService characterService, PlayerInfo[] players)
+        public CharacterSelectScreen(IScreenService screens, IInputService inputService, IMusicService music, ICharactersService characterService, IUISoundService uiSound, PlayerInfo[] players)
         {
             _players = players;
             _inputService = inputService;
@@ -37,6 +38,8 @@ namespace PinguinGame.Screens
 
             _musicService = music;
             _characterService = characterService;
+
+            _uiSound = uiSound;
 
             foreach (var player in players.Where(x => x.CharacterInfo == null))
             {
@@ -76,10 +79,12 @@ namespace PinguinGame.Screens
                 {
                     if (_readyPlayers.Contains(player) && AllReady)
                     {
+                        _uiSound.PlayAccept();
                         _screens.ShowMapSelectScreen(_players);
                     }
                     else
                     {
+                        _uiSound.PlayAccept();
                         _readyPlayers.Add(player);
                     }
                 }
@@ -87,10 +92,12 @@ namespace PinguinGame.Screens
                 {
                     if (_readyPlayers.Contains(player))
                     {
+                        _uiSound.PlayBack();
                         _readyPlayers.Remove(player);
                     }
                     else
                     {
+                        _uiSound.PlayBack();
                         _screens.ShowPlayerSelectScreen();
                     }
                 }
@@ -103,6 +110,7 @@ namespace PinguinGame.Screens
                     {
                         if(_playerIndices.All(x => x.Value != index))
                         {
+                            _uiSound.PlaySelect();
                             _playerIndices[player] = index;
                             break;
                         }
@@ -118,6 +126,7 @@ namespace PinguinGame.Screens
                     {
                         if (_playerIndices.All(x => x.Value != index))
                         {
+                            _uiSound.PlaySelect();
                             _playerIndices[player] = index;
                             break;
                         }

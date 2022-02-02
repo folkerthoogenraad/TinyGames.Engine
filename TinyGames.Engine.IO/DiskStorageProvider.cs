@@ -14,7 +14,9 @@ namespace TinyGames.Engine.IO
 
         public Stream OpenRead(string file)
         {
-            return File.OpenRead(ConvertToPath(file));
+            var path = ConvertToPath(file);
+
+            return File.OpenRead(path);
         }
 
         public Stream OpenWrite(string file)

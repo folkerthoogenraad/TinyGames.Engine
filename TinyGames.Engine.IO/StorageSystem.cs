@@ -24,9 +24,17 @@ namespace TinyGames.Engine.IO
                     return JsonSerializer.Deserialize<T>(json);
                 }
             }
-            catch
+            catch (FileNotFoundException)
             {
                 return @default;
+            }
+            catch (DirectoryNotFoundException)
+            {
+                return @default;
+            }
+            catch
+            {
+                throw;
             }
         }
 
