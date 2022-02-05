@@ -19,6 +19,12 @@
 #begin Data/Levels.json
 /copy:Data/Levels.json
 
+#begin Effects/WaterEdgeEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/WaterEdgeEffect.fx
+
 #begin Fonts/Font8x10.json
 /copy:Fonts/Font8x10.json
 

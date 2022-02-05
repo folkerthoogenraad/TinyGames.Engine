@@ -58,7 +58,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             var facing = CharacterGraphics.GetFacingFromVector(penguin.Facing);
             var color = penguin.Player.Color;
 
-            penguinGraphics.DrawSlide(graphics, facing, penguin.DrawPosition, SlideTimer);
+            penguinGraphics.DrawSlide(graphics, facing, penguin.Position, penguin.Height, SlideTimer);
         }
 
         public override void Destroy()

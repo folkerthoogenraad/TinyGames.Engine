@@ -17,7 +17,6 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             base.Init(penguin);
 
             penguin.Bounce.Bouncyness = 0;
-            penguin.Physics = penguin.Physics.StartSlide(penguin.Position.Normalized() * 16);
         }
 
         public override CharacterState Update(Character penguin, CharacterInput input, float delta)
@@ -35,11 +34,11 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
 
             if(penguin.Bounce.Height > 0)
             {
-                penguinGraphics.DrawIdle(graphics, facing, penguin.DrawPosition, AnimationTimer);
+                penguinGraphics.DrawIdle(graphics, facing, penguin.Position, penguin.Height, AnimationTimer);
             }
             else
             {
-                penguinGraphics.DrawDrown(graphics, facing, penguin.DrawPosition, AnimationTimer);
+                penguinGraphics.DrawDrown(graphics, facing, penguin.Position, penguin.Height, AnimationTimer);
             }
         }
     }

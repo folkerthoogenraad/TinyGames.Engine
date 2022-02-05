@@ -9,7 +9,7 @@ using TinyGames.Engine.Maths;
 namespace TinyGames.Engine.Graphics
 {
 
-    public class Graphics2D
+    public class Graphics2D : IDisposable
     {
         public GraphicsDevice Device { get; set; }
 
@@ -289,6 +289,10 @@ namespace TinyGames.Engine.Graphics
 
             SetPixelTexture();
 
+            // a - b
+            // | \ |
+            // d - c
+
             Vertex(new Vector3(a.X, a.Y, depth), Vector2.Zero, color);
             Vertex(new Vector3(b.X, b.Y, depth), Vector2.Zero, color);
             Vertex(new Vector3(c.X, c.Y, depth), Vector2.Zero, color);
@@ -296,6 +300,44 @@ namespace TinyGames.Engine.Graphics
             Vertex(new Vector3(a.X, a.Y, depth), Vector2.Zero, color);
             Vertex(new Vector3(c.X, c.Y, depth), Vector2.Zero, color);
             Vertex(new Vector3(d.X, d.Y, depth), Vector2.Zero, color);
+        }
+        public void DrawQuadWithColors(Vector2 a, Vector2 b, Vector2 c, Vector2 d, Color colorA, Color colorB, Color colorC, Color colorD, float depthA = 0, float depthB = 0, float depthC = 0, float depthD = 0)
+        {
+            if (VertexIndex >= Vertices.Length - 6) Flush();
+
+            SetPixelTexture();
+
+            // a - b
+            // | \ |
+            // d - c
+
+            Vertex(new Vector3(a.X, a.Y, depthA), Vector2.Zero, colorA);
+            Vertex(new Vector3(b.X, b.Y, depthB), Vector2.Zero, colorB);
+            Vertex(new Vector3(c.X, c.Y, depthC), Vector2.Zero, colorC);
+
+            Vertex(new Vector3(a.X, a.Y, depthA), Vector2.Zero, colorA);
+            Vertex(new Vector3(c.X, c.Y, depthC), Vector2.Zero, colorC);
+            Vertex(new Vector3(d.X, d.Y, depthD), Vector2.Zero, colorD);
+        }
+        public void DrawQuadWithColorsFull(Vector2 a, Vector2 b, Vector2 c, Vector2 d, Color colorA, Color colorB, Color colorC, Color colorD, Vector2 uvA, Vector2 uvB, Vector2 uvC, Vector2 uvD, float depthA = 0, float depthB = 0, float depthC = 0, float depthD = 0, Texture2D texture = null)
+        {
+            if (VertexIndex >= Vertices.Length - 6) Flush();
+
+            if(texture == null) SetPixelTexture();
+            else SetTexture(texture);
+
+
+            // a - b
+            // | \ |
+            // d - c
+
+            Vertex(new Vector3(a.X, a.Y, depthA), uvA, colorA);
+            Vertex(new Vector3(b.X, b.Y, depthB), uvB, colorB);
+            Vertex(new Vector3(c.X, c.Y, depthC), uvC, colorC);
+
+            Vertex(new Vector3(a.X, a.Y, depthA), uvA, colorA);
+            Vertex(new Vector3(c.X, c.Y, depthC), uvC, colorC);
+            Vertex(new Vector3(d.X, d.Y, depthD), uvD, colorD);
         }
 
         public void DrawCircle(Vector2 pos, float radius, Color color, float depth = 0)
@@ -424,50 +466,41 @@ namespace TinyGames.Engine.Graphics
             Device.DepthStencilState = DefaultDepthStencilState;
             Device.BlendState = DefaultBlendState;
 
-#if false
-            // TODO figure out if this is a lot slower or not? I'm not too sure how cached all this is
-            for(int i = 0; i < Textures.Length; i++)
-            {
-                if (Textures[i] != null && CurrentEffect.Parameters[$"Texture{i}"] != null)
-                    CurrentEffect.Parameters[$"Texture{i}"].SetValue(Textures[i]);
-
-                else if (Textures[i] != null && CurrentEffect.Parameters[$"Texture{i}Sampler"] != null)
-                    CurrentEffect.Parameters[$"Texture{i}Sampler"].SetValue(Textures[i]);
-
-                else if (Textures[i] != null && CurrentEffect.Parameters[$"Texture{i}Sampler+Texture{i}"] != null)
-                    CurrentEffect.Parameters[$"Texture{i}Sampler+Texture{i}"].SetValue(Textures[i]);
-            }
-
-            CurrentEffect.Parameters["WorldViewMatrix"].SetValue(ViewMatrix);
-            CurrentEffect.Parameters["ProjectionMatrix"].SetValue(ProjectionMatrix);
-
-            foreach(var param in CurrentEffect.Parameters){
-                string paramName = param.Name;
-
-                if (paramName == "ScreenWidth") param.SetValue((float)Device.Viewport.Width);
-                if (paramName == "ScreenHeight") param.SetValue((float)Device.Viewport.Height);
-            }
-#endif
-
-            var effect = CurrentEffect as BasicEffect;
+            var basicEffect = CurrentEffect as BasicEffect;
             var alphaTest = CurrentEffect as AlphaTestEffect;
 
-            if (effect != null)
+            if (basicEffect != null)
             {
-                effect.View = ProjectionMatrix;
-                effect.World = Matrix;
-                effect.Texture = Textures[0];
-                effect.TextureEnabled = true;
-                effect.VertexColorEnabled = true;
+                basicEffect.View = ProjectionMatrix;
+                basicEffect.World = Matrix;
+                basicEffect.Texture = Textures[0];
+                basicEffect.TextureEnabled = true;
+                basicEffect.VertexColorEnabled = true;
             }
-            if (alphaTest != null)
+            else if (alphaTest != null)
             {
                 alphaTest.View = ProjectionMatrix;
                 alphaTest.World = Matrix;
                 alphaTest.Texture = Textures[0];
                 alphaTest.VertexColorEnabled = true;
             }
+            else
+            {
+                for(int i = 0; i < Textures.Length; i++)
+                {
+                    if (Textures[i] != null && CurrentEffect.Parameters[$"Texture{i}"] != null)
+                        CurrentEffect.Parameters[$"Texture{i}"].SetValue(Textures[i]);
 
+                    else if (Textures[i] != null && CurrentEffect.Parameters[$"Texture{i}Sampler"] != null)
+                        CurrentEffect.Parameters[$"Texture{i}Sampler"].SetValue(Textures[i]);
+
+                    else if (Textures[i] != null && CurrentEffect.Parameters[$"Texture{i}Sampler+Texture{i}"] != null)
+                        CurrentEffect.Parameters[$"Texture{i}Sampler+Texture{i}"].SetValue(Textures[i]);
+                }
+
+                CurrentEffect.Parameters["WorldViewMatrix"].SetValue(Matrix);
+                CurrentEffect.Parameters["ProjectionMatrix"].SetValue(ProjectionMatrix);
+            }
 
             foreach (var pass in CurrentEffect.CurrentTechnique.Passes)
             {
@@ -539,6 +572,11 @@ namespace TinyGames.Engine.Graphics
         {
             return Vertices.Length - VertexIndex - 1;
         }
-        
+
+        public void Dispose()
+        {
+            DefaultEffect?.Dispose();
+            Pixel.Dispose();
+        }
     }
 }

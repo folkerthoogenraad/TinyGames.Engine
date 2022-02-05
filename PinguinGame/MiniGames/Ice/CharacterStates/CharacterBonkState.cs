@@ -45,7 +45,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             var facing = CharacterGraphics.GetFacingFromVector(penguin.Facing);
             var color = penguin.Player.Color;
 
-            penguinGraphics.DrawIdle(graphics, facing, penguin.DrawPosition, BonkTimer);
+            penguinGraphics.DrawIdle(graphics, facing, penguin.Position, penguin.Height, BonkTimer);
         }
     }
 }

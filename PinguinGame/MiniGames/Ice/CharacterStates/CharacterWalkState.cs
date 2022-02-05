@@ -92,11 +92,11 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
 
             if (Walking)
             {
-                penguinGraphics.DrawWalk(graphics, facing, penguin.DrawPosition, AnimationTimer);
+                penguinGraphics.DrawWalk(graphics, facing, penguin.Position, penguin.Height, AnimationTimer);
             }
             else
             {
-                penguinGraphics.DrawIdle(graphics, facing, penguin.DrawPosition, AnimationTimer);
+                penguinGraphics.DrawIdle(graphics, facing, penguin.Position, penguin.Height, AnimationTimer);
             }
         }
 

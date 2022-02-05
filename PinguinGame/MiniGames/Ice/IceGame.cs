@@ -46,7 +46,7 @@ namespace PinguinGame.MiniGames.Ice
 
             Level = level;
             LevelCamera = new Camera(256, 1);
-            LevelGraphics = new IceLevelGraphics(device, 256, 256, new IceLevelGraphicsSettings());
+            LevelGraphics = new IceLevelGraphics(content, device, level, new IceLevelGraphicsSettings());
             SnowballGraphics = new SnowballGraphics() { 
                 Indicator = new Sprite(content.Load<Texture2D>("Sprites/Ice/IceGameplayElements"), new Rectangle(0, 0, 8, 8)).CenterOrigin(),
                 Sprite = new Sprite(content.Load<Texture2D>("Sprites/Ice/IceGameplayElements"), new Rectangle(8, 0, 8, 8)).CenterOrigin(),
@@ -182,6 +182,11 @@ namespace PinguinGame.MiniGames.Ice
                     height = block.Height;
                 }
 
+                if (penguin.IsDrowning)
+                {
+                    height = 0;
+                }
+
                 if (penguin.GroundHeight > height)
                 {
                     penguin.Bounce.Height += penguin.GroundHeight - height;
@@ -240,13 +245,12 @@ namespace PinguinGame.MiniGames.Ice
         
         public void DrawWorld(Graphics2D graphics)
         {
-            LevelGraphics.Draw(LevelCamera, Level);
-
             graphics.Clear(LevelGraphics.Settings.WaterColor);
-            
-            graphics.DrawTexture(LevelGraphics.RenderTarget, new Vector2(-128, -128), new Vector2(256, 256));
 
-            var penguins = _penguins.OrderBy(x => x.Physics.Position.Y);
+            LevelGraphics.DrawWorld(graphics);
+            //graphics.DrawTexture(LevelGraphics.RenderTarget, new Vector2(-64, -64), new Vector2(128, 128));
+
+            //var penguins = _penguins.OrderBy(x => x.Physics.Position.Y);
 
             foreach (var snowball in _snowballs)
             {
@@ -262,7 +266,7 @@ namespace PinguinGame.MiniGames.Ice
                 graphics.DrawSprite(SnowballGraphics.Shadow, snowball.Position - new Vector2(0, height), snowball.Angle);
             }
 
-            foreach (var penguin in penguins)
+            foreach (var penguin in _penguins)
             {
                 penguin.Draw(graphics, penguin.Graphics);
             }
@@ -272,12 +276,18 @@ namespace PinguinGame.MiniGames.Ice
                 graphics.DrawSprite(SnowballGraphics.Sprite, snowball.Position - new Vector2(0, snowball.Height), snowball.Angle);
             }
 
-            foreach (var penguin in penguins)
+            foreach (var penguin in _penguins)
             {
                 if (!penguin.SnowballGathering.HasSnowball) continue;
 
                 graphics.DrawSprite(SnowballGraphics.Indicator, penguin.Position - new Vector2(0, 24 + penguin.Bounce.Height));
             }
+        }
+
+        public void Destroy()
+        {
+            // TODO just have the full character graphics and stuff unload, instead of this
+            LevelGraphics.Dispose();
         }
     }
 }

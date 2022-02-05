@@ -28,6 +28,8 @@ namespace PinguinGame
         public ScreenManager Manager;
         public IInputService Input;
 
+        public static float DebugRunTime { get; private set; } = 0;
+
         public PinguinGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -93,6 +95,8 @@ namespace PinguinGame
 
             Input.Poll();
             Manager.Update(delta);
+
+            DebugRunTime += delta;
         }
 
         protected override void Draw(GameTime gameTime)

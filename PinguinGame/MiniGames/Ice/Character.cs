@@ -48,7 +48,7 @@ namespace PinguinGame.MiniGames.Ice
             get => Physics.Position;
             set => Physics.Position = value;
         }
-        public Vector2 DrawPosition => Physics.Position + Bounce.Offset + new Vector2(0, -GroundHeight);
+        public float Height => -Bounce.Offset.Y + GroundHeight;
         public Vector2 Facing => Physics.Facing;
         public float GroundHeight { get; set; } = 0;
 
@@ -78,7 +78,7 @@ namespace PinguinGame.MiniGames.Ice
         {
             if (Grounded)
             {
-                penguinGraphics.DrawShadow(graphics, Position + new Vector2(0, -GroundHeight));
+                penguinGraphics.DrawShadow(graphics, Position, GroundHeight);
             }
 
             State.Draw(graphics, this, penguinGraphics);

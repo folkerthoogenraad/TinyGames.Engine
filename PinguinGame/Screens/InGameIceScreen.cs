@@ -93,5 +93,11 @@ namespace PinguinGame.Screens
             Graphics.End();
         }
 
+        public override void Destroy()
+        {
+            base.Destroy();
+
+            World.Destroy();
+        }
     }
 }

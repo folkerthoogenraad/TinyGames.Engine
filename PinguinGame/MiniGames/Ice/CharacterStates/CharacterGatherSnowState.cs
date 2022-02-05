@@ -44,9 +44,9 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
         {
             var facing = CharacterGraphics.GetFacingFromVector(penguin.Facing);
             
-            penguinGraphics.DrawIdle(graphics, facing, penguin.DrawPosition, 0);
+            penguinGraphics.DrawIdle(graphics, facing, penguin.Position, penguin.Height, 0);
 
-            Vector2 barPosition = penguin.DrawPosition - new Vector2(0, 16);
+            Vector2 barPosition = penguin.Position - new Vector2(0, penguin.Height + 16);
 
             graphics.DrawRectangle(AABB.CreateCentered(barPosition, new Vector2(16, 6)), Color.Black);
             graphics.DrawRectangle(AABB.CreateCentered(barPosition, new Vector2(14 * penguin.SnowballGathering.GatherProgress, 4)), penguin.Player.Color);

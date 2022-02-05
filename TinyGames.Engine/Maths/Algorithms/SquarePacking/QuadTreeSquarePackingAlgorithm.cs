@@ -51,7 +51,7 @@ namespace TinyGames.Engine.Maths.Algorithms.SquarePacking
             int halfHeight = Rectangle.Height / 2;
 
             // We must use a child
-            if(width <= halfWidth && height <= halfHeight)
+            if(width <= halfWidth && height <= halfHeight && Available)
             {
                 return GetAvailableChildNode(width, height);
             }
@@ -92,6 +92,8 @@ namespace TinyGames.Engine.Maths.Algorithms.SquarePacking
                 var node = root.GetAvailableNode(rect.X, rect.Y);
 
                 if (node == null) throw new ArgumentException("Cannot fit rectangle into blob");
+
+                node.Available = false;
 
                 return node;
             }).Select(node => node.Rectangle).ToArray();
