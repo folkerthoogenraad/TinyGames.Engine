@@ -39,14 +39,14 @@ namespace PinguinGame
         {
             base.Initialize();
 
-            //_graphics.PreferredBackBufferWidth = 1280;
-            //_graphics.PreferredBackBufferHeight = 720;
-            //_graphics.ApplyChanges();
-
-            _graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-            _graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            _graphics.IsFullScreen = true;
+            _graphics.PreferredBackBufferWidth = 1280;
+            _graphics.PreferredBackBufferHeight = 720;
             _graphics.ApplyChanges();
+
+            //_graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            //_graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            //_graphics.IsFullScreen = true;
+            //_graphics.ApplyChanges();
 
             Services.AddService<IStorageSystem>(new StorageSystem(new DiskStorageProvider(Content.RootDirectory)));
             Services.AddService<ISettingsService, SettingsService>();
@@ -71,9 +71,9 @@ namespace PinguinGame
                 player.CharacterInfo = Services.GetService<ICharactersService>().GetDefaultForPlayer(player);
             }
 
-            //ShowMapSelectScreen(players);
-            //ShowInGameScreen(players);
-            ShowSplashScreen();
+            ShowMapSelectScreen(players);
+            // ShowInGameScreen(players);
+            // ShowSplashScreen();
         }
 
         protected override void LoadContent()

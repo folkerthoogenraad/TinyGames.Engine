@@ -84,8 +84,25 @@ namespace TinyGames.Engine.Maths
 
         public float GetWindingNumber()
         {
+            // I think this is basically one long running cross product between all the edges and sum the direction :)
             // (x2 - x1) * (y2 + y1)
             return Points.Loop().Select(t => (t.Item2.X - t.Item1.X) * (t.Item2.Y + t.Item1.Y)).Sum();
+        }
+
+        public AABB GetBounds()
+        {
+            float minX = Points.Min(p => p.X);
+            float maxX = Points.Max(p => p.X);
+            float minY = Points.Min(p => p.Y);
+            float maxY = Points.Max(p => p.Y);
+
+            return new AABB()
+            {
+                Left = minX,
+                Right = maxX,
+                Top = minY,
+                Bottom = maxY
+            };
         }
     }
 }

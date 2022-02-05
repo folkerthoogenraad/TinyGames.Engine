@@ -60,6 +60,11 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             level.Blocks = blocks.ToArray();
             level.Spawns = spawns.ToArray();
 
+            var blockRects = blocks.PackRectangles(1024, 1024, block => new Point(
+                    (int)Math.Ceiling(block.PolygonLocal.GetBounds().Width),
+                    (int)Math.Ceiling(block.PolygonLocal.GetBounds().Height)), 
+                    (block, rect) => (block, rect)).ToArray();
+
             return level;
             
 
