@@ -8,10 +8,14 @@ using TinyGames.Engine.Maths.Algorithms;
 
 namespace PinguinGame.MiniGames.Ice
 {
+    // I think this should be more of a template then the actual level
     public class IceLevel
     {
+        // These blocks have a state, which is _very_ weird
         public IceBlock[] Blocks { get; set; }
         public Vector2[] Spawns { get; set; }
+        
+        public Vector2[] Geysers { get; set; }
 
         public IceLevel()
         {

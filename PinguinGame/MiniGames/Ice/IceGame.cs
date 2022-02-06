@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PinguinGame.Audio;
+using PinguinGame.Graphics;
 using PinguinGame.Input;
 using PinguinGame.MiniGames.Generic;
 using PinguinGame.Player;
@@ -28,9 +29,12 @@ namespace PinguinGame.MiniGames.Ice
 
         public IMiniGameInputService<CharacterInput> InputService { get; set; }
         public IUISoundService UISoundService { get; set; }
-        
+
+        public ParticleSystem ParticleSystem { get; set; }
+
         private List<Character> _penguins;
         private List<Snowball> _snowballs;
+        private List<Geyser> _geysers;
         private List<IceBlockBehaviour> _iceBlockBehaviour;
 
         public IceGame(ContentManager content, GraphicsDevice device, IceLevel level, PlayerInfo[] players, IMiniGameInputService<CharacterInput> inputService, IUISoundService uiSoundService) // Probably should have a levelservice or something
@@ -58,6 +62,21 @@ namespace PinguinGame.MiniGames.Ice
                 new TimedSinkIceBlockBehaviour(),
                 new TimedDriftIceBlockBehaviour(),
             };
+
+            ParticleSystem = new ParticleSystem();
+            var effectsTexture = content.Load<Texture2D>("Sprites/Effects");
+            var geyserAnimation = new Animation(
+                //new Sprite(content.Load<Texture2D>("Sprites/Characters/PenguinSheet"), new Rectangle(0, 0, 16, 16)).CenterOrigin(),
+                //new Sprite(content.Load<Texture2D>("Sprites/Characters/PenguinSheet"), new Rectangle(0, 0, 16, 16)).CenterOrigin(),
+                //new Sprite(content.Load<Texture2D>("Sprites/Characters/PenguinSheet"), new Rectangle(0, 0, 16, 16)).CenterOrigin(),
+                //new Sprite(content.Load<Texture2D>("Sprites/Characters/PenguinSheet"), new Rectangle(0, 0, 16, 16)).CenterOrigin()
+                new Sprite(effectsTexture, new Rectangle(0, 48, 16, 32)).SetOrigin(8, 32),
+                new Sprite(effectsTexture, new Rectangle(16, 48, 16, 32)).SetOrigin(8, 32),
+                new Sprite(effectsTexture, new Rectangle(32, 48, 16, 32)).SetOrigin(8, 32),
+                new Sprite(effectsTexture, new Rectangle(48, 48, 16, 32)).SetOrigin(8, 32)
+                ).SetFrameRate(2);
+            
+            _geysers = level.Geysers.Select(x => new Geyser(x, ParticleSystem, geyserAnimation)).ToList();
         }
 
         public void AddSnowball(Snowball ball)
@@ -108,9 +127,9 @@ namespace PinguinGame.MiniGames.Ice
                 b.Sound.PlayBonk();
             }
 
-            foreach(var penguin in Penguins)
+            foreach (var penguin in Penguins)
             {
-                foreach(var snowball in _snowballs)
+                foreach (var snowball in _snowballs)
                 {
                     if (penguin.Player == snowball.Player) continue;
 
@@ -126,6 +145,27 @@ namespace PinguinGame.MiniGames.Ice
 
                     penguin.Bonk(snowball.Velocity * 0.5f);
                     penguin.Sound.PlaySnowHit();
+                }
+            }
+
+            foreach (var penguin in Penguins)
+            {
+                foreach (var geyser in _geysers)
+                {
+                    if (!geyser.Erupting) continue;
+
+                    var p1 = penguin.Position;
+                    var p2 = geyser.Position;
+
+                    var dir = p2 - p1;
+                    var dist = dir.Length();
+
+                    if (dist > 8) continue;
+                    if (dist == 0) continue;
+
+                    penguin.Bonk(-dir / dist * 64);
+                    penguin.Bounce.Velocity = 128;
+                    penguin.Sound.PlaySnowHit(); // TODO Geyser sounds and stuff
                 }
             }
         }
@@ -225,6 +265,13 @@ namespace PinguinGame.MiniGames.Ice
             {
                 block.Update(delta);
             }
+
+            foreach(var geyser in _geysers)
+            {
+                geyser.Update(delta);
+            }
+
+            ParticleSystem.Update(delta);
         }
 
         public void UpdateSnowballs(float delta)
@@ -282,6 +329,8 @@ namespace PinguinGame.MiniGames.Ice
 
                 graphics.DrawSprite(SnowballGraphics.Indicator, penguin.Position - new Vector2(0, 24 + penguin.Bounce.Height));
             }
+            ParticleSystem.Draw(graphics);
+
         }
 
         public void Destroy()
