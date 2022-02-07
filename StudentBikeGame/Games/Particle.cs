@@ -9,6 +9,7 @@ namespace StudentBikeGame.Games
     public class Particle
     {
         public Vector2 Position;
+        public Vector2 Velocity;
         public Color Color;
 
         public Animation Animation;
@@ -19,6 +20,7 @@ namespace StudentBikeGame.Games
         
         public bool Update(float delta)
         {
+            Position += Velocity * delta;
             Timer += delta;
 
             if (Timer > Animation.Duration)
