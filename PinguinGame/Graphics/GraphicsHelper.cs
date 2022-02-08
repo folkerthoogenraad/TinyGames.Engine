@@ -24,7 +24,7 @@ namespace PinguinGame.Graphics
 
         public static float DebugSinTime(float offset = 0, float frequency = 1)
         {
-            return Wave.Sine(PinguinGame.DebugRunTime * frequency + offset);
+            return Wave.Sine(PenguinGame.DebugRunTime * frequency + offset);
         }
     }
 }

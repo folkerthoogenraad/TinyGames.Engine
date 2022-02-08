@@ -51,6 +51,8 @@ namespace PinguinGame.MiniGames.Ice.GameStates
         {
             base.Draw(graphics);
 
+            graphics.ClearDepthBuffer();
+
             // _ui.Draw(graphics);
         }
     }

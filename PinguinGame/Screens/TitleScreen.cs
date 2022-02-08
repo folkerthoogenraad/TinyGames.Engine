@@ -49,7 +49,7 @@ namespace PinguinGame.Screens
             {
                 if (input.ActionPressed)
                 {
-                    _uiSound.PlayAccept();
+                    _uiSound.PlayNextScreen();
                     _ui.FadeOut();
                     _screens.ShowMenuScreen();
                 }

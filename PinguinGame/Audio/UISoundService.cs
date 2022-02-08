@@ -16,6 +16,7 @@ namespace PinguinGame.Audio
         public SoundEffect Back;
         public SoundEffect Select;
         public SoundEffect Start;
+        public SoundEffect NextScreen;
 
         public UISoundService(ContentManager content)
         {
@@ -26,6 +27,9 @@ namespace PinguinGame.Audio
             Back = content.Load<SoundEffect>("SoundEffects/UI/Back");
             Select = content.Load<SoundEffect>("SoundEffects/UI/Select");
             Start = content.Load<SoundEffect>("SoundEffects/UI/Start");
+
+            // TODO
+            NextScreen = content.Load<SoundEffect>("SoundEffects/UI/NextScreen");
         }
 
         public void PlayCountdownHigh()
@@ -55,6 +59,10 @@ namespace PinguinGame.Audio
         public void PlayStart()
         {
             Start.Play();
+        }
+        public void PlayNextScreen()
+        {
+            NextScreen.Play();
         }
     }
 }

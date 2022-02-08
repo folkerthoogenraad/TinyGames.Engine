@@ -12,5 +12,6 @@ namespace PinguinGame.Audio
         public void PlayBack();
         public void PlaySelect();
         public void PlayStart();
+        public void PlayNextScreen();
     }
 }

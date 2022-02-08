@@ -79,6 +79,11 @@ namespace PinguinGame.Screens.UI
 
             SetModel(model);
         }
+        public void FadeOut()
+        {
+            OK.Background = _resources.ButtonPressed;
+            OK.SetAnimation(new UITransformAnimation(new Vector2(0, 0), new Vector2(1.1f, 1.1f)));
+        }
 
         public void SetModel(UICharacterSelectModel model)
         {

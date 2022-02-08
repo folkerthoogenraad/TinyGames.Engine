@@ -79,7 +79,7 @@ namespace PinguinGame.Screens
                 }
                 else if (isJoined && input.ActionPressed && _readyPlayers.Contains(player) && CanStart)
                 {
-                    _uiSound.PlayAccept();
+                    _uiSound.PlayNextScreen();
                     _screens.ShowCharacterSelectScreen(_playerCollection.Players.ToArray());
                     fadeForward = true;
                 }

@@ -59,7 +59,7 @@ namespace PinguinGame.Screens
                     accepted = true;
                     if(Selected == 0)
                     {
-                        _uiSound.PlayAccept();
+                        _uiSound.PlayNextScreen();
                         _screens.ShowPlayerSelectScreen();
                     }
                     else if(Selected == 1)

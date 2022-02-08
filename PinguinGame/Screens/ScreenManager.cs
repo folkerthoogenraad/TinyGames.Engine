@@ -5,6 +5,7 @@ using PinguinGame.Screens.Fades;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TinyGames.Engine.Animations;
 using TinyGames.Engine.Graphics;
 using TinyGames.Engine.Maths;
 
@@ -27,12 +28,14 @@ namespace PinguinGame.Screens
 
         public float FadeOutDuration { get; set; } = 0.5f;
         public float FadeOutStartOffset { get; set; } = 0.2f;
-        public float FadeInDuration { get; set; } = 0.3f;
+        public float FadeInDuration { get; set; } = 0.5f;
 
         public bool IsFadingOut => _fadeTimer > 0 && _nextScreen != null;
         public bool IsFadingIn => _fadeTimer > 0 && _nextScreen == null;
 
-        public float FadeFactor => GetFadeFactor();
+        public Func<float, float> EaseFunction { get; set; } = Ease.EaseInOut;
+
+        public float FadeFactor => EaseFunction(GetFadeFactor());
 
         private GraphicsDevice _device;
         private ContentManager _content;
@@ -47,6 +50,8 @@ namespace PinguinGame.Screens
             _content = content;
             _graphics = new Graphics2D(device);
 
+            //_fadeIn = new RandomBlockFade(Color.Black) { Forward = true };
+            //_fadeOut = new RandomBlockFade(Color.Black) { Forward = false };
             _fadeIn = new ColorFade(Color.Black);
             _fadeOut = new ColorFade(Color.Black);
         }

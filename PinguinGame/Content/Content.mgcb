@@ -169,6 +169,12 @@
 /processorParam:Quality=Best
 /build:SoundEffects/UI/Countdown_Low.ogg
 
+#begin SoundEffects/UI/NextScreen.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/UI/NextScreen.ogg
+
 #begin SoundEffects/UI/Select.ogg
 /importer:OggImporter
 /processor:SoundEffectProcessor

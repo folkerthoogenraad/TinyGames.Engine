@@ -21,7 +21,7 @@ using PinguinGame.Settings;
 
 namespace PinguinGame
 {
-    public class PinguinGame : Game, IScreenService
+    public class PenguinGame : Game, IScreenService
     {
         private GraphicsDeviceManager _graphics;
 
@@ -30,7 +30,7 @@ namespace PinguinGame
 
         public static float DebugRunTime { get; private set; } = 0;
 
-        public PinguinGame()
+        public PenguinGame()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -73,9 +73,9 @@ namespace PinguinGame
                 player.CharacterInfo = Services.GetService<ICharactersService>().GetDefaultForPlayer(player);
             }
 
-            ShowMapSelectScreen(players);
+            //ShowMapSelectScreen(players);
             // ShowInGameScreen(players);
-            // ShowSplashScreen();
+            ShowSplashScreen();
         }
 
         protected override void LoadContent()

@@ -79,7 +79,8 @@ namespace PinguinGame.Screens
                 {
                     if (_readyPlayers.Contains(player) && AllReady)
                     {
-                        _uiSound.PlayAccept();
+                        _uiSound.PlayNextScreen();
+                        _ui.FadeOut();
                         _screens.ShowMapSelectScreen(_players);
                     }
                     else

@@ -9,7 +9,7 @@ namespace TinyGames
         [STAThread]
         static void Main()
         {
-            using (var game = new PinguinGame.PinguinGame())
+            using (var game = new PinguinGame.PenguinGame())
                 game.Run();
         }
     }
