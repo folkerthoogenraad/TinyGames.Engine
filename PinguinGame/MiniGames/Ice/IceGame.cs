@@ -219,13 +219,13 @@ namespace PinguinGame.MiniGames.Ice
             // Advantage
             if (self.IsSliding && (other.IsGathering || other.IsWalking || self.IsBonking))
             {
-                return (true, bonkVelocity * 0.1f * direction, 0.3f);
+                return (true, bonkVelocity * 0.3f * direction, 1f);
             }
 
             // Disadvantage
             else if ((self.IsGathering || self.IsWalking || self.IsBonking) && other.IsSliding)
             {
-                return (true, bonkVelocity * 1.2f * direction, 0.7f);
+                return (true, bonkVelocity * (self.IsGathering ? 1.5f : 0.7f) * direction, 0.3f);
             }
 
             // Both bad :)

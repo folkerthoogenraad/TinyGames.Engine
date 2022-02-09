@@ -99,12 +99,6 @@ namespace PinguinGame.MiniGames.Ice
 
         public void Bonk(Vector2 velocity, float duration = 1)
         {
-            if (SnowballGathering.HasSnowball)
-            {
-                // TODO lose snowball sound effect or whatever
-                SnowballGathering.RemoveSnowball();
-            }
-
             State = new CharacterBonkState(Level.Effects, velocity, duration);
         }
         public void Drown()

@@ -1,7 +1,7 @@
 {
    "Characters": [
       {
-         "Name": "Penguin",
+         "Name": "Bonk",
          "Identifier": "penguin",
          "Sheet": "Sprites/Characters/PenguinSheet",
          "Icon": {
@@ -15,7 +15,7 @@
          }
       },
       {
-         "Name": "Fox",
+         "Name": "Flix",
          "Identifier": "fox",
          "Sheet": "Sprites/Characters/FoxSheet",
          "Icon": {
@@ -29,7 +29,7 @@
          }
       },
       {
-         "Name": "Tiger",
+         "Name": "Carny",
          "Identifier": "tiger",
          "Sheet": "Sprites/Characters/TigerSheet",
          "Icon": {
@@ -43,7 +43,7 @@
          }
       },
       {
-         "Name": "Parakeet",
+         "Name": "Juno",
          "Identifier": "parakeet",
          "Sheet": "Sprites/Characters/ParakeetSheet",
          "Icon": {
@@ -57,7 +57,7 @@
          }
       },
       {
-         "Name": "Elephant",
+         "Name": "Dash",
          "Identifier": "elephant",
          "Sheet": "Sprites/Characters/ElephantSheet",
          "Icon": {
