@@ -60,9 +60,7 @@ namespace PinguinGame.Screens
         {
             base.Init(device, content);
 
-            Camera.Height = 180;
-
-            World = new IceGame(content, device, content.LoadIceLevel(_level.File), _players, new IceInput(_inputService), _uiSoundService);
+            World = new IceGame(content, device, content.LoadIceLevel(_level.File), _players, new IceInput(_inputService), _uiSoundService, _screens);
             World.Camera = Camera;
 
             State = new PreGameState();
@@ -75,11 +73,6 @@ namespace PinguinGame.Screens
             base.UpdateSelf(delta);
 
             State = State.Update(delta);
-
-            if (World.Fight.Done)
-            {
-                _screens.ShowResultScreen(World.Fight);
-            }
         }
 
         public override void Draw()

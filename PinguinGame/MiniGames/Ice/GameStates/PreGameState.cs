@@ -14,17 +14,17 @@ namespace PinguinGame.MiniGames.Ice.GameStates
     {
         public float Timer = 0;
 
-        private UIPreGame _ui;
+        //private UIPreGame _ui;
 
         public override void Init(IceGame world, GraphicsDevice device, ContentManager content)
         {
             base.Init(world, device, content);
 
-            _ui = new UIPreGame(new InGameResources(content), new PreGameUIModel() {
-                Scores = world.Fight.Scores,
-                Colors = world.Fight.Players.Select(x => x.Color).ToArray(),
-            });
-            _ui.UpdateLayout(World.Camera.Bounds);
+            //_ui = new UIPreGame(new InGameResources(content), new PreGameUIModel() {
+            //    Scores = world.Fight.Scores,
+            //    Colors = world.Fight.Players.Select(x => x.Color).ToArray(),
+            //});
+            //_ui.UpdateLayout(World.Camera.Bounds);
         }
 
         public override GameState Update(float delta)
@@ -36,7 +36,7 @@ namespace PinguinGame.MiniGames.Ice.GameStates
                 return new CountdownPlayState();
             }
 
-            _ui.Update(delta);
+            //_ui.Update(delta);
 
             return this;
         }
@@ -45,9 +45,9 @@ namespace PinguinGame.MiniGames.Ice.GameStates
         {
             base.Draw(graphics);
 
-            graphics.ClearDepthBuffer();
+            //graphics.ClearDepthBuffer();
 
-            _ui.Draw(graphics);
+            //_ui.Draw(graphics);
         }
     }
 }

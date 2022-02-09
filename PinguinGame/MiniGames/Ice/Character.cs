@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using TinyGames.Engine.Graphics;
+using TinyGames.Engine.Maths;
 
 namespace PinguinGame.MiniGames.Ice
 {
@@ -32,7 +33,11 @@ namespace PinguinGame.MiniGames.Ice
         public bool IsDrowning => State is CharacterDrownState;
         public bool IsGathering => State is CharacterGatherSnowState;
 
+        public bool Invunerable => InvunerableTime > 0;
+        public float InvunerableTime { get; set;  } = 0;
+
         public bool Grounded { get; set; } = true;
+        public float Lifetime { get; set; } = 0;
 
         public IceGame Level { get; private set; }
         public PlayerInfo Player { get; private set; }
@@ -52,6 +57,8 @@ namespace PinguinGame.MiniGames.Ice
         public Vector2 Facing => Physics.Facing;
         public float GroundHeight { get; set; } = 0;
 
+        public bool CanCollide => !Invunerable && !IsDrowning;
+
         public Character(IceGame level, PlayerInfo player, CharacterGraphics graphics, CharacterSound sound, Vector2 position)
         {
             Level = level;
@@ -69,6 +76,10 @@ namespace PinguinGame.MiniGames.Ice
 
         public void Update(CharacterInput input, float delta)
         {
+            Lifetime += delta;
+
+            if (Invunerable) InvunerableTime -= delta;
+
             Bounce.Update(delta);
             Sound.Update(this, delta);
             State = State.Update(this, input, delta);
@@ -76,6 +87,8 @@ namespace PinguinGame.MiniGames.Ice
 
         public void Draw(Graphics2D graphics, CharacterGraphics penguinGraphics)
         {
+            if (Invunerable && (InvunerableTime % 0.4f > 0.2f)) return;
+            
             if (Grounded)
             {
                 penguinGraphics.DrawShadow(graphics, Position, GroundHeight);
@@ -84,13 +97,24 @@ namespace PinguinGame.MiniGames.Ice
             State.Draw(graphics, this, penguinGraphics);
         }
 
-        public void Bonk(Vector2 velocity)
+        public void Bonk(Vector2 velocity, float duration = 1)
         {
-            State = new CharacterBonkState(velocity);
+            if (SnowballGathering.HasSnowball)
+            {
+                // TODO lose snowball sound effect or whatever
+                SnowballGathering.RemoveSnowball();
+            }
+
+            State = new CharacterBonkState(Level.Effects, velocity, duration);
         }
         public void Drown()
         {
             State = new CharacterDrownState();
+        }
+
+        public void Destroy()
+        {
+            Sound.StopAll();
         }
     }
 }

@@ -21,6 +21,7 @@ namespace PinguinGame.Screens
 
         private UISplashScreen _ui;
 
+        public bool Fade = false;
         public float Timer = 0;
 
         public SplashScreen(IScreenService screens)
@@ -34,6 +35,7 @@ namespace PinguinGame.Screens
 
             _ui = new UISplashScreen(new SplashResources(content));
             _ui.UpdateLayout(Camera.Bounds);
+            _ui.FadeIn();
         }
 
         public override void UpdateSelf(float delta)
@@ -42,11 +44,16 @@ namespace PinguinGame.Screens
 
             Timer += delta;
 
-            if(Timer > 1.5f)
+            if(Timer > 1.5f && !Fade)
+            {
+                Fade = true;
+                _ui.FadeOut();
+            }
+
+            if(Timer > 2f)
             {
                 _screens.ShowTitleScreen();
             }
-
         }
 
         public override void UpdateAnimation(float delta)

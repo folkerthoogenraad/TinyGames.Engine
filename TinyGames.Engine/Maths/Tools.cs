@@ -16,6 +16,15 @@ namespace TinyGames.Engine.Maths
         {
             return a + (b - a) * f;
         }
+        public static bool Lerp(bool a, bool b, float f)
+        {
+            return Lerp(a, b, f, 0.01f);
+        }
+        public static bool Lerp(bool a, bool b, float f, float threshold)
+        {
+            if (f > threshold) return b;
+            return a;
+        }
 
         public static Vector2 AngleVector(float angle)
         {
@@ -25,6 +34,23 @@ namespace TinyGames.Engine.Maths
         public static bool IsPowerOfTwo(int x)
         {
             return (x & (x - 1)) == 0;
+        }
+
+        public static float AngleLerp(float from, float to, float f)
+        {
+            float add = ShortestAngle(from, to);
+
+            return from + add * f;
+        }
+
+        public static float ShortestAngle(float from, float to)
+        {
+            float angle = to - from;
+
+            if (angle > MathF.PI) return angle - MathF.PI * 2;
+            if (angle < -MathF.PI) return angle + MathF.PI * 2;
+
+            return angle;
         }
 
         public static Rectangle[] PackRectangles(int width, int height, Point[] rectangleSizes)

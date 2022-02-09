@@ -4,25 +4,38 @@ using System.Text;
 
 namespace TinyGames.Engine.Animations
 {
+
     public class EaseAnimation
     {
         public float PreDelay { get; set; } = 0;
         public float CurrentTime { get; set; } = 0;
-        public float Duration { get; set; }
+        public float Duration { get; set; } = 1;
 
         public float Value => _easeFunction(GetLinearValue());
 
         private Func<float, float> _easeFunction;
 
-        public EaseAnimation(Func<float, float> easeFunction, float duration)
+        public EaseAnimation(Func<float, float> easeFunction, float duration, float predelay = 0)
         {
             _easeFunction = easeFunction;
             Duration = duration;
+            PreDelay = predelay;
         }
 
-        public void Update(float delta)
+        public bool Done => CurrentTime >= Duration + PreDelay;
+
+        public void Restart()
         {
+            CurrentTime = 0;
+        }
+
+        public bool Update(float delta)
+        {
+            if (Done) return false;
+
             CurrentTime += delta;
+
+            return true;
         }
         private float GetLinearValue()
         {

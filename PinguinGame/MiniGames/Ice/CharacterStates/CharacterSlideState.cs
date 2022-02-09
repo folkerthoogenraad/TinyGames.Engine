@@ -48,7 +48,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
                 return new CharacterWalkState();
             }
 
-            penguin.Physics = penguin.Physics.Slide(delta);
+            penguin.Physics = penguin.Physics.Slide(delta, input.MoveDirection);
 
             return this;
         }

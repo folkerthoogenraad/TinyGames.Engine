@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TinyGames.Engine.Graphics;
+using TinyGames.Engine.Maths;
 
 namespace PinguinGame.MiniGames.Ice.CharacterStates
 {
@@ -50,33 +51,16 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
 
             if (input.ActionSecondaryPressed)
             {
-                if (character.SnowballGathering.HasSnowball)
+                if (character.SnowballGathering.HasSnowball && input.MoveDirection.LengthSquared() > 0)
                 {
-                    character.SnowballGathering.RemoveSnowball();
+                    var direction = input.MoveDirection.Normalized();
+                    var snowball = character.SnowballGathering.CreateSnowball(character, direction);
 
-                    Vector2 direction = input.MoveDirection;
-
-                    if(direction.LengthSquared() <= 0) direction = character.Facing;
-                    if (direction.LengthSquared() <= 0) direction = new Vector2(1, 0);
-
-                    if(direction.LengthSquared() > 0)
-                    {
-                        direction.Normalize();
-                    }
+                    character.Level.AddSnowball(snowball);
                     character.Sound.PlaySnowballThrow();
-
-                    // Throw snowball
-                    character.Level.AddSnowball(new Snowball()
-                    {
-                        Position = character.Position,
-                        Velocity = direction * 128,
-                        Lifetime = 1,
-                        Height = character.GroundHeight + 8,
-                        Player = character.Player,
-                    });
-                    return new CharacterBonkState(-direction * 16, 0.1f);
+                    character.Physics = character.Physics.StartBonk(-direction * 48);
                 }
-                else
+                else if(!character.SnowballGathering.HasSnowball)
                 {
                     return new CharacterGatherSnowState();
                 }

@@ -73,6 +73,11 @@ namespace PinguinGame.MiniGames.Ice
             SnowballGatherDone?.Play(1f, RandomPitch(), 0);
         }
 
+        public void StopAll()
+        {
+            _slideSoundInstance?.Stop();
+        }
+
         public void Update(Character character, float delta)
         {
             if(_slideSoundInstance != null && !character.IsSliding && _slideSoundInstance.State == SoundState.Playing)

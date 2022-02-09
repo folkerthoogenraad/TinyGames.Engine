@@ -8,7 +8,7 @@ namespace PinguinGame.MiniGames.Ice
     public class CharacterSnowballGathering
     {
         private float _snowballTimer = 0;
-        private float _maxGatherTime = 0.7f;
+        private float _maxGatherTime = 1.0f;
 
         public bool HasSnowball { get; private set; }
         public bool Gathering { get; private set; }
@@ -39,6 +39,26 @@ namespace PinguinGame.MiniGames.Ice
             {
                 HasSnowball = true;
             }
+        }
+
+        public Snowball CreateSnowball(Character character, Vector2 direction)
+        {
+            RemoveSnowball();
+
+            if (direction.LengthSquared() > 0)
+            {
+                direction.Normalize();
+            }
+
+            // Throw snowball
+            return new Snowball()
+            {
+                Position = character.Position + direction * 8,
+                Velocity = direction * 128,
+                Lifetime = 1,
+                Height = character.GroundHeight + 8,
+                Player = character.Player,
+            };
         }
     }
 }

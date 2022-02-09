@@ -10,6 +10,16 @@ using TinyGames.Engine.UI;
 
 namespace PinguinGame.Screens.UI
 {
+    public class UIBackgroundColor : UIComponent
+    {
+        public Color BackgroundColor { get; set; }
+
+        public override void DrawSelf(Graphics2D graphics, AABB bounds)
+        {
+            graphics.DrawRectangle(bounds, BackgroundColor); 
+        }
+    }
+
     public class UIBackground : UIComponent
     {
         public Color BackgroundColor { get; set; }

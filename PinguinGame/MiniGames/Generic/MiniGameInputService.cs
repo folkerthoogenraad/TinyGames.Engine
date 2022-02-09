@@ -9,6 +9,7 @@ namespace PinguinGame.MiniGames.Generic
     public abstract class MiniGameInputService<T> : IMiniGameInputService<T>
     {
         private IInputService _inputService;
+
         public MiniGameInputService(IInputService inputService)
         {
             _inputService = inputService;

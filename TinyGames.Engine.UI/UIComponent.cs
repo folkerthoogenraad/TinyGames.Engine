@@ -19,8 +19,6 @@ namespace TinyGames.Engine.UI
 
         public bool Visible { get; set; } = true;
 
-        public float Alpha => Animation == null ? 1f : Animation.Alpha;
-
         public virtual void Update(float delta)
         {
             if (Animation != null)
@@ -49,11 +47,8 @@ namespace TinyGames.Engine.UI
 
             if (Animation != null && !Animation.Visible) return;
 
-            graphics.PushMatrix();
+            graphics.Push();
             graphics.Translate(Bounds.Center);
-
-            foreach (var child in Children) child.Draw(graphics);
-
 
             var centerBounds = AABB.CreateCentered(Vector2.Zero, Bounds.Size);
 
@@ -61,12 +56,17 @@ namespace TinyGames.Engine.UI
             {
                 if (Animation.Position.HasValue) graphics.Translate(Animation.Position.Value);
                 if (Animation.Scale.HasValue) graphics.Scale(Animation.Scale.Value);
+
                 // TODO rotation
+                // TODO alpha
+
+                graphics.SetAlpha(Animation.Alpha);
             }
 
+            foreach (var child in Children) child.Draw(graphics);
             DrawSelf(graphics, centerBounds);
 
-            graphics.PopMatrix();
+            graphics.Pop();
         }
 
         public virtual void DrawSelf(Graphics2D graphics, AABB bounds)

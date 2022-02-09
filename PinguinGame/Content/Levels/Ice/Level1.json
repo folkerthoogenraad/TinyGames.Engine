@@ -57,17 +57,17 @@
                         {
                          "name":"TimerCycleDuration",
                          "type":"float",
-                         "value":30
+                         "value":20
                         }, 
                         {
                          "name":"TimerOffset",
                          "type":"float",
-                         "value":22.5
+                         "value":-15
                         }, 
                         {
                          "name":"TimerTrigger",
                          "type":"float",
-                         "value":15
+                         "value":10
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -118,17 +118,17 @@
                         {
                          "name":"TimerCycleDuration",
                          "type":"float",
-                         "value":30
+                         "value":20
                         }, 
                         {
                          "name":"TimerOffset",
                          "type":"float",
-                         "value":15
+                         "value":-10
                         }, 
                         {
                          "name":"TimerTrigger",
                          "type":"float",
-                         "value":15
+                         "value":10
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -175,17 +175,17 @@
                         {
                          "name":"TimerCycleDuration",
                          "type":"float",
-                         "value":30
+                         "value":20
                         }, 
                         {
                          "name":"TimerOffset",
                          "type":"float",
-                         "value":7.5
+                         "value":-5
                         }, 
                         {
                          "name":"TimerTrigger",
                          "type":"float",
-                         "value":15
+                         "value":10
                         }],
                  "rotation":0,
                  "type":"IceBlock",
@@ -232,7 +232,7 @@
                         {
                          "name":"TimerCycleDuration",
                          "type":"float",
-                         "value":30
+                         "value":20
                         }, 
                         {
                          "name":"TimerOffset",
@@ -242,7 +242,7 @@
                         {
                          "name":"TimerTrigger",
                          "type":"float",
-                         "value":15
+                         "value":10
                         }],
                  "rotation":0,
                  "type":"IceBlock",

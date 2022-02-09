@@ -41,14 +41,15 @@ namespace PinguinGame
         {
             base.Initialize();
 
-            _graphics.PreferredBackBufferWidth = 1280;
-            _graphics.PreferredBackBufferHeight = 720;
+            //_graphics.PreferredBackBufferWidth = 1280;
+            //_graphics.PreferredBackBufferHeight = 720;
+            //_graphics.ApplyChanges();
+
+            _graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
-            //_graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-            //_graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            //_graphics.IsFullScreen = true;
-            //_graphics.ApplyChanges();
 
             Services.AddService<IStorageSystem>(new StorageSystem(new DiskStorageProvider(Content.RootDirectory)));
             Services.AddService<ISettingsService, SettingsService>();
@@ -66,6 +67,8 @@ namespace PinguinGame
             var players = new PlayerInfo[] {
                 new PlayerInfo() { Index = 0, InputDevice = InputDeviceType.Gamepad0 },
                 new PlayerInfo() { Index = 1, InputDevice = InputDeviceType.Keyboard1 },
+                new PlayerInfo() { Index = 2, InputDevice = InputDeviceType.Keyboard0 },
+                new PlayerInfo() { Index = 3, InputDevice = InputDeviceType.Gamepad1 },
             };
 
             foreach (var player in players.Where(x => x.CharacterInfo == null))
@@ -74,8 +77,10 @@ namespace PinguinGame
             }
 
             //ShowMapSelectScreen(players);
-            // ShowInGameScreen(players);
+            //ShowInGameScreen(players, Services.GetService<ILevelsService>().GetLevels().FirstOrDefault());
+            // ShowMenuScreen();
             ShowSplashScreen();
+
         }
 
         protected override void LoadContent()
@@ -92,6 +97,10 @@ namespace PinguinGame
             base.Update(gameTime);
 
             float delta = gameTime.GetDeltaInSeconds();
+
+            if(Keyboard.GetState().IsKeyDown(Keys.Escape)){
+                ShowMenuScreen();
+            }
 
             Input.Poll();
             Manager.Update(delta);
@@ -163,7 +172,8 @@ namespace PinguinGame
                 Services.GetService<IScreenService>(),
                 Services.GetService<IInputService>(),
                 Services.GetService<IMusicService>(),
-                Services.GetService<IUISoundService>());
+                Services.GetService<IUISoundService>(),
+                Services.GetService<ICharactersService>());
         }
         public void ShowSplashScreen()
         {

@@ -7,36 +7,36 @@
   <object id="1" type="IceBlock" x="128" y="24">
    <properties>
     <property name="Behaviour" value="TimedSink"/>
-    <property name="TimerCycleDuration" type="float" value="30"/>
-    <property name="TimerOffset" type="float" value="22.5"/>
-    <property name="TimerTrigger" type="float" value="15"/>
+    <property name="TimerCycleDuration" type="float" value="20"/>
+    <property name="TimerOffset" type="float" value="-15"/>
+    <property name="TimerTrigger" type="float" value="10"/>
    </properties>
    <polygon points="0,0 -16,8 -32,32 -24,72 16,80 56,64 48,16"/>
   </object>
   <object id="2" type="IceBlock" x="176" y="40">
    <properties>
     <property name="Behaviour" value="TimedSink"/>
-    <property name="TimerCycleDuration" type="float" value="30"/>
-    <property name="TimerOffset" type="float" value="15"/>
-    <property name="TimerTrigger" type="float" value="15"/>
+    <property name="TimerCycleDuration" type="float" value="20"/>
+    <property name="TimerOffset" type="float" value="-10"/>
+    <property name="TimerTrigger" type="float" value="10"/>
    </properties>
    <polygon points="0,0 48,-8 80,8 88,56 56,88 32,80 8,48"/>
   </object>
   <object id="3" type="IceBlock" x="144" y="104">
    <properties>
     <property name="Behaviour" value="TimedSink"/>
-    <property name="TimerCycleDuration" type="float" value="30"/>
-    <property name="TimerOffset" type="float" value="7.5"/>
-    <property name="TimerTrigger" type="float" value="15"/>
+    <property name="TimerCycleDuration" type="float" value="20"/>
+    <property name="TimerOffset" type="float" value="-5"/>
+    <property name="TimerTrigger" type="float" value="10"/>
    </properties>
    <polygon points="0,0 -16,56 16,72 72,72 64,16 40,-16"/>
   </object>
   <object id="5" type="IceBlock" x="104" y="96">
    <properties>
     <property name="Behaviour" value="TimedSink"/>
-    <property name="TimerCycleDuration" type="float" value="30"/>
+    <property name="TimerCycleDuration" type="float" value="20"/>
     <property name="TimerOffset" type="float" value="0"/>
-    <property name="TimerTrigger" type="float" value="15"/>
+    <property name="TimerTrigger" type="float" value="10"/>
    </properties>
    <polygon points="0,0 -40,16 -48,80 -16,80 24,64 40,8"/>
   </object>

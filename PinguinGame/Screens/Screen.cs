@@ -18,7 +18,9 @@ namespace PinguinGame.Screens
         public virtual void Init(GraphicsDevice device, ContentManager content)
         {
             Graphics = new Graphics2D(device);
-            Camera = new Camera(360 / 2, 16.0f / 9.0f);
+            
+            float aspect = device.PresentationParameters.BackBufferWidth / (float)device.PresentationParameters.BackBufferHeight;
+            Camera = new Camera(GetApplicableHeight(device.PresentationParameters.BackBufferWidth, device.PresentationParameters.BackBufferHeight), aspect);
 
             Content = content;
             Device = device;
@@ -47,6 +49,11 @@ namespace PinguinGame.Screens
         public virtual void Destroy()
         {
 
+        }
+
+        private int GetApplicableHeight(int width, int height)
+        {
+            return 180;
         }
     }
 }

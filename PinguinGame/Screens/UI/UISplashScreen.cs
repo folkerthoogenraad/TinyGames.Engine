@@ -36,11 +36,28 @@ namespace PinguinGame.Screens.UI
                 Sprite = resources.JustFGames
             };
 
-            Title.SetAnimation(new UITransformAnimation(Vector2.Zero, new Vector2(1.2f, 1.2f)) { Speed = 2 });
-
             AddComponent(Background);
             AddComponent(Title);
         }
+
+        public void FadeIn()
+        {
+            var animation = new UIEaseAnimation(1);
+            animation.AlphaAnimation.Animate(0, 1);
+            animation.ScaleAnimation.Animate(new Vector2(1.5f, 1.5f), new Vector2(1, 1));
+
+            Title.SetAnimation(animation);
+        }
+
+        public void FadeOut()
+        {
+            var animation = new UIEaseAnimation(1);
+            //animation.AlphaAnimation.Animate(1, 0);
+            animation.ScaleAnimation.Animate(new Vector2(1, 1), new Vector2(0, 0));
+
+            Title.SetAnimation(animation);
+        }
+
         public override void UpdateLayout(AABB bounds)
         {
             base.UpdateLayout(bounds);

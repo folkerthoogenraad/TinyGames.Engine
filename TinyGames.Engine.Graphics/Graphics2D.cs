@@ -26,6 +26,9 @@ namespace TinyGames.Engine.Graphics
 
         private Matrix ProjectionMatrix;
 
+        private Stack<float> AlphaStack;
+        private float Alpha = 1;
+
         private Stack<Matrix> TransformStack;
         private Matrix Matrix;
 
@@ -51,6 +54,7 @@ namespace TinyGames.Engine.Graphics
             Pixel.SetData(new Color[] { Color.White });
 
             TransformStack = new Stack<Matrix>();
+            AlphaStack= new Stack<float>();
             
             DefaultDepthStencilState = new DepthStencilState
             {
@@ -377,6 +381,13 @@ namespace TinyGames.Engine.Graphics
             }
         }
 
+        public void ClearDepthBuffer()
+        {
+            Flush();
+
+            Device.Clear(ClearOptions.DepthBuffer, Color.Transparent, Device.Viewport.MaxDepth, 0);
+        }
+
         public void Begin(Matrix m)
         {
             Drawing = true;
@@ -387,10 +398,11 @@ namespace TinyGames.Engine.Graphics
             ProjectionMatrix = m; //Matrix.CreateOrthographicOffCenter(0, Device.PresentationParameters.BackBufferWidth, Device.PresentationParameters.BackBufferHeight, 0, -100, 100);
         }
 
-        public void PushMatrix()
+        public void Push()
         {
             Flush();
             TransformStack.Push(Matrix);
+            AlphaStack.Push(Alpha);
         }
 
         public void Translate(Vector2 v)
@@ -415,10 +427,11 @@ namespace TinyGames.Engine.Graphics
             Matrix = Matrix.CreateScale(x, y, 1) * Matrix;
         }
 
-        public void PopMatrix()
+        public void Pop()
         {
             Flush();
             Matrix = TransformStack.Pop();
+            Alpha = AlphaStack.Pop();
         }
 
         public Matrix GetMatrix()
@@ -446,6 +459,12 @@ namespace TinyGames.Engine.Graphics
             {
                 Vertex(vertex.Position, vertex.TextureCoordinate, vertex.Color);
             }
+        }
+
+        public void SetAlpha(float newAlpha, bool overwrite = false)
+        {
+            if (!overwrite) Alpha *= newAlpha;
+            else Alpha = newAlpha;
         }
 
         public void End()
@@ -476,6 +495,7 @@ namespace TinyGames.Engine.Graphics
                 basicEffect.Texture = Textures[0];
                 basicEffect.TextureEnabled = true;
                 basicEffect.VertexColorEnabled = true;
+                basicEffect.Alpha = Alpha;
             }
             else if (alphaTest != null)
             {
@@ -483,6 +503,7 @@ namespace TinyGames.Engine.Graphics
                 alphaTest.World = Matrix;
                 alphaTest.Texture = Textures[0];
                 alphaTest.VertexColorEnabled = true;
+                alphaTest.Alpha = Alpha;
             }
             else
             {

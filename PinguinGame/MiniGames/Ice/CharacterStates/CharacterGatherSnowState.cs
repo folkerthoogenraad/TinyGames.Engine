@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using PinguinGame.Graphics;
 using PinguinGame.MiniGames.Generic;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,13 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
 {
     internal class CharacterGatherSnowState : CharacterState
     {
+        private IceGameUIGraphics _ui;
+
         public override void Init(Character penguin)
         {
             base.Init(penguin);
+
+            _ui = penguin.Level.UIGraphics;
 
             penguin.SnowballGathering.RemoveSnowball();
             penguin.Sound.PlaySnowballGather();
@@ -22,6 +27,8 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
         {
             penguin.Physics = penguin.Physics.Move(delta, new Vector2(), penguin.Settings.Acceleration);
 
+            // Maybe disallow stopping with gathering?
+            // timeout maybe?
             if (!input.ActionSecondary)
             {
                 return new CharacterWalkState();
@@ -40,16 +47,22 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             return this;
         }
 
-        public override void Draw(Graphics2D graphics, Character penguin, CharacterGraphics penguinGraphics)
+        public override void Draw(Graphics2D graphics, Character character, CharacterGraphics penguinGraphics)
         {
-            var facing = CharacterGraphics.GetFacingFromVector(penguin.Facing);
+            var facing = CharacterGraphics.GetFacingFromVector(character.Facing);
             
-            penguinGraphics.DrawIdle(graphics, facing, penguin.Position, penguin.Height, 0);
+            penguinGraphics.DrawIdle(graphics, facing, character.Position, character.Height, 0);
 
-            Vector2 barPosition = penguin.Position - new Vector2(0, penguin.Height + 16);
+            var outline = _ui.SnowballChargeOutline;
+            var sprite = _ui.SnowballCharge.GetSpriteNormalized(character.SnowballGathering.GatherProgress);
 
-            graphics.DrawRectangle(AABB.CreateCentered(barPosition, new Vector2(16, 6)), Color.Black);
-            graphics.DrawRectangle(AABB.CreateCentered(barPosition, new Vector2(14 * penguin.SnowballGathering.GatherProgress, 4)), penguin.Player.Color);
+            graphics.DrawSprite(outline, character.Position - new Vector2(0, character.Height + 16), 0, GraphicsHelper.YToDepth(character.Position.Y));
+            graphics.DrawSprite(sprite, character.Position - new Vector2(0, character.Height + 16), 0, GraphicsHelper.YToDepth(character.Position.Y), character.Player.Color);
+
+            //Vector2 barPosition = penguin.Position - new Vector2(0, penguin.Height + 16);
+
+            //graphics.DrawRectangle(AABB.CreateCentered(barPosition, new Vector2(16, 6)), Color.Black);
+            //graphics.DrawRectangle(AABB.CreateCentered(barPosition, new Vector2(14 * penguin.SnowballGathering.GatherProgress, 4)), penguin.Player.Color);
 
             // Draw some indicator?
         }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TinyGames.Engine.Maths;
 
 namespace PinguinGame.MiniGames.Ice
 {
@@ -59,10 +60,24 @@ namespace PinguinGame.MiniGames.Ice
             return state;
         }
 
-        public CharacterPhysics Slide(float delta)
+        public CharacterPhysics Slide(float delta, Vector2 direction)
         {
             var state = Clone();
 
+            if(direction.LengthSquared() > 0)
+            {
+                var wantedAngle = direction.GetAngle();
+                var angle = state.Velocity.GetAngle();
+
+                var speed = state.Velocity.Length();
+
+                var newAngle = Tools.AngleLerp(angle, wantedAngle, delta);
+
+                state.Velocity = Tools.AngleVector(newAngle) * speed;
+            }
+
+
+            state.Facing = state.Velocity;
             state.Position += state.Velocity * delta;
 
             return state;

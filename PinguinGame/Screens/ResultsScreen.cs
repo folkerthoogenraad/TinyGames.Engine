@@ -32,7 +32,7 @@ namespace PinguinGame.Screens
             _inputService = inputService;
             _screens = screens;
             _fight = fight;
-            _winner = _fight.Scoreboard.First().Player;
+            _winner = _fight.Winner;
             _musicService = musicService;
             _uiSound = sound;
         }
@@ -45,7 +45,24 @@ namespace PinguinGame.Screens
             var text = winner.Name;
             var color = winner.Color;
 
-            _ui = new UIResultScreen(new Resources.ResultsResources(content), text, color);
+            _ui = new UIResultScreen(new Resources.ResultsResources(content), new UIResultsScreenModel()
+            {
+                BannerText = winner.Name,
+                BannerColor = winner.Color,
+                BackLabel = "Back",
+                Lines = _fight.Scoreboard.Select(x => new UIResultLineModel()
+                {
+                    PlayerName = x.Player.Name,
+                    Icon = x.Player.CharacterInfo.Icon,
+                    Color = x.Player.Color,
+
+                    Score = x.Score,
+                    ScoreLabel = "pnt.",
+
+                    IsWinning = x.Player == winner,
+                    WinningLabel = "Winner!",
+                }).ToArray()
+            });
             _ui.UpdateLayout(Camera.Bounds);
 
             _musicService.PlayVictoryMusic();
@@ -54,6 +71,7 @@ namespace PinguinGame.Screens
         public override void UpdateSelf(float delta)
         {
             base.UpdateSelf(delta);
+            _ui.UpdateLayout(Camera.Bounds);
 
             var state = _inputService.GetInputStateForDevice(_winner.InputDevice);
 

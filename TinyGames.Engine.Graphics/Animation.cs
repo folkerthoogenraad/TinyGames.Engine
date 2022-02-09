@@ -17,6 +17,10 @@ namespace TinyGames.Engine.Graphics
             Sprites = sprites;
         }
 
+        public Sprite GetSpriteNormalized(float index)
+        {
+            return GetSpriteByIndex((int)(index * Sprites.Length));
+        }
         public Sprite GetSpriteForTime(float time)
         {
             return GetSpriteByIndex((int)(time * FrameRate));

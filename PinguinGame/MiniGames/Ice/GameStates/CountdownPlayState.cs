@@ -30,14 +30,7 @@ namespace PinguinGame.MiniGames.Ice.GameStates
 
             Timer = TickTime * 3;
 
-            Vector2 spawnLocation = game.Level.Spawns.Where(x => {
-                var block = game.Level.GetIceBlockForPosition(x);
-
-                if (block == null) return false;
-
-                return block.IsIdle;
-            }).RandomOrDefault();
-
+            Vector2 spawnLocation = game.FindApplicableSpawnLocation();
 
             float angle = 0;
             float anglePerPlayer = (MathF.PI * 2) / game.Fight.Players.Length;
@@ -45,15 +38,8 @@ namespace PinguinGame.MiniGames.Ice.GameStates
             foreach (var player in game.Players)
             {
                 Vector2 pos = spawnLocation + Tools.AngleVector(angle) * 16;
-
-                var graphics = player.CharacterInfo.Graphics;
-
-                var sound = CharacterSound.CreateCharacterSound(content);
-
-                var penguin = new Character(game, player, graphics, sound, pos + new Vector2(0, 4));
-                penguin.Physics = penguin.Physics.SetFacing(-pos);
-
-                World.AddPenguin(penguin);
+                
+                game.SpawnCharacter(pos, player);
 
                 angle += anglePerPlayer;
             }
@@ -98,6 +84,8 @@ namespace PinguinGame.MiniGames.Ice.GameStates
         public override void Draw(Graphics2D graphics)
         {
             base.Draw(graphics);
+
+            World.DrawPlayerIndicators(graphics);
 
             graphics.ClearDepthBuffer();
 

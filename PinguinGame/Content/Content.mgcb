@@ -145,6 +145,30 @@
 /processorParam:Quality=Best
 /build:SoundEffects/Characters/Splash.ogg
 
+#begin SoundEffects/Kills/Kill0.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Kills/Kill0.ogg
+
+#begin SoundEffects/Kills/Kill1.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Kills/Kill1.ogg
+
+#begin SoundEffects/Kills/Kill2.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Kills/Kill2.ogg
+
+#begin SoundEffects/Kills/KillFinal.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Kills/KillFinal.ogg
+
 #begin SoundEffects/UI/Accept.ogg
 /importer:OggImporter
 /processor:SoundEffectProcessor
@@ -367,6 +391,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/UI/InGameCountdown.png
 
+#begin Sprites/UI/InGameUI.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/UI/InGameUI.png
+
 #begin Sprites/UI/InsertCoin.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -498,18 +534,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/UI/TitleResults.png
-
-#begin Sprites/UI/TitleWin.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/UI/TitleWin.png
 
 #begin Sprites/UI/WinBanner.png
 /importer:TextureImporter
