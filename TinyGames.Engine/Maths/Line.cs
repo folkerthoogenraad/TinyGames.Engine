@@ -16,6 +16,16 @@ namespace TinyGames.Engine.Maths
             To = to;
         }
 
+        public Vector2 Reflect(Vector2 input)
+        {
+            Vector2 relative = input - From;
+            Vector2 normal = Normal;
+
+            float distance = Vector2.Dot(normal, relative);
+
+            return input - distance * 2 * normal;
+        }
+
         public float SignedDistanceDeterminant(Vector2 point)
         {
             return ((To.X - From.X) * (point.Y - From.Y) - (To.Y - From.Y) * (point.X - From.X));

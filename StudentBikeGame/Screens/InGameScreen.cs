@@ -80,7 +80,7 @@ namespace StudentBikeGame.Screens
 
             for(int i = 0; i < 100; i++)
             {
-                Coins.Add(new Coin(random.RandomPointInBox(0, 1024, 0, 1024)));
+                Coins.Add(new Coin(random.NextPointInBox(0, 1024, 0, 1024)));
             }
 
             SmallFont = content.LoadFont("Fonts/Font5x6");
@@ -108,7 +108,7 @@ namespace StudentBikeGame.Screens
                         var random = new Random();
 
                         Particles.Add(new Particle() {
-                            Position = x.Position + random.RandomPointInCircle() * 8,
+                            Position = x.Position + random.NextPointInCircle() * 8,
                             Color = Color.White,
                             Animation = CoinGraphics.PickupParticle
                         });

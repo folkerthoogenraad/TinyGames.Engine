@@ -14,7 +14,6 @@ namespace PinguinGame.MiniGames.Ice
         // These blocks have a state, which is _very_ weird
         public IceBlock[] Blocks { get; set; }
         public Vector2[] Spawns { get; set; }
-        
         public Vector2[] Geysers { get; set; }
 
         public IceLevel()

@@ -20,9 +20,12 @@ namespace PinguinGame.Graphics
 
         public float Height = 0;
         public float HeightVelocity = 0;
+        public float Gravity = 0;
 
         public bool Update(float delta)
         {
+            HeightVelocity += Gravity * delta;
+
             Position += Velocity * delta;
             Height += HeightVelocity * delta;
             Timer += delta;

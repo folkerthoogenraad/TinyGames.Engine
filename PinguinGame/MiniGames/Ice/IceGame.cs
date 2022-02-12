@@ -10,6 +10,7 @@ using PinguinGame.Screens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TinyGames.Engine.Extensions;
 using TinyGames.Engine.Graphics;
 using TinyGames.Engine.Util;
 
@@ -42,6 +43,8 @@ namespace PinguinGame.MiniGames.Ice
 
         public ContentManager Content { get; set; }
 
+        public Random Random { get; set; }
+
         public IceGame(ContentManager content, GraphicsDevice device, IceLevel level, PlayerInfo[] players, IMiniGameInputService<CharacterInput> inputService, IUISoundService uiSoundService, IScreenService screenservice) // Probably should have a levelservice or something
         {
             Content = content;
@@ -60,11 +63,7 @@ namespace PinguinGame.MiniGames.Ice
             Level = level;
             LevelCamera = new Camera(256, 1);
             LevelGraphics = new IceLevelGraphics(content, device, level, new IceLevelGraphicsSettings());
-            SnowballGraphics = new SnowballGraphics() { 
-                Indicator = new Sprite(content.Load<Texture2D>("Sprites/Ice/IceGameplayElements"), new Rectangle(0, 0, 8, 8)).CenterOrigin(),
-                Sprite = new Sprite(content.Load<Texture2D>("Sprites/Ice/IceGameplayElements"), new Rectangle(8, 0, 8, 8)).CenterOrigin(),
-                Shadow = new Sprite(content.Load<Texture2D>("Sprites/Ice/IceGameplayElements"), new Rectangle(8, 8, 8, 8)).CenterOrigin(),
-            };
+            SnowballGraphics = new SnowballGraphics(content);
 
             _iceBlockBehaviour = new List<IceBlockBehaviour>() { 
                 new RandomSinkIceBlockBehaviour(),
@@ -84,7 +83,9 @@ namespace PinguinGame.MiniGames.Ice
                 new Sprite(effectsTexture, new Rectangle(32, 48, 16, 32)).SetOrigin(8, 32),
                 new Sprite(effectsTexture, new Rectangle(48, 48, 16, 32)).SetOrigin(8, 32)
                 ).SetFrameRate(2);
-            
+
+            Random = new Random();
+
             _geysers = level.Geysers.Select(x => new Geyser(x, ParticleSystem, geyserAnimation)).ToList();
         }
 
@@ -187,6 +188,8 @@ namespace PinguinGame.MiniGames.Ice
 
                     character.Bonk(snowball.Velocity * 0.6f, 0.8f);
                     character.Sound.PlaySnowHit();
+
+                    AddSnowballBonkEffect(character.Position, snowball.Velocity * 0.5f, character.Height);
                 }
             }
 
@@ -211,6 +214,24 @@ namespace PinguinGame.MiniGames.Ice
                     character.Bounce.Velocity = 128;
                     character.Sound.PlaySnowHit(); // TODO Geyser sounds and stuff
                 }
+            }
+        }
+
+        private void AddSnowballBonkEffect(Vector2 position, Vector2 velocity, float height)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                ParticleSystem.Add(new Particle()
+                {
+                    Animation = SnowballGraphics.SplashAnimation,
+                    Angle = Random.NextAngle(),
+                    Color = Color.White,
+                    Position = position + Random.NextPointInCircle() * 4,
+                    Height = height,
+                    Velocity = velocity * Random.NextFloat() + Random.NextPointInCircle() * 8,
+                    HeightVelocity = -Random.NextFloat() * 32,
+                    Gravity = 64,
+                });
             }
         }
 
@@ -270,6 +291,11 @@ namespace PinguinGame.MiniGames.Ice
 
                 return block.IsIdle;
             }).RandomOrDefault();
+        }
+
+        public Vector2 FindRandomSpawnPoint()
+        {
+            return Random.NextPointsInPolygon(Level.Blocks.Where(x => x.IsIdle).Random().Polygon, 1).First();
         }
 
         public Character SpawnCharacter(Vector2 spawnLocation, PlayerInfo player)

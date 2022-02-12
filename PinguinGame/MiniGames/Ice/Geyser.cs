@@ -45,7 +45,7 @@ namespace PinguinGame.MiniGames.Ice
                         Position = Position,
                         Height = 8,
                         HeightVelocity = 64,
-                        Velocity = new Random().RandomPointInCircle() * 16
+                        Velocity = new Random().NextPointInCircle() * 16
                     });
                 }
             }

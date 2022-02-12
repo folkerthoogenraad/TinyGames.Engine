@@ -41,14 +41,14 @@ namespace PinguinGame
         {
             base.Initialize();
 
-            //_graphics.PreferredBackBufferWidth = 1280;
-            //_graphics.PreferredBackBufferHeight = 720;
-            //_graphics.ApplyChanges();
-
-            _graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-            _graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            _graphics.IsFullScreen = true;
+            _graphics.PreferredBackBufferWidth = 1280;
+            _graphics.PreferredBackBufferHeight = 720;
             _graphics.ApplyChanges();
+
+            //_graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            //_graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            //_graphics.IsFullScreen = true;
+            //_graphics.ApplyChanges();
 
 
             Services.AddService<IStorageSystem>(new StorageSystem(new DiskStorageProvider(Content.RootDirectory)));
@@ -67,8 +67,8 @@ namespace PinguinGame
             var players = new PlayerInfo[] {
                 new PlayerInfo() { Index = 0, InputDevice = InputDeviceType.Gamepad0 },
                 new PlayerInfo() { Index = 1, InputDevice = InputDeviceType.Keyboard1 },
-                new PlayerInfo() { Index = 2, InputDevice = InputDeviceType.Keyboard0 },
-                new PlayerInfo() { Index = 3, InputDevice = InputDeviceType.Gamepad1 },
+                //new PlayerInfo() { Index = 2, InputDevice = InputDeviceType.Keyboard0 },
+                //new PlayerInfo() { Index = 3, InputDevice = InputDeviceType.Gamepad1 },
             };
 
             foreach (var player in players.Where(x => x.CharacterInfo == null))
@@ -77,9 +77,9 @@ namespace PinguinGame
             }
 
             //ShowMapSelectScreen(players);
-            //ShowInGameScreen(players, Services.GetService<ILevelsService>().GetLevels().FirstOrDefault());
+            ShowInGameScreen(players, Services.GetService<ILevelsService>().GetLevels().FirstOrDefault());
             // ShowMenuScreen();
-            ShowSplashScreen();
+            //ShowSplashScreen();
 
         }
 

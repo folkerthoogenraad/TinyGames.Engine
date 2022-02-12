@@ -287,6 +287,18 @@ namespace TinyGames.Engine.Graphics
             Vertex(new Vector3(c.X, c.Y, depth), Vector2.Zero, color);
         }
 
+        public void DrawTexturedTriangle(Texture2D texture, Vector2 a, Vector2 b, Vector2 c, Vector2 uvA, Vector2 uvB, Vector2 uvC, Color color, float depth = 0)
+        {
+            if (VertexIndex >= Vertices.Length - 3) Flush();
+
+            SetTexture(texture);
+
+            Vertex(new Vector3(a.X, a.Y, depth), uvA, color);
+            Vertex(new Vector3(b.X, b.Y, depth), uvB, color);
+            Vertex(new Vector3(c.X, c.Y, depth), uvC, color);
+        }
+
+
         public void DrawQuad(Vector2 a, Vector2 b, Vector2 c, Vector2 d, Color color, float depth = 0)
         {
             if (VertexIndex >= Vertices.Length - 6) Flush();

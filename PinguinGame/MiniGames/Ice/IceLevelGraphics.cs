@@ -35,6 +35,7 @@ namespace PinguinGame.MiniGames.Ice
         private Dictionary<IceBlock, Sprite> _topSprites;
         private Dictionary<IceBlock, IceBlockSubdividedSprite> _sideSprites;
 
+        public Texture2D SnowTexture { get; set; }
         public Effect Effect { get; set; }
 
         public IceLevelGraphics(ContentManager manager, GraphicsDevice device, IceLevel level, IceLevelGraphicsSettings settings)
@@ -48,13 +49,14 @@ namespace PinguinGame.MiniGames.Ice
 
             RenderTargets = new List<RenderTarget2D>();
 
-            SetupDrawNormalSprites();
-            SetupDrawSideParts();
-
             Effect = manager.Load<Effect>("Effects/WaterEdgeEffect");
+            SnowTexture = manager.Load<Texture2D>("Sprites/Ice/SnowTexture");
 
             Effect.Parameters["AboveWaterColor"].SetValue(Settings.SideColor.ToVector4());
             Effect.Parameters["BelowWaterColor"].SetValue(Settings.SideWaterColor.ToVector4());
+
+            SetupDrawNormalSprites();
+            SetupDrawSideParts();
         }
 
         public void SetupDrawNormalSprites()
@@ -145,7 +147,7 @@ namespace PinguinGame.MiniGames.Ice
             }
         }
 
-        private void DrawBlockInRectangle(Graphics2D renderer, IceBlock block, Rectangle rectangle)
+        private void DrawBlockInRectangle(Graphics2D graphics, IceBlock block, Rectangle rectangle)
         {
 
             AABB bounds = block.LocalPolygon.GetBounds();
@@ -157,7 +159,14 @@ namespace PinguinGame.MiniGames.Ice
 
             foreach (var triangle in block.LocalPolygon.Triangles)
             {
-                renderer.DrawTriangle(triangle.A + offset, triangle.B + offset, triangle.C + offset, Color.White);
+                float uvScale = 1 / 16.0f;
+
+                Vector2 a = triangle.A + offset;
+                Vector2 b = triangle.B + offset;
+                Vector2 c = triangle.C + offset;
+
+                graphics.DrawTexturedTriangle(SnowTexture, a, b, c, a * uvScale, b * uvScale, c * uvScale, Color.White);
+                // graphics.DrawTexturedTriangle(SnowTexture, a, b, c, new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1), Color.White);
             }
         }
 

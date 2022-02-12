@@ -71,7 +71,7 @@ namespace TinyGames
             for (int i = 0; i < 200; i++)
             {
                 World.AddBody(new PhysicsBody(new Vector2((random.NextFloat() * 2 - 1) * 180, (random.NextFloat() * 2 - 1) * 180), 
-                    new CircleCollider(new Circle(random.RandomPointInCircle() * 128, random.NextFloatRange(8, 32))))
+                    new CircleCollider(new Circle(random.NextPointInCircle() * 128, random.NextFloatRange(8, 32))))
                 {
                     Solid = true
                 });

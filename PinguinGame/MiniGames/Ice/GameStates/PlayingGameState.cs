@@ -121,7 +121,7 @@ namespace PinguinGame.MiniGames.Ice.GameStates
                 {
                     ToRespawn.Remove(character);
                     World.RemoveCharacter(character);
-                    var player = World.SpawnCharacter(World.FindApplicableSpawnLocation(), character.Player);
+                    var player = World.SpawnCharacter(World.FindRandomSpawnPoint(), character.Player);
                     player.InvunerableTime = 2f;
                 }
             }
