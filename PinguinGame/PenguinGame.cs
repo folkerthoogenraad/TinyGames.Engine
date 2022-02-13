@@ -76,8 +76,8 @@ namespace PinguinGame
                 player.CharacterInfo = Services.GetService<ICharactersService>().GetDefaultForPlayer(player);
             }
 
-            //ShowMapSelectScreen(players);
-            ShowInGameScreen(players, Services.GetService<ILevelsService>().GetLevels().FirstOrDefault());
+            ShowMapSelectScreen(players);
+            //ShowInGameScreen(players, Services.GetService<ILevelsService>().GetLevels().FirstOrDefault());
             // ShowMenuScreen();
             //ShowSplashScreen();
 

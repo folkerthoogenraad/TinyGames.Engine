@@ -57,8 +57,9 @@ namespace PinguinGame.Screens.UI
 
         private UIMapSelectModel _currentModel;
 
-        public UIMapSelectScreen(MapSelectResources resources)
+        public UIMapSelectScreen(MapSelectResources resources, UIMapSelectModel model)
         {
+            _currentModel = model;
             _resources = resources;
 
             Background = new UIBackground() { 
@@ -87,7 +88,7 @@ namespace PinguinGame.Screens.UI
                 Background = resources.ButtonSelected
             };
 
-            MapButtons = new UIMapButton[4];
+            MapButtons = new UIMapButton[_currentModel.Maps.Length];
 
             for(int i = 0; i < MapButtons.Length; i++)
             {

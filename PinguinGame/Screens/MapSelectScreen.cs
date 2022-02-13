@@ -45,15 +45,14 @@ namespace PinguinGame.Screens
         {
             base.Init(device, content);
 
-            _ui = new UIMapSelectScreen(new MapSelectResources(content));
-
-            _ui.UpdateLayout(Camera.Bounds);
-            _ui.SetModel(new UIMapSelectModel()
+            _ui = new UIMapSelectScreen(new MapSelectResources(content), new UIMapSelectModel()
             {
                 Maps = GetMaps().ToArray(),
                 Ready = _ready,
                 SelectedIndex = _selectedIndex
-            }, false);
+            });
+
+            _ui.UpdateLayout(Camera.Bounds);
 
             _musicService.PlayMenuMusic();
         }

@@ -59,6 +59,21 @@
             "OriginX": 8,
             "OriginY": 8
          }
+      },
+      {
+         "Name": "TEst123",
+         "Identifier": "test123",
+         "Description": "Try this level, it seems fun",
+         "File": "Levels/Ice/Level4",
+         "Icon": {
+            "Texture": "Sprites/UI/MapIcons",
+            "X": 48,
+            "Y": 16,
+            "Width": 16,
+            "Height": 16,
+            "OriginX": 8,
+            "OriginY": 8
+         }
       }
    ]
 }

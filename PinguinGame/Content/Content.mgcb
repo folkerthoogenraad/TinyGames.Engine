@@ -67,6 +67,9 @@
 #begin Levels/Ice/Level3.json
 /copy:Levels/Ice/Level3.json
 
+#begin Levels/Ice/Level4.json
+/copy:Levels/Ice/Level4.json
+
 #begin Songs/InGame.mp3
 /importer:Mp3Importer
 /processor:SongProcessor

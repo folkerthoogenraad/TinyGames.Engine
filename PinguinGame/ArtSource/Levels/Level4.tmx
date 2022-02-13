@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="13">
+ <editorsettings>
+  <export target="../../Content/Levels/Ice/Level4.json" format="json"/>
+ </editorsettings>
+ <objectgroup id="2" name="Objects">
+  <object id="4" type="IceBlock" x="80" y="48">
+   <properties>
+    <property name="Behaviour" value="TimedDrift"/>
+    <property name="Disabled" type="bool" value="false"/>
+    <property name="DriftDirectionX" type="float" value="-16"/>
+    <property name="DriftDirectionY" type="float" value="0"/>
+    <property name="TimerCycleDuration" type="float" value="12"/>
+    <property name="TimerOffset" type="float" value="0"/>
+    <property name="TimerTrigger" type="float" value="7"/>
+   </properties>
+   <polygon points="16,-8 48,-24 80,-16 96,48 64,56 16,56 8,40"/>
+  </object>
+  <object id="5" type="IceBlock" x="160" y="32">
+   <properties>
+    <property name="Behaviour" value="TimedDrift"/>
+    <property name="DriftDirectionX" type="float" value="16"/>
+    <property name="DriftDirectionY" type="float" value="0"/>
+    <property name="TimerCycleDuration" type="float" value="12"/>
+    <property name="TimerOffset" type="float" value="0"/>
+    <property name="TimerTrigger" type="float" value="7"/>
+   </properties>
+   <polygon points="0,0 48,0 88,8 96,56 64,64 16,64"/>
+  </object>
+  <object id="8" type="IceBlock" x="64" y="160">
+   <polygon points="0,0 -8,-32 32,-56 80,-56 88,-32 88,0"/>
+  </object>
+  <object id="9" type="IceBlock" x="200" y="96">
+   <polygon points="0,0 -16,16 -16,56 0,64 64,56 56,24 40,0"/>
+  </object>
+  <object id="12" type="Bridge" x="152" y="128" width="32" height="16">
+   <properties>
+    <property name="Height" type="float" value="6"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Spawns">
+  <object id="10" type="Spawn" x="112" y="136">
+   <point/>
+  </object>
+  <object id="11" type="Spawn" x="224" y="128">
+   <point/>
+  </object>
+ </objectgroup>
+</map>
