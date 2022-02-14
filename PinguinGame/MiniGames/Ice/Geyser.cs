@@ -6,19 +6,19 @@ using System.Collections.Generic;
 using System.Text;
 using TinyGames.Engine.Extensions;
 using TinyGames.Engine.Graphics;
+using TinyGames.Engine.Scenes;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    public class Geyser
+    public class Geyser : GameObject
     {
         public Vector2 Position { get; set; }
         public ParticleSystem System { get; set; }
         public Animation Particle { get; set; }
 
-        public Geyser(Vector2 position, ParticleSystem system, Animation particle)
+        public Geyser(Vector2 position, Animation particle)
         {
             Position = position;
-            System = system;
             Particle = particle;
         }
 
@@ -27,7 +27,14 @@ namespace PinguinGame.MiniGames.Ice
 
         public bool Erupting => Timer % 8 > 4;
 
-        public void Update(float delta)
+        public override void Init()
+        {
+            base.Init();
+
+            System = Scene.GetComponent<ParticleSystem>();
+        }
+
+        public override void Update(float delta)
         {
             Timer += delta;
 

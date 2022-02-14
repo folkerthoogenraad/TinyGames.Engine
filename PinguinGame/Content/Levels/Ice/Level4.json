@@ -233,6 +233,23 @@
                  "width":0,
                  "x":200,
                  "y":96
+                }, 
+                {
+                 "height":16,
+                 "id":12,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"Height",
+                         "type":"float",
+                         "value":6
+                        }],
+                 "rotation":0,
+                 "type":"Bridge",
+                 "visible":true,
+                 "width":32,
+                 "x":152,
+                 "y":128
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -276,7 +293,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":12,
+ "nextobjectid":14,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.3",

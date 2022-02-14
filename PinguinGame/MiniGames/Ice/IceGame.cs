@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TinyGames.Engine.Extensions;
 using TinyGames.Engine.Graphics;
+using TinyGames.Engine.Scenes;
+using TinyGames.Engine.Scenes.Extensions;
 using TinyGames.Engine.Util;
 
 namespace PinguinGame.MiniGames.Ice
@@ -19,14 +21,12 @@ namespace PinguinGame.MiniGames.Ice
     public class IceGame
     {
         public Camera Camera { get; set; }
-        public IEnumerable<Character> Characters => _characters;
+        public IEnumerable<Character> Characters => Scene.FindGameObjectsOfType<Character>();
         public IEnumerable<PlayerInfo> Players => Fight.Players;
         public Fight Fight { get; private set; }
 
         public IceLevel Level { get; private set; }
-        public Camera LevelCamera { get; private set; }
         public IceLevelGraphics LevelGraphics { get; private set; }
-        public SnowballGraphics SnowballGraphics { get; set; }
         public IceGameUIGraphics UIGraphics { get; set; }
         public IceGameEffects Effects { get; set; }
 
@@ -34,22 +34,23 @@ namespace PinguinGame.MiniGames.Ice
         public IUISoundService UISoundService { get; set; }
         public IScreenService ScreenService { get; set; }
 
-        public ParticleSystem ParticleSystem { get; set; }
 
-        private List<Character> _characters;
-        private List<Snowball> _snowballs;
-        private List<Geyser> _geysers;
+        private IEnumerable<Snowball> _snowballs => Scene.FindGameObjectsOfType<Snowball>();
+        private IEnumerable<Geyser> _geysers => Scene.FindGameObjectsOfType<Geyser>();
+
         private List<IceBlockBehaviour> _iceBlockBehaviour;
 
         public ContentManager Content { get; set; }
 
         public Random Random { get; set; }
 
+        public Scene Scene { get; set; }
+        public SceneGraphics SceneGraphics { get; set; }
+        public ParticleSystem ParticleSystem { get; set; }
+
         public IceGame(ContentManager content, GraphicsDevice device, IceLevel level, PlayerInfo[] players, IMiniGameInputService<CharacterInput> inputService, IUISoundService uiSoundService, IScreenService screenservice) // Probably should have a levelservice or something
         {
             Content = content;
-            _characters = new List<Character>();
-            _snowballs = new List<Snowball>();
 
             UISoundService = uiSoundService;
             ScreenService = screenservice;
@@ -61,9 +62,7 @@ namespace PinguinGame.MiniGames.Ice
             Fight = new Fight(players);
 
             Level = level;
-            LevelCamera = new Camera(256, 1);
             LevelGraphics = new IceLevelGraphics(content, device, level, new IceLevelGraphicsSettings());
-            SnowballGraphics = new SnowballGraphics(content);
 
             _iceBlockBehaviour = new List<IceBlockBehaviour>() { 
                 new RandomSinkIceBlockBehaviour(),
@@ -71,45 +70,58 @@ namespace PinguinGame.MiniGames.Ice
                 new TimedDriftIceBlockBehaviour(),
             };
 
-            ParticleSystem = new ParticleSystem();
+
+            Random = new Random();
+
+            Scene = new Scene();
+
+            SceneGraphics = Scene.AddComponent(new SceneGraphics());
+            ParticleSystem  = Scene.AddComponent(new ParticleSystem());
+            Scene.AddComponent(new Walkables(Level));
+            Scene.AddComponent(new SnowballGraphics(content));
+            Scene.AddComponent(new IceGameUIGraphics(content));
+
+            Scene.Init();
+
+
+            // This is loading the Geysers, not really needed.
             var effectsTexture = content.Load<Texture2D>("Sprites/Effects");
             var geyserAnimation = new Animation(
-                //new Sprite(content.Load<Texture2D>("Sprites/Characters/PenguinSheet"), new Rectangle(0, 0, 16, 16)).CenterOrigin(),
-                //new Sprite(content.Load<Texture2D>("Sprites/Characters/PenguinSheet"), new Rectangle(0, 0, 16, 16)).CenterOrigin(),
-                //new Sprite(content.Load<Texture2D>("Sprites/Characters/PenguinSheet"), new Rectangle(0, 0, 16, 16)).CenterOrigin(),
-                //new Sprite(content.Load<Texture2D>("Sprites/Characters/PenguinSheet"), new Rectangle(0, 0, 16, 16)).CenterOrigin()
                 new Sprite(effectsTexture, new Rectangle(0, 48, 16, 32)).SetOrigin(8, 32),
                 new Sprite(effectsTexture, new Rectangle(16, 48, 16, 32)).SetOrigin(8, 32),
                 new Sprite(effectsTexture, new Rectangle(32, 48, 16, 32)).SetOrigin(8, 32),
                 new Sprite(effectsTexture, new Rectangle(48, 48, 16, 32)).SetOrigin(8, 32)
                 ).SetFrameRate(2);
 
-            Random = new Random();
-
-            _geysers = level.Geysers.Select(x => new Geyser(x, ParticleSystem, geyserAnimation)).ToList();
+            var geysers = level.Geysers.Select(x => new Geyser(x, geyserAnimation)).ToList();
+            
+            foreach (var g in geysers)
+            {
+                Scene.AddGameObject(g);
+            }
         }
 
         public void AddSnowball(Snowball ball)
         {
-            _snowballs.Add(ball);
+            Scene.AddGameObject(ball);
         }
 
         public void AddCharacter(Character character)
         {
-            _characters.Add(character);
+            Scene.AddGameObject(character);
         }
 
         public void RemoveCharacter(Character character)
         {
-            character.Destroy();
-            _characters.Remove(character);
+            Scene.RemoveGameObject(character);
         }
 
         public void RemoveAllCharacters()
         {
-            foreach (var character in _characters) character.Destroy();
-
-            _characters.Clear();
+            foreach(var character in Characters)
+            {
+                Scene.RemoveGameObject(character);
+            }
         }
 
         public void ResetIceBlocks()
@@ -123,6 +135,7 @@ namespace PinguinGame.MiniGames.Ice
                 new TimedSinkIceBlockBehaviour(),
                 new TimedDriftIceBlockBehaviour(),
             };
+            Scene.Sync();
         }
 
         public void TryBonkCharacters()
@@ -174,7 +187,7 @@ namespace PinguinGame.MiniGames.Ice
 
                 foreach (var snowball in _snowballs)
                 {
-                    if (character.Player == snowball.Player) continue;
+                    if (character.Player == snowball.Info) continue;
 
                     var p1 = character.Position;
                     var p2 = snowball.Position;
@@ -188,8 +201,6 @@ namespace PinguinGame.MiniGames.Ice
 
                     character.Bonk(snowball.Velocity * 0.6f, 0.8f);
                     character.Sound.PlaySnowHit();
-
-                    AddSnowballBonkEffect(character.Position, snowball.Velocity * 0.5f, character.Height);
                 }
             }
 
@@ -214,24 +225,6 @@ namespace PinguinGame.MiniGames.Ice
                     character.Bounce.Velocity = 128;
                     character.Sound.PlaySnowHit(); // TODO Geyser sounds and stuff
                 }
-            }
-        }
-
-        private void AddSnowballBonkEffect(Vector2 position, Vector2 velocity, float height)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                ParticleSystem.Add(new Particle()
-                {
-                    Animation = SnowballGraphics.SplashAnimation,
-                    Angle = Random.NextAngle(),
-                    Color = Color.White,
-                    Position = position + Random.NextPointInCircle() * 4,
-                    Height = height,
-                    Velocity = velocity * Random.NextFloat() + Random.NextPointInCircle() * 8,
-                    HeightVelocity = -Random.NextFloat() * 32,
-                    Gravity = 64,
-                });
             }
         }
 
@@ -267,11 +260,11 @@ namespace PinguinGame.MiniGames.Ice
         {
             var result = new List<Character>();
 
-            foreach(var p in _characters.Where(x => !x.IsDrowning))
+            foreach(var p in Characters.Where(x => !x.IsDrowning))
             {
                 var block = Level.GetIceBlockForPosition(p.Position);
                 
-                if(block == null || !block.Solid)
+                if(block == null || !block.Solid && p.Height < 1)
                 {
                     p.Drown();
                     result.Add(p);
@@ -300,61 +293,31 @@ namespace PinguinGame.MiniGames.Ice
 
         public Character SpawnCharacter(Vector2 spawnLocation, PlayerInfo player)
         {
-            var graphics = player.CharacterInfo.Graphics;
-
-            var sound = CharacterSound.CreateCharacterSound(Content);
-
-            var character = new Character(this, player, graphics, sound, spawnLocation);
+            var character = new Character(this, player, spawnLocation);
             character.Physics = character.Physics.SetFacing(-spawnLocation);
 
             AddCharacter(character);
+
+            // TODO this is kinda ugly :)
+            Scene.Sync();
 
             return character;
         }
 
         public void PlaceCharactersOnGround()
         {
-            foreach (var penguin in _characters)
+            foreach (var penguin in Characters)
             {
-                IceBlock block = Level.GetIceBlockForPosition(penguin.Position);
-                float height = 0;
-
-                if (block != null && block.Solid)
-                {
-                    height = block.Height;
-                }
-
-                if (penguin.IsDrowning)
-                {
-                    height = 0;
-                }
-
-                if (penguin.GroundHeight > height)
-                {
-                    penguin.Bounce.Height += penguin.GroundHeight - height;
-                }
-
-                penguin.GroundHeight = height;
-                penguin.Grounded = block != null && block.Solid;
-            }
-        }
-        public void MoveCharactersWithGround(float delta)
-        {
-            foreach (var penguin in _characters)
-            {
-                IceBlock block = Level.GetIceBlockForPosition(penguin.Position);
-
-                if (block == null) continue;
-
-                penguin.Position += block.Velocity * delta;
+                penguin.PlaceOnGround();
             }
         }
 
         public void Update(float delta)
         {
             UpdateLevel(delta);
-            UpdateSnowballs(delta);
-            UpdatePenguins(delta);
+
+            Scene.Update(delta);
+            UpdateCharacters(delta);
         }
         public void UpdateLevel(float delta)
         {
@@ -367,29 +330,14 @@ namespace PinguinGame.MiniGames.Ice
             {
                 block.Update(delta);
             }
-
-            foreach(var geyser in _geysers)
-            {
-                geyser.Update(delta);
-            }
-
-            ParticleSystem.Update(delta);
         }
 
-        public void UpdateSnowballs(float delta)
+        public void UpdateCharacters(float delta)
         {
-            _snowballs = _snowballs.Where(x => x.Update(delta)).ToList();
-        }
-
-        public void UpdatePenguins(float delta)
-        {
-            foreach (var (penguin, input) in _characters.Select(x => (x, InputService.GetInputForPlayer(x.Player))))
+            foreach (var (character, input) in Characters.Select(x => (x, InputService.GetInputForPlayer(x.Player))).ToArray())
             {
-                penguin.Update(input, delta);
+                character.Update(input, delta);
             }
-
-            PlaceCharactersOnGround();
-            MoveCharactersWithGround(delta);
         }
         
         public void DrawWorld(Graphics2D graphics)
@@ -397,46 +345,13 @@ namespace PinguinGame.MiniGames.Ice
             graphics.Clear(LevelGraphics.Settings.WaterColor);
 
             LevelGraphics.DrawWorld(graphics);
-            //graphics.DrawTexture(LevelGraphics.RenderTarget, new Vector2(-64, -64), new Vector2(128, 128));
 
-            //var penguins = _penguins.OrderBy(x => x.Physics.Position.Y);
-
-            foreach (var snowball in _snowballs)
-            {
-                IceBlock block = Level.GetIceBlockForPosition(snowball.Position);
-
-                float height = 0;
-
-                if (block != null && block.Solid)
-                {
-                    height = block.Height;
-                }
-
-                graphics.DrawSprite(SnowballGraphics.Shadow, snowball.Position - new Vector2(0, height), snowball.Angle, GraphicsHelper.YToDepth(snowball.Position.Y));
-            }
-
-            foreach (var penguin in _characters)
-            {
-                penguin.Draw(graphics, penguin.Graphics);
-            }
-
-            foreach(var snowball in _snowballs)
-            {
-                graphics.DrawSprite(SnowballGraphics.Sprite, snowball.Position - new Vector2(0, snowball.Height), snowball.Angle, GraphicsHelper.YToDepth(snowball.Position.Y));
-            }
-
-            foreach (var penguin in _characters)
-            {
-                if (!penguin.SnowballGathering.HasSnowball) continue;
-
-                graphics.DrawSprite(SnowballGraphics.Indicator, penguin.Position - new Vector2(0, 24 + penguin.Bounce.Height), 0, GraphicsHelper.YToDepth(penguin.Position.Y));
-            }
-            ParticleSystem.Draw(graphics);
+            SceneGraphics.Draw(graphics);
         }
 
         public void DrawPlayerIndicators(Graphics2D graphics)
         {
-            foreach (var character in _characters)
+            foreach (var character in Characters)
             {
                 if(character.Lifetime < 2)
                 {
@@ -453,7 +368,7 @@ namespace PinguinGame.MiniGames.Ice
 
         public void Destroy()
         {
-            // TODO just have the full character graphics and stuff unload, instead of this
+            Scene.Destroy();
             LevelGraphics.Dispose();
         }
     }

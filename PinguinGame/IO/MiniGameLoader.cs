@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using PinguinGame.MiniGames;
 using System.IO;
 using PinguinGame.IO.Levels;
+using PinguinGame.MiniGames.Ice;
 
 namespace PinguinGame.IO
 {
@@ -59,6 +60,7 @@ namespace PinguinGame.IO
             info.Identifier = data.Identifier;
             info.Icon = ConvertSprite(data.Icon);
             info.Graphics = new MiniGames.Generic.CharacterGraphics(_content.Load<Texture2D>(data.Sheet));
+            info.Sound = CharacterSound.CreateCharacterSound(_content);
 
             return info;
         }

@@ -38,6 +38,8 @@
     <ProjectReference Include="..\TinyGames.Engine.Collisions\TinyGames.Engine.Collisions.csproj" />
     <ProjectReference Include="..\TinyGames.Engine.Graphics\TinyGames.Engine.Graphics.csproj" />
     <ProjectReference Include="..\TinyGames.Engine.IO\TinyGames.Engine.IO.csproj" />
+    <ProjectReference Include="..\TinyGames.Engine.Scenes.Extensions\TinyGames.Engine.Scenes.Extensions.csproj" />
+    <ProjectReference Include="..\Tinygames.Engine.Scenes\TinyGames.Engine.Scenes.csproj" />
     <ProjectReference Include="..\TinyGames.Engine.UI\TinyGames.Engine.UI.csproj" />
     <ProjectReference Include="..\TinyGames.Engine\TinyGames.Engine.csproj" />
   </ItemGroup>

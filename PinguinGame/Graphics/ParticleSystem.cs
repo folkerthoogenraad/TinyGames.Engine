@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TinyGames.Engine.Graphics;
+using TinyGames.Engine.Scenes;
+using TinyGames.Engine.Scenes.Extensions;
 
 namespace PinguinGame.Graphics
 {
-    public class ParticleSystem
+    public class ParticleSystem : ISceneComponent, IDrawable2D
     {
         public List<Particle> Particles;
 
@@ -14,10 +16,7 @@ namespace PinguinGame.Graphics
         {
             Particles = new List<Particle>();
         }
-        public void Update(float delta)
-        {
-            Particles.RemoveAll(x => !x.Update(delta));
-        }
+
 
         public void Draw(Graphics2D graphics)
         {
@@ -31,6 +30,30 @@ namespace PinguinGame.Graphics
         public void Add(Particle particle)
         {
             Particles.Add(particle);
+        }
+
+        // ======================================== // 
+        // Scene component stuff
+        // ======================================== // 
+        public void Init(Scene scene)
+        {
+            var graphics = scene.GetComponent<SceneGraphics>();
+            graphics.AddDrawable(this);
+        }
+
+        public void BeforeUpdate(float delta)
+        {
+            // Do nothing
+        }
+
+        public void AfterUpdate(float delta)
+        {
+            Particles.RemoveAll(x => !x.Update(delta));
+        }
+
+        public void Destroy()
+        {
+            // Do nothing
         }
     }
 }

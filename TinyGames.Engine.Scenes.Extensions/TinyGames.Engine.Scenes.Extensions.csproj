@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TinyGames.Engine.Graphics\TinyGames.Engine.Graphics.csproj" />
+    <ProjectReference Include="..\Tinygames.Engine.Scenes\TinyGames.Engine.Scenes.csproj" />
+  </ItemGroup>
+
+</Project>

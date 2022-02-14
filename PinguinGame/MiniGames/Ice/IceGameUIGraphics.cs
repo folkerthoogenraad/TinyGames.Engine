@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TinyGames.Engine.Graphics;
+using TinyGames.Engine.Scenes;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    public class IceGameUIGraphics
+    public class IceGameUIGraphics : ISceneComponent
     {
         public Sprite Heart { get; set; }
         public Sprite HeartOutline { get; set; }
@@ -17,6 +18,7 @@ namespace PinguinGame.MiniGames.Ice
 
         public Animation SnowballCharge { get; set; }
         public Sprite SnowballChargeOutline { get; set; }
+        public Sprite SnowballIndicator { get; set; }
 
         public IceGameUIGraphics(ContentManager content)
         {
@@ -33,6 +35,28 @@ namespace PinguinGame.MiniGames.Ice
                 new Sprite(texture, new Rectangle(48, 32, 16, 16)).CenterOrigin()
                 );
             SnowballChargeOutline = new Sprite(texture, new Rectangle(0, 48, 16, 16)).CenterOrigin();
+            SnowballChargeOutline = new Sprite(texture, new Rectangle(0, 48, 16, 16)).CenterOrigin();
+
+            SnowballIndicator = new Sprite(content.Load<Texture2D>("Sprites/Ice/IceGameplayElements"), new Rectangle(0, 0, 8, 8)).CenterOrigin();
+        }
+
+        // =========================================== //
+        // Scene component
+        // =========================================== //
+        public void Init(Scene scene)
+        {
+        }
+
+        public void BeforeUpdate(float delta)
+        {
+        }
+
+        public void AfterUpdate(float delta)
+        {
+        }
+
+        public void Destroy()
+        {
         }
     }
 }

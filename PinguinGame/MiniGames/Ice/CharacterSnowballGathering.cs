@@ -51,13 +51,13 @@ namespace PinguinGame.MiniGames.Ice
             }
 
             // Throw snowball
-            return new Snowball()
+            return new Snowball(character.Player)
             {
                 Position = character.Position + direction * 8,
                 Velocity = direction * 128,
                 Lifetime = 1,
                 Height = character.GroundHeight + 8,
-                Player = character.Player,
+                Info = character.Player,
             };
         }
     }

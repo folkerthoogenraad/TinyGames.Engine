@@ -13,14 +13,14 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
     {
         private IceGameUIGraphics _ui;
 
-        public override void Init(Character penguin)
+        public override void Init(Character character)
         {
-            base.Init(penguin);
+            base.Init(character);
 
-            _ui = penguin.Level.UIGraphics;
+            _ui = character.UIGraphics;
 
-            penguin.SnowballGathering.RemoveSnowball();
-            penguin.Sound.PlaySnowballGather();
+            character.SnowballGathering.RemoveSnowball();
+            character.Sound.PlaySnowballGather();
         }
 
         public override CharacterState Update(Character penguin, CharacterInput input, float delta)

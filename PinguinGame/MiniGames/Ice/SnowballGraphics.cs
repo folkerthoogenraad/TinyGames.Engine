@@ -5,12 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TinyGames.Engine.Graphics;
+using TinyGames.Engine.Scenes;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    public class SnowballGraphics
+    public class SnowballGraphics : ISceneComponent
     {
-        public Sprite Indicator;
         public Sprite Sprite;
         public Sprite Shadow;
 
@@ -20,7 +20,6 @@ namespace PinguinGame.MiniGames.Ice
         {
             var texture = content.Load<Texture2D>("Sprites/Ice/IceGameplayElements");
 
-            Indicator = new Sprite(texture, new Rectangle(0, 0, 8, 8)).CenterOrigin();
             Sprite = new Sprite(texture, new Rectangle(8, 0, 8, 8)).CenterOrigin();
             Shadow = new Sprite(texture, new Rectangle(8, 8, 8, 8)).CenterOrigin();
 
@@ -29,6 +28,25 @@ namespace PinguinGame.MiniGames.Ice
                 new Sprite(texture, new Rectangle(64 + 16, 0, 16, 16)).CenterOrigin(),
                 new Sprite(texture, new Rectangle(64 + 32, 0, 16, 16)).CenterOrigin(),
                 new Sprite(texture, new Rectangle(64 + 48, 0, 16, 16)).CenterOrigin());
+        }
+
+        // ======================================== // 
+        // Scene component stuff
+        // ======================================== // 
+        public void AfterUpdate(float delta)
+        {
+        }
+
+        public void BeforeUpdate(float delta)
+        {
+        }
+
+        public void Destroy()
+        {
+        }
+
+        public void Init(Scene scene)
+        {
         }
     }
 }

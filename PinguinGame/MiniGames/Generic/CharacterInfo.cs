@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PinguinGame.MiniGames.Ice;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using TinyGames.Engine.Graphics;
@@ -11,5 +12,6 @@ namespace PinguinGame.MiniGames.Generic
         public string Identifier { get; set; }
         public Sprite Icon { get; set; }
         public CharacterGraphics Graphics { get; set; }
+        public CharacterSound Sound { get; set; }
     }
 }

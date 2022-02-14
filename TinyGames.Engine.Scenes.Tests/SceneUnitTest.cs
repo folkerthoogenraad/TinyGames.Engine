@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tinygames.Engine.Scenes;
+using TinyGames.Engine.Scenes;
 using System.Linq;
 
 namespace TinyGames.Engine.Scenes.Tests

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Tinygames.Engine.Scenes;
+using TinyGames.Engine.Scenes;
 
 namespace TinyGames.Engine.Scenes.Tests
 {
