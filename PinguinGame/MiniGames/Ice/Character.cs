@@ -14,9 +14,9 @@ using PinguinGame.Graphics;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    [RequireSceneComponent(typeof(SceneGraphics))]
-    [RequireSceneComponent(typeof(Walkables))]
-    [RequireSceneComponent(typeof(IceGameUIGraphics))]
+    [RequireSceneBehaviour(typeof(SceneGraphics))]
+    [RequireSceneBehaviour(typeof(Walkables))]
+    [RequireSceneBehaviour(typeof(IceGameUIGraphics))]
     public class Character : GameObject, IDrawable2D
     {
         private CharacterState _state { get; set; }
@@ -87,11 +87,11 @@ namespace PinguinGame.MiniGames.Ice
         {
             base.Init();
 
-            var sceneGraphics = Scene.GetComponent<SceneGraphics>();
+            var sceneGraphics = Scene.GetBehaviour<SceneGraphics>();
             sceneGraphics.AddDrawable(this);
 
-            Walkables = Scene.GetComponent<Walkables>();
-            UIGraphics = Scene.GetComponent<IceGameUIGraphics>();
+            Walkables = Scene.GetBehaviour<Walkables>();
+            UIGraphics = Scene.GetBehaviour<IceGameUIGraphics>();
         }
 
         public void Update(CharacterInput input, float delta)
@@ -163,7 +163,7 @@ namespace PinguinGame.MiniGames.Ice
         {
             Sound.StopAll();
 
-            var sceneGraphics = Scene.GetComponent<SceneGraphics>();
+            var sceneGraphics = Scene.GetBehaviour<SceneGraphics>();
             sceneGraphics.RemoveDrawable(this);
         }
     }

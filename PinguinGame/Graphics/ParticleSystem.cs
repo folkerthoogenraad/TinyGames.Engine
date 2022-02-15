@@ -8,7 +8,7 @@ using TinyGames.Engine.Scenes.Extensions;
 
 namespace PinguinGame.Graphics
 {
-    public class ParticleSystem : ISceneComponent, IDrawable2D
+    public class ParticleSystem : ISceneBehaviour, IDrawable2D
     {
         public List<Particle> Particles;
 
@@ -37,7 +37,7 @@ namespace PinguinGame.Graphics
         // ======================================== // 
         public void Init(Scene scene)
         {
-            var graphics = scene.GetComponent<SceneGraphics>();
+            var graphics = scene.GetBehaviour<SceneGraphics>();
             graphics.AddDrawable(this);
         }
 

@@ -14,7 +14,7 @@ namespace PinguinGame.MiniGames.Ice
         public Vector2 Velocity;
     }
 
-    public class Walkables : ISceneComponent
+    public class Walkables : ISceneBehaviour
     {
         public IceLevel Level { get; set; }
 
@@ -49,7 +49,13 @@ namespace PinguinGame.MiniGames.Ice
         public void BeforeUpdate(float delta)
         {
         }
+    }
 
-
+    public static class WalkablesExtensions
+    {
+        public static Walkables GetWalkables(this Scene scene)
+        {
+            return scene.GetBehaviour<Walkables>();
+        }
     }
 }

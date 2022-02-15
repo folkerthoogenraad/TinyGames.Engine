@@ -21,6 +21,8 @@ namespace PinguinGame.Screens
 {
     public class InGameIceScreen : Screen
     {
+        public IServiceProvider Services { get; }
+
         private readonly PlayerInfo[] _players;
 
         private readonly IInputService _inputService;
@@ -46,8 +48,9 @@ namespace PinguinGame.Screens
             }
         }
 
-        public InGameIceScreen(IScreenService screens, IInputService inputService, IMusicService music, IUISoundService uiSoundService, PlayerInfo[] players, LevelInfo level)
+        public InGameIceScreen(IServiceProvider services, IScreenService screens, IInputService inputService, IMusicService music, IUISoundService uiSoundService, PlayerInfo[] players, LevelInfo level)
         {
+            Services = services;
             _players = players;
             _inputService = inputService;
             _screens = screens;
@@ -60,7 +63,7 @@ namespace PinguinGame.Screens
         {
             base.Init(device, content);
 
-            World = new IceGame(content, device, content.LoadIceLevel(_level.File), _players, new IceInput(_inputService), _uiSoundService, _screens);
+            World = new IceGame(Services, content, device, content.LoadIceLevel(_level.File), _players, new IceInput(_inputService), _uiSoundService, _screens);
             World.Camera = Camera;
 
             State = new PreGameState();

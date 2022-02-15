@@ -5,7 +5,7 @@ using TinyGames.Engine.Graphics;
 
 namespace TinyGames.Engine.Scenes.Extensions
 {
-    public class SceneGraphics : ISceneComponent
+    public class SceneGraphics : ISceneBehaviour
     {
         private List<IDrawable2D> _drawables;
 
@@ -46,6 +46,14 @@ namespace TinyGames.Engine.Scenes.Extensions
         public void RemoveDrawable(IDrawable2D drawable)
         {
             _drawables.Remove(drawable);
+        }
+    }
+
+    public static class SceneGraphicsExtensions
+    {
+        public static SceneGraphics GetSceneGraphics(this Scene scene)
+        {
+            return scene.GetBehaviour<SceneGraphics>();
         }
     }
 }

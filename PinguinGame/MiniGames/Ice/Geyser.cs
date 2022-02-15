@@ -31,7 +31,7 @@ namespace PinguinGame.MiniGames.Ice
         {
             base.Init();
 
-            System = Scene.GetComponent<ParticleSystem>();
+            System = Scene.GetBehaviour<ParticleSystem>();
         }
 
         public override void Update(float delta)

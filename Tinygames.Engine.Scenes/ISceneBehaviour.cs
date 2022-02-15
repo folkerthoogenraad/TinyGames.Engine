@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TinyGames.Engine.Scenes
 {
-    public interface ISceneComponent
+    public interface ISceneBehaviour
     {
         public void Init(Scene scene);
 

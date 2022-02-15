@@ -5,11 +5,11 @@ using System.Text;
 namespace TinyGames.Engine.Scenes
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = true)]
-    public class RequireSceneComponent : Attribute
+    public class RequireSceneBehaviour : Attribute
     {
         public Type Type { get; }
 
-        public RequireSceneComponent(Type type)
+        public RequireSceneBehaviour(Type type)
         {
             Type = type;
         }

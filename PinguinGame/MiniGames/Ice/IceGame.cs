@@ -48,7 +48,7 @@ namespace PinguinGame.MiniGames.Ice
         public SceneGraphics SceneGraphics { get; set; }
         public ParticleSystem ParticleSystem { get; set; }
 
-        public IceGame(ContentManager content, GraphicsDevice device, IceLevel level, PlayerInfo[] players, IMiniGameInputService<CharacterInput> inputService, IUISoundService uiSoundService, IScreenService screenservice) // Probably should have a levelservice or something
+        public IceGame(IServiceProvider services, ContentManager content, GraphicsDevice device, IceLevel level, PlayerInfo[] players, IMiniGameInputService<CharacterInput> inputService, IUISoundService uiSoundService, IScreenService screenservice) // Probably should have a levelservice or something
         {
             Content = content;
 
@@ -73,13 +73,13 @@ namespace PinguinGame.MiniGames.Ice
 
             Random = new Random();
 
-            Scene = new Scene();
+            Scene = new Scene(services);
 
-            SceneGraphics = Scene.AddComponent(new SceneGraphics());
-            ParticleSystem  = Scene.AddComponent(new ParticleSystem());
-            Scene.AddComponent(new Walkables(Level));
-            Scene.AddComponent(new SnowballGraphics(content));
-            Scene.AddComponent(new IceGameUIGraphics(content));
+            SceneGraphics = Scene.AddBehaviour(new SceneGraphics());
+            ParticleSystem  = Scene.AddBehaviour(new ParticleSystem());
+            Scene.AddBehaviour(new Walkables(Level));
+            Scene.AddBehaviour(new SnowballGraphics(content));
+            Scene.AddBehaviour(new IceGameUIGraphics(content));
 
             Scene.Init();
 

@@ -8,25 +8,28 @@ namespace TinyGames.Engine.Scenes
     {
         public bool Initialized { get; private set; }
 
-        private List<ISceneComponent> _components;
+        private List<ISceneBehaviour> _behaviours;
         private List<GameObject> _gameObjects;
         private int _lastIndex = 0;
 
         public IEnumerable<GameObject> GameObjects => _gameObjects.Where(x => !x.Destroyed && (x.Initialized || !Initialized));
-        public IEnumerable<ISceneComponent> Components => _components;
+        public IEnumerable<ISceneBehaviour> Behaviours => _behaviours;
+        public IServiceProvider Services { get; }
 
-        public Scene()
+        public Scene(IServiceProvider services)
         {
             _gameObjects = new List<GameObject>();
-            _components = new List<ISceneComponent>();
+            _behaviours = new List<ISceneBehaviour>();
             _lastIndex = 0;
+
+            Services = services;
         }
 
         public virtual void Init()
         {
             if (Initialized) throw new InvalidOperationException("Scene is already initialized.");
 
-            foreach(var component in _components) component.Init(this);
+            foreach(var component in _behaviours) component.Init(this);
             
             Initialized = true;
             InitGameObjects();
@@ -36,7 +39,7 @@ namespace TinyGames.Engine.Scenes
         {
             Sync();
 
-            foreach (var component in _components) component.BeforeUpdate(delta);
+            foreach (var component in _behaviours) component.BeforeUpdate(delta);
 
             // This "ToArray" is pretty inefficient (full copy), but we keep our current state throughout
             foreach (var obj in _gameObjects.ToArray().Where(x => !x.Destroyed && x.Initialized)) 
@@ -44,7 +47,7 @@ namespace TinyGames.Engine.Scenes
                 obj.Update(delta);
             }
 
-            foreach (var component in _components) component.AfterUpdate(delta);
+            foreach (var component in _behaviours) component.AfterUpdate(delta);
 
             Sync();
         }
@@ -57,7 +60,7 @@ namespace TinyGames.Engine.Scenes
 
             DestroyGameObjects();
 
-            foreach (var component in _components) component.Destroy();
+            foreach (var component in _behaviours) component.Destroy();
 
             Initialized = false;
         }
@@ -70,11 +73,11 @@ namespace TinyGames.Engine.Scenes
 
         public void AddGameObject(GameObject obj)
         {
-            var requiredAttributes = obj.GetType().GetCustomAttributes(typeof(RequireSceneComponent), true).OfType<RequireSceneComponent>();
+            var requiredAttributes = obj.GetType().GetCustomAttributes(typeof(RequireSceneBehaviour), true).OfType<RequireSceneBehaviour>();
             
             foreach(var attribute in requiredAttributes)
             {
-                if (GetComponent(attribute.Type) == null)
+                if (GetBehaviour(attribute.Type) == null)
                 {
                     throw new ArgumentException("Scene does not contain the required scene components for this object to function.");
                 }
@@ -124,22 +127,22 @@ namespace TinyGames.Engine.Scenes
             return GameObjects.OfType<T>();
         }
 
-        public T AddComponent<T>(T t) where T : ISceneComponent
+        public T AddBehaviour<T>(T t) where T : ISceneBehaviour
         {
-            if (Initialized) throw new ArgumentException("Cannot add components after being initialized");
+            if (Initialized) throw new ArgumentException("Cannot add behaviours after being initialized");
 
-            _components.Add(t);
+            _behaviours.Add(t);
 
             return t;
         }
 
-        public T GetComponent<T>()
+        public T GetBehaviour<T>()
         {
-            return _components.OfType<T>().FirstOrDefault();
+            return _behaviours.OfType<T>().FirstOrDefault();
         }
-        public object GetComponent(Type type)
+        public object GetBehaviour(Type type)
         {
-            return _components.Where(x => x.GetType() == type).FirstOrDefault();
+            return _behaviours.Where(x => x.GetType() == type).FirstOrDefault();
         }
     }
 }

@@ -9,7 +9,7 @@ using TinyGames.Engine.Scenes;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    public class SnowballGraphics : ISceneComponent
+    public class SnowballGraphics : ISceneBehaviour
     {
         public Sprite Sprite;
         public Sprite Shadow;

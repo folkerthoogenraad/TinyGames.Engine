@@ -139,6 +139,7 @@ namespace PinguinGame
         public void ShowInGameScreen(PlayerInfo[] players, LevelInfo info)
         {
             Manager.Screen = new InGameIceScreen(
+                Services,
                 Services.GetService<IScreenService>(),
                 Services.GetService<IInputService>(),
                 Services.GetService<IMusicService>(),

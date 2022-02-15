@@ -9,7 +9,7 @@ using TinyGames.Engine.Scenes;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    public class IceGameUIGraphics : ISceneComponent
+    public class IceGameUIGraphics : ISceneBehaviour
     {
         public Sprite Heart { get; set; }
         public Sprite HeartOutline { get; set; }

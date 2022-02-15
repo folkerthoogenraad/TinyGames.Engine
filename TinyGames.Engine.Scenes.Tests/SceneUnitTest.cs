@@ -10,7 +10,7 @@ namespace TinyGames.Engine.Scenes.Tests
         [TestMethod]
         public void TestSceneIsInitialized()
         {
-            Scene scene = new Scene();
+            Scene scene = new Scene(null);
 
             Assert.IsFalse(scene.Initialized);
 
@@ -26,7 +26,7 @@ namespace TinyGames.Engine.Scenes.Tests
         [TestMethod]
         public void TestSceneAddGameObjects()
         {
-            Scene scene = new Scene();
+            Scene scene = new Scene(null);
 
             scene.AddGameObject(new GameObject());
             scene.AddGameObject(new GameObject());
@@ -42,7 +42,7 @@ namespace TinyGames.Engine.Scenes.Tests
         [TestMethod]
         public void TestSceneRemoveGameObjects()
         {
-            Scene scene = new Scene();
+            Scene scene = new Scene(null);
 
             var obj = new GameObject();
 
@@ -64,7 +64,7 @@ namespace TinyGames.Engine.Scenes.Tests
         [TestMethod]
         public void TestSceneAddGameObjectsAtRunning()
         {
-            Scene scene = new Scene();
+            Scene scene = new Scene(null);
 
             var obj = new GameObject();
 
@@ -91,7 +91,7 @@ namespace TinyGames.Engine.Scenes.Tests
         [TestMethod]
         public void TestUpdateCounts()
         {
-            Scene scene = new Scene();
+            Scene scene = new Scene(null);
 
             var obj1 = new UpdateCountTestGameObject();
             var obj2 = new UpdateCountTestGameObject();
@@ -113,7 +113,7 @@ namespace TinyGames.Engine.Scenes.Tests
         [TestMethod]
         public void TestAddGameObjectDuringUpdate()
         {
-            Scene scene = new Scene();
+            Scene scene = new Scene(null);
 
             var obj1 = new AddGameObjectDuringUpdateGameObject<GameObject>();
 
@@ -131,7 +131,7 @@ namespace TinyGames.Engine.Scenes.Tests
         [TestMethod]
         public void TestAddGameObjectDuringInit()
         {
-            Scene scene = new Scene();
+            Scene scene = new Scene(null);
 
             var obj1 = new AddGameObjectDuringInitGameObject<GameObject>();
 
@@ -148,7 +148,7 @@ namespace TinyGames.Engine.Scenes.Tests
         [TestMethod]
         public void TestFindGameObjectById()
         {
-            Scene scene = new Scene();
+            Scene scene = new Scene(null);
 
             var a = new GameObject();
             var b = new GameObject();
@@ -166,7 +166,7 @@ namespace TinyGames.Engine.Scenes.Tests
         [TestMethod]
         public void TestFindGameObjectById_IsNull()
         {
-            Scene scene = new Scene();
+            Scene scene = new Scene(null);
 
             Assert.IsNull(scene.FindGameObjectById(1));
         }
@@ -174,7 +174,7 @@ namespace TinyGames.Engine.Scenes.Tests
         [TestMethod]
         public void TestFindGameObjectById_Deleted()
         {
-            Scene scene = new Scene();
+            Scene scene = new Scene(null);
 
             var a = new GameObject();
             

@@ -10,9 +10,9 @@ using TinyGames.Engine.Scenes.Extensions;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    [RequireSceneComponent(typeof(SceneGraphics))]
-    [RequireSceneComponent(typeof(Walkables))]
-    [RequireSceneComponent(typeof(SnowballGraphics))]
+    [RequireSceneBehaviour(typeof(SceneGraphics))]
+    [RequireSceneBehaviour(typeof(Walkables))]
+    [RequireSceneBehaviour(typeof(SnowballGraphics))]
     public class Snowball : GameObject, IDrawable2D
     {
         public Vector2 Position { get; set; }
@@ -35,17 +35,17 @@ namespace PinguinGame.MiniGames.Ice
         {
             base.Init();
 
-            Walkables = Scene.GetComponent<Walkables>();
-            Graphics = Scene.GetComponent<SnowballGraphics>();
+            Walkables = Scene.GetBehaviour<Walkables>();
+            Graphics = Scene.GetBehaviour<SnowballGraphics>();
 
-            var sceneGraphics = Scene.GetComponent<SceneGraphics>();
+            var sceneGraphics = Scene.GetBehaviour<SceneGraphics>();
             sceneGraphics.AddDrawable(this);
         }
 
         public override void Destroy()
         {
             base.Destroy();
-            var sceneGraphics = Scene.GetComponent<SceneGraphics>();
+            var sceneGraphics = Scene.GetBehaviour<SceneGraphics>();
             sceneGraphics.RemoveDrawable(this);
         }
 
