@@ -41,14 +41,14 @@ namespace PinguinGame
         {
             base.Initialize();
 
-            _graphics.PreferredBackBufferWidth = 1280;
-            _graphics.PreferredBackBufferHeight = 720;
-            _graphics.ApplyChanges();
-
-            //_graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-            //_graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            //_graphics.IsFullScreen = true;
+            //_graphics.PreferredBackBufferWidth = 1280;
+            //_graphics.PreferredBackBufferHeight = 720;
             //_graphics.ApplyChanges();
+
+            _graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            _graphics.IsFullScreen = true;
+            _graphics.ApplyChanges();
 
 
             Services.AddService<IStorageSystem>(new StorageSystem(new DiskStorageProvider(Content.RootDirectory)));
@@ -76,9 +76,9 @@ namespace PinguinGame
                 player.CharacterInfo = Services.GetService<ICharactersService>().GetDefaultForPlayer(player);
             }
 
-            ShowMapSelectScreen(players);
+            // ShowMapSelectScreen(players);
             // ShowInGameScreen(players, Services.GetService<ILevelsService>().GetLevels().FirstOrDefault());
-            //ShowSplashScreen();
+            ShowSplashScreen();
             // ShowMenuScreen();
 
         }
