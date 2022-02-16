@@ -54,7 +54,7 @@ namespace PinguinGame.MiniGames.Ice
         public CharacterBounce Bounce { get; private set; }
         public CharacterGraphics Graphics { get; private set; }
         public CharacterSnowballGathering SnowballGathering { get; private set; }
-        public CharacterSound Sound { get; private set; }
+        public CharacterSoundComponent Sound { get; private set; }
 
 
         public Vector2 Position
@@ -73,7 +73,7 @@ namespace PinguinGame.MiniGames.Ice
             Level = level;
             Player = player;
             Graphics = player.CharacterInfo.Graphics;
-            Sound = player.CharacterInfo.Sound;
+            Sound = new CharacterSoundComponent(player.CharacterInfo.Sound);
 
             Physics = new CharacterPhysics(position);
             Settings = new CharacterSettings();
