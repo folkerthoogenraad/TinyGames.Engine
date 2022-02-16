@@ -8,6 +8,7 @@ namespace PinguinGame.MiniGames.Ice
     public class CharacterBounce
     {
         public float Bouncyness { get; set; } = 0.5f;
+        public float GroundHeight { get; set; }
         public float Height { get; set; }
         public float Velocity { get; set; }
         public float Gravity { get; set; } = 128;
@@ -19,9 +20,18 @@ namespace PinguinGame.MiniGames.Ice
             Velocity += Gravity * delta;
             Height -= Velocity * delta;
 
-            if(Height < 0)
+            if(Height < GroundHeight)
             {
-                Height = 0;
+                Height = GroundHeight;
+                Velocity = -Velocity * Bouncyness;
+            }
+        }
+
+        public void ClampPosition()
+        {
+            if (Height < GroundHeight)
+            {
+                Height = GroundHeight;
                 Velocity = -Velocity * Bouncyness;
             }
         }

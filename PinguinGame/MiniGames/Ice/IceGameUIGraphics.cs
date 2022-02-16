@@ -59,4 +59,9 @@ namespace PinguinGame.MiniGames.Ice
         {
         }
     }
+
+    public static class IceGameUIGraphicsExtensions
+    {
+        public static IceGameUIGraphics GetIceGameUIGraphics(this Scene scene) => scene.GetBehaviour<IceGameUIGraphics>();
+    }
 }

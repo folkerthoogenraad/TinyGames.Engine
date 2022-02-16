@@ -38,7 +38,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4A904C60-3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyGames.Engine.Scenes.Tests", "TinyGames.Engine.Scenes.Tests\TinyGames.Engine.Scenes.Tests.csproj", "{77756FA4-6058-4194-BCE7-50AC7001DF4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyGames.Engine.Scenes.Extensions", "TinyGames.Engine.Scenes.Extensions\TinyGames.Engine.Scenes.Extensions.csproj", "{192DE8DF-CB96-404A-B3CD-79F45F7904DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyGames.Engine.Scenes.Extensions", "TinyGames.Engine.Scenes.Extensions\TinyGames.Engine.Scenes.Extensions.csproj", "{192DE8DF-CB96-404A-B3CD-79F45F7904DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmmaGame", "EmmaGame\EmmaGame.csproj", "{959FCD22-7841-49BC-9FF5-1C06E584A962}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +133,12 @@ Global
 		{192DE8DF-CB96-404A-B3CD-79F45F7904DE}.DebugNoContent|Any CPU.Build.0 = Debug|Any CPU
 		{192DE8DF-CB96-404A-B3CD-79F45F7904DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{192DE8DF-CB96-404A-B3CD-79F45F7904DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{959FCD22-7841-49BC-9FF5-1C06E584A962}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{959FCD22-7841-49BC-9FF5-1C06E584A962}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{959FCD22-7841-49BC-9FF5-1C06E584A962}.DebugNoContent|Any CPU.ActiveCfg = Debug|Any CPU
+		{959FCD22-7841-49BC-9FF5-1C06E584A962}.DebugNoContent|Any CPU.Build.0 = Debug|Any CPU
+		{959FCD22-7841-49BC-9FF5-1C06E584A962}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{959FCD22-7841-49BC-9FF5-1C06E584A962}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,6 +158,7 @@ Global
 		{E6A0A17E-E6DB-42C8-861B-1FDD913FB606} = {90BE5121-88A7-414E-B3F6-1FF91CA6D67B}
 		{77756FA4-6058-4194-BCE7-50AC7001DF4B} = {4A904C60-3FCA-438F-A715-E466717FD3D6}
 		{192DE8DF-CB96-404A-B3CD-79F45F7904DE} = {90BE5121-88A7-414E-B3F6-1FF91CA6D67B}
+		{959FCD22-7841-49BC-9FF5-1C06E584A962} = {0BC05661-CA82-489E-B288-0A65EFBC73A4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {20485DC7-800C-41DB-B866-F04420DA72BC}

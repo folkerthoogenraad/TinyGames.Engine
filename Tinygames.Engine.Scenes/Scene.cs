@@ -6,6 +6,8 @@ namespace TinyGames.Engine.Scenes
 {
     public class Scene
     {
+        public delegate void SceneGameObjectDelegate(Scene scene, GameObject obj);
+
         public bool Initialized { get; private set; }
 
         private List<ISceneBehaviour> _behaviours;
@@ -15,6 +17,9 @@ namespace TinyGames.Engine.Scenes
         public IEnumerable<GameObject> GameObjects => _gameObjects.Where(x => !x.Destroyed && (x.Initialized || !Initialized));
         public IEnumerable<ISceneBehaviour> Behaviours => _behaviours;
         public IServiceProvider Services { get; }
+
+        public event SceneGameObjectDelegate OnGameObjectCreated;
+        public event SceneGameObjectDelegate OnGameObjectDestroyed;
 
         public Scene(IServiceProvider services)
         {
@@ -102,6 +107,7 @@ namespace TinyGames.Engine.Scenes
                 foreach (var obj in _gameObjects.Where(x => !x.Destroyed && !x.Initialized).ToArray())
                 {
                     obj.Init();
+                    OnGameObjectCreated?.Invoke(this, obj);
                 }
             } while (toInit.Length > 0);
         }
@@ -112,6 +118,7 @@ namespace TinyGames.Engine.Scenes
             foreach (var obj in _gameObjects.Where(x => x.Destroyed && x.Initialized))
             {
                 obj.Destroy();
+                OnGameObjectDestroyed?.Invoke(this, obj);
             }
 
             _gameObjects.RemoveAll(x => x.Destroyed);

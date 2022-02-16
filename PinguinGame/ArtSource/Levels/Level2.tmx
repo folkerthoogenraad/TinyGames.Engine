@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="8">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="33">
  <editorsettings>
   <export target="../../Content/Levels/Ice/Level2.json" format="json"/>
  </editorsettings>
@@ -33,6 +33,83 @@
    <point/>
   </object>
   <object id="7" type="Spawn" x="192" y="104">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="Details">
+  <object id="8" type="Grass" x="97.5742" y="62.3835">
+   <point/>
+  </object>
+  <object id="9" type="Grass" x="120.857" y="57.5848">
+   <point/>
+  </object>
+  <object id="10" type="Grass" x="136.497" y="67.36">
+   <point/>
+  </object>
+  <object id="11" type="Grass" x="145.561" y="87.4435">
+   <point/>
+  </object>
+  <object id="12" type="Grass" x="143.073" y="113.57">
+   <point/>
+  </object>
+  <object id="13" type="Grass" x="136.319" y="134.187">
+   <point/>
+  </object>
+  <object id="14" type="Grass" x="122.101" y="141.118">
+   <point/>
+  </object>
+  <object id="15" type="Grass" x="149.827" y="137.564">
+   <point/>
+  </object>
+  <object id="16" type="Grass" x="97.041" y="112.859">
+   <point/>
+  </object>
+  <object id="17" type="Grass" x="126.367" y="116.058">
+   <point/>
+  </object>
+  <object id="18" type="Grass" x="99.8847" y="74.2915">
+   <point/>
+  </object>
+  <object id="19" type="Grass" x="125.656" y="67.8931">
+   <point/>
+  </object>
+  <object id="20" type="Grass" x="111.437" y="91.3536">
+   <point/>
+  </object>
+  <object id="21" type="Grass" x="135.431" y="79.9788">
+   <point/>
+  </object>
+  <object id="22" type="Grass" x="167.778" y="137.03">
+   <point/>
+  </object>
+  <object id="23" type="Grass" x="190.705" y="141.296">
+   <point/>
+  </object>
+  <object id="24" type="Grass" x="216.121" y="127.966">
+   <point/>
+  </object>
+  <object id="25" type="Grass" x="211.855" y="95.9746">
+   <point/>
+  </object>
+  <object id="26" type="Grass" x="192.127" y="116.058">
+   <point/>
+  </object>
+  <object id="27" type="Grass" x="173.11" y="85.844">
+   <point/>
+  </object>
+  <object id="28" type="Grass" x="191.238" y="69.4927">
+   <point/>
+  </object>
+  <object id="29" type="Grass" x="172.754" y="95.086">
+   <point/>
+  </object>
+  <object id="30" type="Tree" x="160.313" y="55.0965">
+   <point/>
+  </object>
+  <object id="31" type="Tree" x="107.172" y="120.146">
+   <point/>
+  </object>
+  <object id="32" type="Tree" x="177.198" y="109.482">
    <point/>
   </object>
  </objectgroup>

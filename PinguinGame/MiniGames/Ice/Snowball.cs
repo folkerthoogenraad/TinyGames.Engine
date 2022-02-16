@@ -37,16 +37,6 @@ namespace PinguinGame.MiniGames.Ice
 
             Walkables = Scene.GetBehaviour<Walkables>();
             Graphics = Scene.GetBehaviour<SnowballGraphics>();
-
-            var sceneGraphics = Scene.GetBehaviour<SceneGraphics>();
-            sceneGraphics.AddDrawable(this);
-        }
-
-        public override void Destroy()
-        {
-            base.Destroy();
-            var sceneGraphics = Scene.GetBehaviour<SceneGraphics>();
-            sceneGraphics.RemoveDrawable(this);
         }
 
         public override void Update(float delta)

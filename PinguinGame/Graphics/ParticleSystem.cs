@@ -38,7 +38,7 @@ namespace PinguinGame.Graphics
         public void Init(Scene scene)
         {
             var graphics = scene.GetBehaviour<SceneGraphics>();
-            graphics.AddDrawable(this);
+            graphics.AddManualDrawable(this);
         }
 
         public void BeforeUpdate(float delta)

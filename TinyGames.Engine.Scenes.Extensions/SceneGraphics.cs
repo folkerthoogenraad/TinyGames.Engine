@@ -7,6 +7,7 @@ namespace TinyGames.Engine.Scenes.Extensions
 {
     public class SceneGraphics : ISceneBehaviour
     {
+        public Scene Scene { get; set; }
         private List<IDrawable2D> _drawables;
 
         public SceneGraphics()
@@ -16,12 +17,16 @@ namespace TinyGames.Engine.Scenes.Extensions
 
         public void Init(Scene scene)
         {
-            // Do nothing
+            Scene = scene;
+
+            Scene.OnGameObjectCreated += OnGameObjectCreated;
+            Scene.OnGameObjectDestroyed += OnGameObjectDestroyed;
         }
 
         public void Destroy()
         {
-            // Do nothing
+            Scene.OnGameObjectCreated -= OnGameObjectCreated;
+            Scene.OnGameObjectDestroyed -= OnGameObjectDestroyed;
         }
 
         public void AfterUpdate(float delta)
@@ -34,16 +39,25 @@ namespace TinyGames.Engine.Scenes.Extensions
             // Do nothing
         }
 
+        public void OnGameObjectCreated(Scene scene, GameObject obj)
+        {
+            if (obj is IDrawable2D) AddManualDrawable(obj as IDrawable2D);
+        }
+        public void OnGameObjectDestroyed(Scene scene, GameObject obj)
+        {
+            if (obj is IDrawable2D) RemoveManualDrawable(obj as IDrawable2D);
+        }
+
         public void Draw(Graphics2D graphics)
         {
             foreach (var drawable in _drawables) drawable.Draw(graphics);
         }
 
-        public void AddDrawable(IDrawable2D drawable)
+        public void AddManualDrawable(IDrawable2D drawable)
         {
             _drawables.Add(drawable);
         }
-        public void RemoveDrawable(IDrawable2D drawable)
+        public void RemoveManualDrawable(IDrawable2D drawable)
         {
             _drawables.Remove(drawable);
         }

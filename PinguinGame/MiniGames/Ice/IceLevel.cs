@@ -15,6 +15,9 @@ namespace PinguinGame.MiniGames.Ice
         public IceBlock[] Blocks { get; set; }
         public Vector2[] Spawns { get; set; }
         public Vector2[] Geysers { get; set; }
+        public Vector2[] Grass { get; set; }
+        public Vector2[] Trees { get; set; }
+        public (Vector2 Position, Vector2 Size)[] Bridges { get; set; }
 
         public IceLevel()
         {

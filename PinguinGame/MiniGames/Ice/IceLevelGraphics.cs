@@ -279,7 +279,7 @@ namespace PinguinGame.MiniGames.Ice
                 var color = Settings.SnowColor;
 
                 if (block.Highlighted) color = Settings.SnowColorHighlighted;
-                if (block.Height < 0) color = Settings.SideWaterColor;
+                //if (block.Height < 0) color = Settings.SideWaterColor;
 
                 target.DrawSpriteWithDepths(sprite, 
                     offset - new Vector2(0, height), 

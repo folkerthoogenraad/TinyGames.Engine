@@ -45,7 +45,7 @@ float4 MainPS(VertexShaderOutput input) : SV_Target
 
 	clip(textureColor.a - 0.1f);
 
-	if(textureColor.r > WaterLine) return AboveWaterColor;
+	if(textureColor.r + 1000 > WaterLine) return AboveWaterColor;
 	return BelowWaterColor;
 }
 

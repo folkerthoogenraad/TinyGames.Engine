@@ -14,7 +14,7 @@ using PinguinGame.Graphics;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    [RequireSceneBehaviour(typeof(SceneGraphics))]
+    [RequireSceneBehaviour(typeof(SceneGraphics))] // This it doens't need :)
     [RequireSceneBehaviour(typeof(Walkables))]
     [RequireSceneBehaviour(typeof(IceGameUIGraphics))]
     public class Character : GameObject, IDrawable2D
@@ -51,7 +51,7 @@ namespace PinguinGame.MiniGames.Ice
         public PlayerInfo Player { get; private set; }
         public CharacterPhysics Physics { get; set; }
         public CharacterSettings Settings { get; private set; }
-        public CharacterBounce Bounce { get; private set; } // TODO merge this with the groundheight thing
+        public CharacterBounce Bounce { get; private set; }
         public CharacterGraphics Graphics { get; private set; }
         public CharacterSnowballGathering SnowballGathering { get; private set; }
         public CharacterSound Sound { get; private set; }
@@ -62,7 +62,7 @@ namespace PinguinGame.MiniGames.Ice
             get => Physics.Position;
             set => Physics.Position = value;
         }
-        public float Height => -Bounce.Offset.Y + GroundHeight;
+        public float Height => -Bounce.Offset.Y;
         public Vector2 Facing => Physics.Facing;
         public float GroundHeight { get; set; } = 0;
 
@@ -86,9 +86,6 @@ namespace PinguinGame.MiniGames.Ice
         public override void Init()
         {
             base.Init();
-
-            var sceneGraphics = Scene.GetBehaviour<SceneGraphics>();
-            sceneGraphics.AddDrawable(this);
 
             Walkables = Scene.GetBehaviour<Walkables>();
             UIGraphics = Scene.GetBehaviour<IceGameUIGraphics>();
@@ -132,15 +129,15 @@ namespace PinguinGame.MiniGames.Ice
             if (IsDrowning)
             {
                 GroundHeight = 0;
+                Bounce.GroundHeight = GroundHeight;
                 return;
             }
 
-            if (GroundHeight > result.Height)
-            {
-                Bounce.Height += GroundHeight - result.Height;
-            }
-
             GroundHeight = result.Height;
+            Bounce.GroundHeight = GroundHeight;
+
+            Bounce.ClampPosition();
+
             Grounded = result.Solid;
         }
         public void MoveWithGround(float delta)
@@ -162,9 +159,6 @@ namespace PinguinGame.MiniGames.Ice
         public override void Destroy()
         {
             Sound.StopAll();
-
-            var sceneGraphics = Scene.GetBehaviour<SceneGraphics>();
-            sceneGraphics.RemoveDrawable(this);
         }
     }
 }

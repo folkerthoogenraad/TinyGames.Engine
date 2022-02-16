@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TinyGames.Engine.Maths;
+using TinyGames.Engine.Util;
 
 namespace TinyGames.Engine.Extensions
 {
@@ -24,6 +25,11 @@ namespace TinyGames.Engine.Extensions
         public static float NextAngle(this Random random)
         {
             return (float)random.NextDouble() * 360;
+        }
+
+        public static T Choose<T>(this Random random, params T[] input)
+        {
+            return input.Random(random);
         }
 
         public static Vector2 NextPointInBox(this Random random, float minX, float maxX, float minY, float maxY)

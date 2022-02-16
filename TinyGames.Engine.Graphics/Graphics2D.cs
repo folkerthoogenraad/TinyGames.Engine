@@ -8,7 +8,12 @@ using TinyGames.Engine.Maths;
 
 namespace TinyGames.Engine.Graphics
 {
-
+    public enum BlendMode
+    {
+        Normal,
+        Additive,
+        Multiply
+    }
     public class Graphics2D : IDisposable
     {
         public GraphicsDevice Device { get; set; }
@@ -18,11 +23,13 @@ namespace TinyGames.Engine.Graphics
         private Effect CurrentEffect = null;
         private Effect DefaultEffect = null;
 
-        private Texture2D Pixel;
+        public Texture2D Pixel;
         private RenderTarget2D RenderTarget;
 
-        private DepthStencilState DefaultDepthStencilState;
-        private BlendState DefaultBlendState;
+        private DepthStencilState DepthStencilState;
+        private BlendState BlendState;
+
+        private BlendMode CurrentBlendMode;
 
         private Matrix ProjectionMatrix;
 
@@ -33,6 +40,7 @@ namespace TinyGames.Engine.Graphics
         private Matrix Matrix;
 
         private Texture2D[] Textures;
+
 
         public bool Drawing { get; private set; }
 
@@ -56,7 +64,7 @@ namespace TinyGames.Engine.Graphics
             TransformStack = new Stack<Matrix>();
             AlphaStack= new Stack<float>();
             
-            DefaultDepthStencilState = new DepthStencilState
+            DepthStencilState = new DepthStencilState
             {
                 StencilEnable = true,
                 StencilFunction = CompareFunction.Always,
@@ -66,7 +74,7 @@ namespace TinyGames.Engine.Graphics
             };
 
 
-            DefaultBlendState = new BlendState()
+            BlendState = new BlendState()
             {
                 AlphaBlendFunction = BlendFunction.Add,
                 AlphaSourceBlend = Blend.One,
@@ -494,8 +502,8 @@ namespace TinyGames.Engine.Graphics
             Device.SamplerStates[0] = SamplerState.PointWrap;
             Device.RasterizerState = RasterizerState.CullNone;
             
-            Device.DepthStencilState = DefaultDepthStencilState;
-            Device.BlendState = DefaultBlendState;
+            Device.DepthStencilState = DepthStencilState;
+            Device.BlendState = BlendState;
 
             var basicEffect = CurrentEffect as BasicEffect;
             var alphaTest = CurrentEffect as AlphaTestEffect;
@@ -562,6 +570,60 @@ namespace TinyGames.Engine.Graphics
         public void ResetRenderTarget()
         {
             SetRenderTarget(null);
+        }
+
+        public void SetBlendMode(BlendMode mode)
+        {
+            if (CurrentBlendMode == mode) return;
+
+            CurrentBlendMode = mode;
+
+            Flush();
+
+            switch (mode)
+            {
+                case BlendMode.Normal:
+                    BlendState = new BlendState()
+                    {
+                        AlphaBlendFunction = BlendFunction.Add,
+                        AlphaSourceBlend = Blend.One,
+                        AlphaDestinationBlend = Blend.InverseSourceAlpha,
+
+                        ColorBlendFunction = BlendFunction.Add,
+                        ColorSourceBlend = Blend.SourceAlpha,
+                        ColorDestinationBlend = Blend.InverseSourceAlpha
+                    };
+
+                    break;
+
+                case BlendMode.Additive:
+                    BlendState = new BlendState()
+                    {
+                        AlphaBlendFunction = BlendFunction.Add,
+                        AlphaSourceBlend = Blend.One,
+                        AlphaDestinationBlend = Blend.InverseSourceAlpha,
+
+                        ColorBlendFunction = BlendFunction.Add,
+                        ColorSourceBlend = Blend.One,
+                        ColorDestinationBlend = Blend.One
+                    };
+
+                    break;
+
+                case BlendMode.Multiply:
+                    BlendState = new BlendState()
+                    {
+                        AlphaBlendFunction = BlendFunction.Add,
+                        AlphaSourceBlend = Blend.One,
+                        AlphaDestinationBlend = Blend.InverseSourceAlpha,
+
+                        ColorBlendFunction = BlendFunction.Add,
+                        ColorSourceBlend = Blend.DestinationColor,
+                        ColorDestinationBlend = Blend.Zero,
+                    };
+
+                    break;
+            }
         }
 
         private void Vertex(Vector3 pos, Vector2 uv, Color blend)

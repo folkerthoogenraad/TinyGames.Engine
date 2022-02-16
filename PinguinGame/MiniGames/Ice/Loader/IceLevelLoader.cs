@@ -25,6 +25,9 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             var blocks = new List<IceBlock>();
             var spawns = new List<Vector2>();
             var geysers = new List<Vector2>();
+            var grass = new List<Vector2>();
+            var trees = new List<Vector2>();
+            var bridges = new List<(Vector2 Position, Vector2 Size)>();
 
             foreach (var layer in levelIO.Layers)
             {
@@ -60,11 +63,26 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
                 {
                     geysers.Add(obj.Position - center);
                 }
+                foreach (var obj in layer.Objects.Where(x => x.Type == "Bridge"))
+                {
+                    bridges.Add((obj.Position - center, obj.Size));
+                }
+                foreach (var obj in layer.Objects.Where(x => x.Type == "Grass"))
+                {
+                    grass.Add(obj.Position - center);
+                }
+                foreach (var obj in layer.Objects.Where(x => x.Type == "Tree"))
+                {
+                    trees.Add(obj.Position - center);
+                }
             }
 
             level.Blocks = blocks.ToArray();
             level.Spawns = spawns.ToArray();
             level.Geysers = geysers.ToArray();
+            level.Bridges = bridges.ToArray();
+            level.Grass = grass.ToArray();
+            level.Trees = trees.ToArray();
 
             return level;
         }

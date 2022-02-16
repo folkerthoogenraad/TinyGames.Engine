@@ -78,10 +78,9 @@ namespace PinguinGame.MiniGames.Ice
             SceneGraphics = Scene.AddBehaviour(new SceneGraphics());
             ParticleSystem  = Scene.AddBehaviour(new ParticleSystem());
             Scene.AddBehaviour(new Walkables(Level));
-            Scene.AddBehaviour(new SnowballGraphics(content));
-            Scene.AddBehaviour(new IceGameUIGraphics(content));
-
-            Scene.Init();
+            Scene.AddBehaviour(new SnowballGraphics(content)); // TODO this shouldn't be a seperate class I think.
+            Scene.AddBehaviour(UIGraphics);
+            Scene.AddBehaviour(new IceGameGraphics(content));
 
 
             // This is loading the Geysers, not really needed.
@@ -93,12 +92,27 @@ namespace PinguinGame.MiniGames.Ice
                 new Sprite(effectsTexture, new Rectangle(48, 48, 16, 32)).SetOrigin(8, 32)
                 ).SetFrameRate(2);
 
-            var geysers = level.Geysers.Select(x => new Geyser(x, geyserAnimation)).ToList();
-            
-            foreach (var g in geysers)
+            foreach (var g in level.Geysers.Select(x => new Geyser(x, geyserAnimation)))
             {
                 Scene.AddGameObject(g);
             }
+
+            foreach (var bridge in level.Bridges.Select(x => new Bridge(x.Position, x.Size)))
+            {
+                Scene.AddGameObject(bridge);
+            }
+
+            foreach (var grass in level.Grass.Select(x => new Grass(x)))
+            {
+                Scene.AddGameObject(grass);
+            }
+            foreach (var grass in level.Trees.Select(x => new Tree(x)))
+            {
+                Scene.AddGameObject(grass);
+            }
+
+            // Initialize the scene with all objects :)
+            Scene.Init();
         }
 
         public void AddSnowball(Snowball ball)
@@ -262,9 +276,7 @@ namespace PinguinGame.MiniGames.Ice
 
             foreach(var p in Characters.Where(x => !x.IsDrowning))
             {
-                var block = Level.GetIceBlockForPosition(p.Position);
-                
-                if(block == null || !block.Solid && p.Height < 1)
+                if(!p.Grounded && p.Height < 1)
                 {
                     p.Drown();
                     result.Add(p);
@@ -342,11 +354,17 @@ namespace PinguinGame.MiniGames.Ice
         
         public void DrawWorld(Graphics2D graphics)
         {
-            graphics.Clear(LevelGraphics.Settings.WaterColor);
+            graphics.Clear(Color.White);
 
             LevelGraphics.DrawWorld(graphics);
 
             SceneGraphics.Draw(graphics);
+
+            // Draw the water
+            graphics.SetBlendMode(BlendMode.Multiply);
+            graphics.DrawRectangleFlat(Camera.Bounds.Translated(new Vector2(0, -32)), -32, LevelGraphics.Settings.WaterColor);
+            graphics.DrawRectangleFlat(Camera.Bounds, 0, LevelGraphics.Settings.WaterColor);
+            graphics.SetBlendMode(BlendMode.Normal);
         }
 
         public void DrawPlayerIndicators(Graphics2D graphics)
