@@ -21,7 +21,7 @@ namespace PinguinGame.MiniGames.Ice
         {
             var random = new Random();
 
-            Sprite = random.Choose(graphics.Grass0, graphics.Grass1, graphics.Grass2, graphics.Grass3);
+            Sprite = random.Choose(graphics.Grass);
         }
     }
 }

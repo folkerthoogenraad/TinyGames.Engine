@@ -11,6 +11,7 @@ namespace PinguinGame.MiniGames.Ice
     public class IceGameEffects
     {
         public Animation StunEffect { get; set; }
+        public Animation GeyserParticles { get; set; }
 
         public IceGameEffects(ContentManager content)
         {
@@ -22,6 +23,13 @@ namespace PinguinGame.MiniGames.Ice
                 new Sprite(texture, new Rectangle(64 + 32, 0, 16, 16)).CenterOrigin(),
                 new Sprite(texture, new Rectangle(64 + 48, 0, 16, 16)).CenterOrigin()
                 );
+
+            GeyserParticles = new Animation(
+                new Sprite(texture, new Rectangle(0, 48, 16, 32)).SetOrigin(8, 32),
+                new Sprite(texture, new Rectangle(16, 48, 16, 32)).SetOrigin(8, 32),
+                new Sprite(texture, new Rectangle(32, 48, 16, 32)).SetOrigin(8, 32),
+                new Sprite(texture, new Rectangle(48, 48, 16, 32)).SetOrigin(8, 32)
+                ).SetFrameRate(2);
         }
     }
 }

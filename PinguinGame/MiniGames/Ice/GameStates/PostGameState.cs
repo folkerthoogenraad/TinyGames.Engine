@@ -32,8 +32,8 @@ namespace PinguinGame.MiniGames.Ice.GameStates
 
             World.Update(delta);
 
-            World.TryBonkCharacters();
-            World.TryDrownCharacters();
+            World.CharacterCollisions.TryBonkCharacters();
+            World.CharacterCollisions.TryDrownCharacters();
 
             if (Timer > 1)
             {

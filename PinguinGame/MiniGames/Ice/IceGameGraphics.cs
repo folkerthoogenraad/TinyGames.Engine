@@ -12,13 +12,15 @@ namespace PinguinGame.MiniGames.Ice
     public class IceGameGraphics : ISceneBehaviour
     {
         public Sprite Bridge { get; set; }
-        public Sprite Grass0 { get; set; }
-        public Sprite Grass1 { get; set; }
-        public Sprite Grass2 { get; set; }
-        public Sprite Grass3 { get; set; }
-        public Sprite GrassShadow { get; set; }
+        public Sprite[] Grass { get; set; }
+
         public Sprite Tree { get; set; }
         public Sprite TreeShadow { get; set; }
+
+
+        public Sprite Snowball { get; set; }
+        public Sprite SnowballShadow { get; set; }
+        public Animation SnowballSplashAnimation { get; set; }
 
         public IceGameGraphics(ContentManager content)
         {
@@ -26,14 +28,25 @@ namespace PinguinGame.MiniGames.Ice
 
             Bridge = new Sprite(texture, new Rectangle(32, 48, 16, 16));
 
-            Grass0 = new Sprite(texture, new Rectangle(16, 64, 16, 16)).CenterOrigin();
-            Grass1 = new Sprite(texture, new Rectangle(32, 64, 16, 16)).CenterOrigin();
-            Grass2 = new Sprite(texture, new Rectangle(48, 64, 16, 16)).CenterOrigin();
-            Grass3 = new Sprite(texture, new Rectangle(64, 64, 16, 16)).CenterOrigin();
-            GrassShadow = new Sprite(texture, new Rectangle(16, 80, 16, 16)).CenterOrigin();
+            Grass = new Sprite[] {
+                new Sprite(texture, new Rectangle(16, 64, 16, 16)).CenterOrigin(),
+                new Sprite(texture, new Rectangle(32, 64, 16, 16)).CenterOrigin(),
+                new Sprite(texture, new Rectangle(48, 64, 16, 16)).CenterOrigin(),
+                new Sprite(texture, new Rectangle(64, 64, 16, 16)).CenterOrigin()
+            };
 
             Tree = new Sprite(texture, new Rectangle(0, 48, 16, 32)).SetOrigin(8, 32);
             TreeShadow = new Sprite(texture, new Rectangle(0, 80, 16, 16)).CenterOrigin();
+
+            Snowball = new Sprite(texture, new Rectangle(8, 0, 8, 8)).CenterOrigin();
+            SnowballShadow = new Sprite(texture, new Rectangle(8, 8, 8, 8)).CenterOrigin();
+
+            SnowballSplashAnimation = new Animation(
+                new Sprite(texture, new Rectangle(64 + 0, 0, 16, 16)).CenterOrigin(),
+                new Sprite(texture, new Rectangle(64 + 16, 0, 16, 16)).CenterOrigin(),
+                new Sprite(texture, new Rectangle(64 + 32, 0, 16, 16)).CenterOrigin(),
+                new Sprite(texture, new Rectangle(64 + 48, 0, 16, 16)).CenterOrigin());
+
         }
 
         // =========================================== //

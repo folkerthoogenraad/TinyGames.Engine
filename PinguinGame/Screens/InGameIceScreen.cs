@@ -63,7 +63,7 @@ namespace PinguinGame.Screens
         {
             base.Init(device, content);
 
-            World = new IceGame(Services, content, device, content.LoadIceLevel(_level.File), _players, new IceInput(_inputService), _uiSoundService, _screens);
+            World = new IceGame(Services, _level, _players, new IceInput(_inputService), _uiSoundService, _screens);
             World.Camera = Camera;
 
             State = new PreGameState();

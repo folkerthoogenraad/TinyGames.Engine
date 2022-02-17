@@ -12,7 +12,7 @@ namespace PinguinGame.MiniGames.Ice
 {
     [RequireSceneBehaviour(typeof(SceneGraphics))]
     [RequireSceneBehaviour(typeof(Walkables))]
-    [RequireSceneBehaviour(typeof(SnowballGraphics))]
+    [RequireSceneBehaviour(typeof(IceGameGraphics))]
     public class Snowball : GameObject, IDrawable2D
     {
         public Vector2 Position { get; set; }
@@ -23,7 +23,7 @@ namespace PinguinGame.MiniGames.Ice
         public float Height { get; set; }
         public bool Collided { get; set; } = false;
         public PlayerInfo Info { get; set; }
-        public SnowballGraphics Graphics { get; set; }
+        public IceGameGraphics Graphics { get; set; }
         public Walkables Walkables { get; set; }
 
         public Snowball(PlayerInfo info)
@@ -36,7 +36,7 @@ namespace PinguinGame.MiniGames.Ice
             base.Init();
 
             Walkables = Scene.GetBehaviour<Walkables>();
-            Graphics = Scene.GetBehaviour<SnowballGraphics>();
+            Graphics = Scene.GetBehaviour<IceGameGraphics>();
         }
 
         public override void Update(float delta)
@@ -61,8 +61,8 @@ namespace PinguinGame.MiniGames.Ice
         {
             var info = Walkables.GetGroundInfo(Position);
             
-            graphics.DrawSprite(Graphics.Shadow, Position - new Vector2(0, info.Height), Angle, GraphicsHelper.YToDepth(Position.Y));
-            graphics.DrawSprite(Graphics.Sprite, Position - new Vector2(0, Height), Angle, GraphicsHelper.YToDepth(Position.Y));
+            graphics.DrawSprite(Graphics.SnowballShadow, Position - new Vector2(0, info.Height), Angle, GraphicsHelper.YToDepth(Position.Y));
+            graphics.DrawSprite(Graphics.Snowball, Position - new Vector2(0, Height), Angle, GraphicsHelper.YToDepth(Position.Y));
         }
     }
 }

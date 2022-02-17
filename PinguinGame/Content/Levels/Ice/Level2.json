@@ -1,12 +1,4 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"Level2.json"
-        }
-    },
  "height":12,
  "infinite":false,
  "layers":[
@@ -202,270 +194,6 @@
          "objects":[
                 {
                  "height":0,
-                 "id":8,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":97.5741867230891,
-                 "y":62.383496429516
-                }, 
-                {
-                 "height":0,
-                 "id":9,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":120.856916159746,
-                 "y":57.5847659349378
-                }, 
-                {
-                 "height":0,
-                 "id":10,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":136.49722295689,
-                 "y":67.3599576831526
-                }, 
-                {
-                 "height":0,
-                 "id":11,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":145.561491668871,
-                 "y":87.4435334567575
-                }, 
-                {
-                 "height":0,
-                 "id":12,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":143.073261042052,
-                 "y":113.56995503835
-                }, 
-                {
-                 "height":0,
-                 "id":13,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":136.319492197831,
-                 "y":134.18672308913
-                }, 
-                {
-                 "height":0,
-                 "id":14,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":122.101031473155,
-                 "y":141.118222692409
-                }, 
-                {
-                 "height":0,
-                 "id":15,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":149.827029886273,
-                 "y":137.56360751124
-                }, 
-                {
-                 "height":0,
-                 "id":16,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":97.0409944459138,
-                 "y":112.859032002116
-                }, 
-                {
-                 "height":0,
-                 "id":17,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":126.366569690558,
-                 "y":116.058185665168
-                }, 
-                {
-                 "height":0,
-                 "id":18,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":99.884686590849,
-                 "y":74.2914572864322
-                }, 
-                {
-                 "height":0,
-                 "id":19,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":125.655646654324,
-                 "y":67.893149960328
-                }, 
-                {
-                 "height":0,
-                 "id":20,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":111.437185929648,
-                 "y":91.3536101560434
-                }, 
-                {
-                 "height":0,
-                 "id":21,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":135.430838402539,
-                 "y":79.9788415763026
-                }, 
-                {
-                 "height":0,
-                 "id":22,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":167.777836551177,
-                 "y":137.030415234065
-                }, 
-                {
-                 "height":0,
-                 "id":23,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":190.705104469717,
-                 "y":141.295953451468
-                }, 
-                {
-                 "height":0,
-                 "id":24,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":216.120603015075,
-                 "y":127.966146522084
-                }, 
-                {
-                 "height":0,
-                 "id":25,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":211.855064797673,
-                 "y":95.9746098915631
-                }, 
-                {
-                 "height":0,
-                 "id":26,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":192.126950542185,
-                 "y":116.058185665168
-                }, 
-                {
-                 "height":0,
-                 "id":27,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":173.10975932293,
-                 "y":85.8439566252314
-                }, 
-                {
-                 "height":0,
-                 "id":28,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":191.238296746892,
-                 "y":69.492726791854
-                }, 
-                {
-                 "height":0,
-                 "id":29,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"Grass",
-                 "visible":true,
-                 "width":0,
-                 "x":172.754297804814,
-                 "y":95.0859560962708
-                }, 
-                {
-                 "height":0,
                  "id":30,
                  "name":"",
                  "point":true,
@@ -473,8 +201,8 @@
                  "type":"Tree",
                  "visible":true,
                  "width":0,
-                 "x":160.313144670722,
-                 "y":55.0965353081195
+                 "x":160.313,
+                 "y":55.0965
                 }, 
                 {
                  "height":0,
@@ -485,8 +213,8 @@
                  "type":"Tree",
                  "visible":true,
                  "width":0,
-                 "x":107.171647712245,
-                 "y":120.145993123512
+                 "x":107.172,
+                 "y":120.146
                 }, 
                 {
                  "height":0,
@@ -497,8 +225,68 @@
                  "type":"Tree",
                  "visible":true,
                  "width":0,
-                 "x":177.197566781275,
-                 "y":109.482147580005
+                 "x":177.198,
+                 "y":109.482
+                }, 
+                {
+                 "gid":34,
+                 "height":16,
+                 "id":33,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Grass",
+                 "visible":true,
+                 "width":16,
+                 "x":125.655646654324,
+                 "y":57.4070351758794
+                }, 
+                {
+                 "gid":34,
+                 "height":16,
+                 "id":34,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Grass",
+                 "visible":true,
+                 "width":16,
+                 "x":114.280878074583,
+                 "y":129.921184871727
+                }, 
+                {
+                 "gid":34,
+                 "height":16,
+                 "id":35,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Grass",
+                 "visible":true,
+                 "width":16,
+                 "x":178.797143612801,
+                 "y":135.964030679714
+                }, 
+                {
+                 "gid":34,
+                 "height":16,
+                 "id":36,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Grass",
+                 "visible":true,
+                 "width":16,
+                 "x":199.413911663581,
+                 "y":71.8032266596139
+                }, 
+                {
+                 "gid":34,
+                 "height":16,
+                 "id":37,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Grass",
+                 "visible":true,
+                 "width":16,
+                 "x":167.42237503306,
+                 "y":92.9531869875694
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -507,14 +295,28 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":33,
+ "nextobjectid":38,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.4.3",
+ "tiledversion":"1.8.1",
  "tileheight":16,
- "tilesets":[],
+ "tilesets":[
+        {
+         "columns":8,
+         "firstgid":1,
+         "image":"..\/..\/Sprites\/Ice\/IceGameplayElements.png",
+         "imageheight":128,
+         "imagewidth":128,
+         "margin":0,
+         "name":"IceGameplayElements",
+         "objectalignment":"center",
+         "spacing":0,
+         "tilecount":64,
+         "tileheight":16,
+         "tilewidth":16
+        }],
  "tilewidth":16,
  "type":"map",
- "version":1.4,
+ "version":"1.8",
  "width":20
 }

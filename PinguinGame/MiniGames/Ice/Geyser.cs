@@ -10,16 +10,16 @@ using TinyGames.Engine.Scenes;
 
 namespace PinguinGame.MiniGames.Ice
 {
+    [RequireSceneBehaviour(typeof(IceGameEffects))]
     public class Geyser : GameObject
     {
         public Vector2 Position { get; set; }
         public ParticleSystem System { get; set; }
         public Animation Particle { get; set; }
 
-        public Geyser(Vector2 position, Animation particle)
+        public Geyser(Vector2 position)
         {
             Position = position;
-            Particle = particle;
         }
 
         private float Timer = 0;
@@ -32,6 +32,8 @@ namespace PinguinGame.MiniGames.Ice
             base.Init();
 
             System = Scene.GetBehaviour<ParticleSystem>();
+
+            Particle = Scene.GetBehaviour<IceGameEffects>().GeyserParticles;
         }
 
         public override void Update(float delta)

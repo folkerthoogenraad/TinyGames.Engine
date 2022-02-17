@@ -5,11 +5,14 @@ using PinguinGame.Audio;
 using PinguinGame.Graphics;
 using PinguinGame.Input;
 using PinguinGame.MiniGames.Generic;
+using PinguinGame.MiniGames.Ice.Behaviours;
+using PinguinGame.MiniGames.Ice.CharacterStates;
 using PinguinGame.Player;
 using PinguinGame.Screens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TinyGames.Engine.Collections;
 using TinyGames.Engine.Extensions;
 using TinyGames.Engine.Graphics;
 using TinyGames.Engine.Scenes;
@@ -34,10 +37,6 @@ namespace PinguinGame.MiniGames.Ice
         public IUISoundService UISoundService { get; set; }
         public IScreenService ScreenService { get; set; }
 
-
-        private IEnumerable<Snowball> _snowballs => Scene.FindGameObjectsOfType<Snowball>();
-        private IEnumerable<Geyser> _geysers => Scene.FindGameObjectsOfType<Geyser>();
-
         private List<IceBlockBehaviour> _iceBlockBehaviour;
 
         public ContentManager Content { get; set; }
@@ -47,22 +46,26 @@ namespace PinguinGame.MiniGames.Ice
         public Scene Scene { get; set; }
         public SceneGraphics SceneGraphics { get; set; }
         public ParticleSystem ParticleSystem { get; set; }
+        public CharacterCollisionBehaviour CharacterCollisions { get; set; }
 
-        public IceGame(IServiceProvider services, ContentManager content, GraphicsDevice device, IceLevel level, PlayerInfo[] players, IMiniGameInputService<CharacterInput> inputService, IUISoundService uiSoundService, IScreenService screenservice) // Probably should have a levelservice or something
+        public IceGame(IServiceProvider services, LevelInfo level, PlayerInfo[] players, IMiniGameInputService<CharacterInput> inputService, IUISoundService uiSoundService, IScreenService screenservice)
         {
-            Content = content;
+            var graphicsDeviceService = services.GetService<IGraphicsDeviceService>();            
+
+            Content = new ContentManager(services);
+            Content.RootDirectory = "Content";
 
             UISoundService = uiSoundService;
             ScreenService = screenservice;
-            UIGraphics = new IceGameUIGraphics(content);
-            Effects = new IceGameEffects(content);
+            UIGraphics = new IceGameUIGraphics(Content);
+            Effects = new IceGameEffects(Content);
 
             InputService = inputService;
 
             Fight = new Fight(players);
 
-            Level = level;
-            LevelGraphics = new IceLevelGraphics(content, device, level, new IceLevelGraphicsSettings());
+            Level = Content.LoadIceLevel(level.File);
+            LevelGraphics = new IceLevelGraphics(Content, graphicsDeviceService.GraphicsDevice, Level, new IceLevelGraphicsSettings());
 
             _iceBlockBehaviour = new List<IceBlockBehaviour>() { 
                 new RandomSinkIceBlockBehaviour(),
@@ -70,43 +73,37 @@ namespace PinguinGame.MiniGames.Ice
                 new TimedDriftIceBlockBehaviour(),
             };
 
-
             Random = new Random();
+
+            CharacterCollisions = new CharacterCollisionBehaviour();
 
             Scene = new Scene(services);
 
             SceneGraphics = Scene.AddBehaviour(new SceneGraphics());
             ParticleSystem  = Scene.AddBehaviour(new ParticleSystem());
+            Scene.AddBehaviour(CharacterCollisions);
             Scene.AddBehaviour(new Walkables(Level));
-            Scene.AddBehaviour(new SnowballGraphics(content)); // TODO this shouldn't be a seperate class I think.
             Scene.AddBehaviour(UIGraphics);
-            Scene.AddBehaviour(new IceGameGraphics(content));
+            Scene.AddBehaviour(new IceGameGraphics(Content));
 
 
             // This is loading the Geysers, not really needed.
-            var effectsTexture = content.Load<Texture2D>("Sprites/Effects");
-            var geyserAnimation = new Animation(
-                new Sprite(effectsTexture, new Rectangle(0, 48, 16, 32)).SetOrigin(8, 32),
-                new Sprite(effectsTexture, new Rectangle(16, 48, 16, 32)).SetOrigin(8, 32),
-                new Sprite(effectsTexture, new Rectangle(32, 48, 16, 32)).SetOrigin(8, 32),
-                new Sprite(effectsTexture, new Rectangle(48, 48, 16, 32)).SetOrigin(8, 32)
-                ).SetFrameRate(2);
 
-            foreach (var g in level.Geysers.Select(x => new Geyser(x, geyserAnimation)))
+            foreach (var g in Level.Geysers.Select(x => new Geyser(x)))
             {
                 Scene.AddGameObject(g);
             }
 
-            foreach (var bridge in level.Bridges.Select(x => new Bridge(x.Position, x.Size)))
+            foreach (var bridge in Level.Bridges.Select(x => new Bridge(x.Position, x.Size)))
             {
                 Scene.AddGameObject(bridge);
             }
 
-            foreach (var grass in level.Grass.Select(x => new Grass(x)))
+            foreach (var grass in Level.Grass.Select(x => new Grass(x)))
             {
                 Scene.AddGameObject(grass);
             }
-            foreach (var grass in level.Trees.Select(x => new Tree(x)))
+            foreach (var grass in Level.Trees.Select(x => new Tree(x)))
             {
                 Scene.AddGameObject(grass);
             }
@@ -150,140 +147,6 @@ namespace PinguinGame.MiniGames.Ice
                 new TimedDriftIceBlockBehaviour(),
             };
             Scene.Sync();
-        }
-
-        public void TryBonkCharacters()
-        {
-            // Bonks!
-            foreach (var (a, b) in Characters.Combinations())
-            {
-                if (!a.CanCollide) continue;
-                if (!b.CanCollide) continue;
-
-                var p1 = a.Position;
-                var p2 = b.Position;
-
-                var dir = p2 - p1;
-                var dist = dir.Length();
-
-                if (dist > 8) continue;
-                if (dist == 0)
-                {
-                    dir = new Vector2(1, 0);
-                }
-                else
-                {
-                    dir /= dist;
-                }
-
-
-                //Unstuck
-                float penetration = (8 - dist) / 2;
-                
-                a.Position -= dir * penetration;
-                b.Position += dir * penetration;
-
-                var totalVelocity = Math.Abs(Vector2.Dot(a.Physics.Velocity, dir)) + Math.Abs(Vector2.Dot(b.Physics.Velocity, dir));
-                var bonkVelocity = Math.Max(16, totalVelocity);
-
-                var bonkA = BonkCharacters(a, b, bonkVelocity, -dir);
-                var bonkB = BonkCharacters(b, a, bonkVelocity, dir);
-
-                if(bonkA.Bonking) a.Bonk(bonkA.Velocity, bonkA.StunTime);
-                if(bonkB.Bonking) b.Bonk(bonkB.Velocity, bonkB.StunTime);
-
-                if(bonkA.Bonking || bonkB.Bonking) b.Sound.PlayBonk();
-            }
-
-            foreach (var character in Characters)
-            {
-                if (!character.CanCollide) continue;
-
-                foreach (var snowball in _snowballs)
-                {
-                    if (character.Player == snowball.Info) continue;
-
-                    var p1 = character.Position;
-                    var p2 = snowball.Position;
-
-                    var dir = p2 - p1;
-                    var dist = dir.Length();
-
-                    if (dist > 8) continue;
-
-                    snowball.Collided = true;
-
-                    character.Bonk(snowball.Velocity * 0.6f, 0.8f);
-                    character.Sound.PlaySnowHit();
-                }
-            }
-
-            foreach (var character in Characters)
-            {
-                if (!character.CanCollide) continue;
-
-                foreach (var geyser in _geysers)
-                {
-                    if (!geyser.Erupting) continue;
-
-                    var p1 = character.Position;
-                    var p2 = geyser.Position;
-
-                    var dir = p2 - p1;
-                    var dist = dir.Length();
-
-                    if (dist > 8) continue;
-                    if (dist == 0) continue;
-
-                    character.Bonk(-dir / dist * 64);
-                    character.Bounce.Velocity = 128;
-                    character.Sound.PlaySnowHit(); // TODO Geyser sounds and stuff
-                }
-            }
-        }
-
-        private (bool Bonking, Vector2 Velocity, float StunTime) BonkCharacters(Character self, Character other, float bonkVelocity, Vector2 direction)
-        {
-            // Advantage
-            if (self.IsSliding && (other.IsGathering || other.IsWalking || self.IsBonking))
-            {
-                return (true, bonkVelocity * 0.3f * direction, 1f);
-            }
-
-            // Disadvantage
-            else if ((self.IsGathering || self.IsWalking || self.IsBonking) && other.IsSliding)
-            {
-                return (true, bonkVelocity * (self.IsGathering ? 1.5f : 0.7f) * direction, 0.3f);
-            }
-
-            // Both bad :)
-            else if (self.IsSliding && other.IsSliding)
-            {
-                return (true, bonkVelocity * 0.5f * direction, 1);
-            }
-
-            // No bonks
-            else
-            {
-                // Divide equally
-                return (false, bonkVelocity * 0.5f * direction, 0);
-            }
-        }
-
-        public List<Character> TryDrownCharacters()
-        {
-            var result = new List<Character>();
-
-            foreach(var p in Characters.Where(x => !x.IsDrowning))
-            {
-                if(!p.Grounded && p.Height < 1)
-                {
-                    p.Drown();
-                    result.Add(p);
-                }
-            }
-
-            return result;
         }
 
         // Extension methods maybe?
@@ -388,6 +251,7 @@ namespace PinguinGame.MiniGames.Ice
         {
             Scene.Destroy();
             LevelGraphics.Dispose();
+            Content.Unload();
         }
     }
 }

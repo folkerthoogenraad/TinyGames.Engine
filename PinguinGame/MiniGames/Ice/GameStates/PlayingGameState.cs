@@ -76,8 +76,8 @@ namespace PinguinGame.MiniGames.Ice.GameStates
         public override GameState Update(float delta)
         {
             World.Update(delta);
-            World.TryBonkCharacters();
-            var results = World.TryDrownCharacters();
+            World.CharacterCollisions.TryBonkCharacters();
+            var results = World.CharacterCollisions.TryDrownCharacters();
 
             _ui.Update(delta);
 
