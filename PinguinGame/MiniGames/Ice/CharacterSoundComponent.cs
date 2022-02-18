@@ -68,7 +68,7 @@ namespace PinguinGame.MiniGames.Ice
             _slideSoundInstance?.Stop();
         }
 
-        public void Update(Character character, float delta)
+        public void Update(CharacterGameObject character, float delta)
         {
             if (_slideSoundInstance != null && !character.IsSliding && _slideSoundInstance.State == SoundState.Playing)
             {

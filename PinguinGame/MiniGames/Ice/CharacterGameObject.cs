@@ -17,7 +17,7 @@ namespace PinguinGame.MiniGames.Ice
     [RequireSceneBehaviour(typeof(SceneGraphics))] // This it doens't need :)
     [RequireSceneBehaviour(typeof(Walkables))]
     [RequireSceneBehaviour(typeof(IceGameUIGraphics))]
-    public class Character : GameObject, IDrawable2D
+    public class CharacterGameObject : GameObject, IDrawable2D
     {
         private CharacterState _state { get; set; }
         private CharacterState State
@@ -46,7 +46,6 @@ namespace PinguinGame.MiniGames.Ice
 
         public Walkables Walkables { get; set; }
         public IceGameUIGraphics UIGraphics { get; set; }
-        public IceGame Level { get; private set; }
 
         public PlayerInfo Player { get; private set; }
         public CharacterPhysics Physics { get; set; }
@@ -68,18 +67,16 @@ namespace PinguinGame.MiniGames.Ice
 
         public bool CanCollide => !Invunerable && !IsDrowning;
 
-        public Character(IceGame level, PlayerInfo player, Vector2 position)
+        public CharacterGameObject(PlayerInfo player, Vector2 position)
         {
-            Level = level;
             Player = player;
             Graphics = player.CharacterInfo.Graphics;
-            Sound = new CharacterSoundComponent(player.CharacterInfo.Sound);
 
+            Sound = new CharacterSoundComponent(player.CharacterInfo.Sound);
             Physics = new CharacterPhysics(position);
             Settings = new CharacterSettings();
             Bounce = new CharacterBounce();
             SnowballGathering = new CharacterSnowballGathering();
-
             State = new CharacterWalkState();
         }
 
@@ -149,7 +146,7 @@ namespace PinguinGame.MiniGames.Ice
 
         public void Bonk(Vector2 velocity, float duration = 1)
         {
-            State = new CharacterBonkState(Level.Effects, velocity, duration);
+            State = new CharacterBonkState(Scene.GetBehaviour<IceGameEffects>(), velocity, duration);
         }
         public void Drown()
         {

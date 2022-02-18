@@ -16,6 +16,7 @@ namespace PinguinGame.Screens.Resources
         public Sprite Two { get; private set; }
         public Sprite One { get; private set; }
         public Sprite Go { get; private set; }
+        public Sprite Finish { get; private set; }
 
         public Sprite Heart { get; private set; }
         public Sprite HeartOutline { get; private set; }
@@ -38,6 +39,8 @@ namespace PinguinGame.Screens.Resources
 
             Heart = new Sprite(iguiTexture, new Rectangle(0, 0, 16, 16)).CenterOrigin();
             HeartOutline = new Sprite(iguiTexture, new Rectangle(16, 0, 16, 16)).CenterOrigin();
+
+            Finish = new Sprite(content.Load<Texture2D>("Sprites/UI/InGameFinish")).CenterOrigin();
         }
     }
 }

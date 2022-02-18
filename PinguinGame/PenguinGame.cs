@@ -65,7 +65,7 @@ namespace PinguinGame
             Manager = new ScreenManager(GraphicsDevice, Content);
 
             var players = new PlayerInfo[] {
-                new PlayerInfo() { Index = 0, InputDevice = InputDeviceType.Gamepad0 },
+                new PlayerInfo() { Index = 0, InputDevice = InputDeviceType.Keyboard0 },
                 new PlayerInfo() { Index = 1, InputDevice = InputDeviceType.Keyboard1 },
                 //new PlayerInfo() { Index = 2, InputDevice = InputDeviceType.Keyboard0 },
                 //new PlayerInfo() { Index = 3, InputDevice = InputDeviceType.Gamepad1 },
@@ -98,8 +98,13 @@ namespace PinguinGame
 
             float delta = gameTime.GetDeltaInSeconds();
 
-            if(Keyboard.GetState().IsKeyDown(Keys.Escape)){
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
                 ShowMenuScreen();
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.F1))
+            {
+                GC.Collect();
             }
 
             Input.Poll();

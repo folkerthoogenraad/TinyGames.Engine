@@ -9,11 +9,11 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
 {
     internal abstract class CharacterState
     {
-        public Character Character { get; set; }
-        public virtual void Init(Character character) { Character = character; }
+        public CharacterGameObject Character { get; set; }
+        public virtual void Init(CharacterGameObject character) { Character = character; }
         public virtual void Destroy() { }
-        public abstract CharacterState Update(Character character, CharacterInput input, float delta);
-        public virtual void Draw(Graphics2D graphics, Character character, CharacterGraphics penguinGraphics) { }
+        public abstract CharacterState Update(CharacterGameObject character, CharacterInput input, float delta);
+        public virtual void Draw(Graphics2D graphics, CharacterGameObject character, CharacterGraphics penguinGraphics) { }
 
     }
 }

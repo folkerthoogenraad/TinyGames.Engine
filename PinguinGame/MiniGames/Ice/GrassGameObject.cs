@@ -11,9 +11,9 @@ using TinyGames.Engine.Scenes.Extensions;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    public class Grass : IceDetail
+    public class GrassGameObject : IceDetailGameObject
     {
-        public Grass(Vector2 position) : base(position)
+        public GrassGameObject(Vector2 position) : base(position)
         {
         }
 

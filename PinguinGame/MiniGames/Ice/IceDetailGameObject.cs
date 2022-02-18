@@ -12,7 +12,7 @@ namespace PinguinGame.MiniGames.Ice
 {
     [RequireSceneBehaviour(typeof(IceGameGraphics))]
     [RequireSceneBehaviour(typeof(Walkables))]
-    public abstract class IceDetail : GameObject, IDrawable2D
+    public abstract class IceDetailGameObject : GameObject, IDrawable2D
     {
         public Vector2 Position { get; set; }
         public float Height { get; set; } = 0;
@@ -24,7 +24,7 @@ namespace PinguinGame.MiniGames.Ice
 
         public float Angle { get; set; }
 
-        public IceDetail(Vector2 position)
+        public IceDetailGameObject(Vector2 position)
         {
             Position = position;
         }

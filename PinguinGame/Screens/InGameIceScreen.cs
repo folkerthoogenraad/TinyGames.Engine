@@ -16,6 +16,8 @@ using TinyGames.Engine.Graphics;
 using TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators;
 using TinyGames.Engine.Util;
 using PinguinGame.MiniGames.Generic;
+using PinguinGame.MiniGames.Ice.GameModes;
+using PinguinGame.GameStates;
 
 namespace PinguinGame.Screens
 {
@@ -32,21 +34,7 @@ namespace PinguinGame.Screens
         private readonly LevelInfo _level;
 
         public IceGame World;
-
-        private GameState _gameState;
-        public GameState State
-        {
-            get => _gameState;
-            set
-            {
-                if(value != _gameState)
-                {
-                    _gameState?.Destroy();
-                    _gameState = value;
-                    _gameState?.Init(World, Device, Content);
-                }
-            }
-        }
+        public IceGameMode<Fight> GameMode;
 
         public InGameIceScreen(IServiceProvider services, IScreenService screens, IInputService inputService, IMusicService music, IUISoundService uiSoundService, PlayerInfo[] players, LevelInfo level)
         {
@@ -63,10 +51,12 @@ namespace PinguinGame.Screens
         {
             base.Init(device, content);
 
+            // TODO this is very weirdly coupled tbh
             World = new IceGame(Services, _level, _players, new IceInput(_inputService), _uiSoundService, _screens);
             World.Camera = Camera;
 
-            State = new PreGameState();
+            GameMode = new DeathMatchGameMode(World);
+            GameMode.Run();
 
             _musicService.PlayInGameMusic();
         }
@@ -75,7 +65,12 @@ namespace PinguinGame.Screens
         {
             base.UpdateSelf(delta);
 
-            State = State.Update(delta);
+            GameMode.Update(delta);
+
+            if (GameMode.Done)
+            {
+                _screens.ShowResultScreen(GameMode.GetResult());
+            }
         }
 
         public override void Draw()
@@ -84,7 +79,7 @@ namespace PinguinGame.Screens
 
             Graphics.Begin(Camera.GetMatrix());
 
-            State.Draw(Graphics);
+            GameMode.Draw(Graphics);
 
             Graphics.End();
         }
@@ -94,6 +89,7 @@ namespace PinguinGame.Screens
             base.Destroy();
 
             World.Destroy();
+            GameMode.Destroy();
         }
     }
 }

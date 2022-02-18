@@ -22,7 +22,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             _effects = effects;
         }
 
-        public override void Init(Character penguin)
+        public override void Init(CharacterGameObject penguin)
         {
             base.Init(penguin);
 
@@ -30,7 +30,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             penguin.Physics = penguin.Physics.StartBonk(Velocity);
         }
 
-        public override CharacterState Update(Character penguin, CharacterInput input, float delta)
+        public override CharacterState Update(CharacterGameObject penguin, CharacterInput input, float delta)
         {
             BonkTimer -= delta;
 
@@ -44,7 +44,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             return this;
         }
 
-        public override void Draw(Graphics2D graphics, Character character, CharacterGraphics characterGraphics)
+        public override void Draw(Graphics2D graphics, CharacterGameObject character, CharacterGraphics characterGraphics)
         {
             var facing = CharacterGraphics.GetFacingFromVector(character.Facing);
 

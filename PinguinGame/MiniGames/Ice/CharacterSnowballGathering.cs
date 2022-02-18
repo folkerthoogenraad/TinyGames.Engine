@@ -41,7 +41,7 @@ namespace PinguinGame.MiniGames.Ice
             }
         }
 
-        public Snowball CreateSnowball(Character character, Vector2 direction)
+        public SnowballGameObject CreateSnowball(CharacterGameObject character, Vector2 direction)
         {
             RemoveSnowball();
 
@@ -51,7 +51,7 @@ namespace PinguinGame.MiniGames.Ice
             }
 
             // Throw snowball
-            return new Snowball(character.Player)
+            return new SnowballGameObject(character.Player)
             {
                 Position = character.Position + direction * 8,
                 Velocity = direction * 128,

@@ -10,9 +10,9 @@ using TinyGames.Engine.Scenes.Extensions;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    public class Tree : IceDetail
+    public class TreeGameObject : IceDetailGameObject
     {
-        public Tree(Vector2 position) : base(position)
+        public TreeGameObject(Vector2 position) : base(position)
         {
         }
 

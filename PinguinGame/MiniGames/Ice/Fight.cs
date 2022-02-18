@@ -8,7 +8,7 @@ namespace PinguinGame.Screens
 {
     public class FightSettings
     {
-        public int GoalScore = 10;
+        public int GoalScore = 2;
 
         private Dictionary<int, int[]> _scoresForPlayerCount;
 

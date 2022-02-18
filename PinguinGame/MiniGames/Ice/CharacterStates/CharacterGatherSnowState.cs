@@ -13,7 +13,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
     {
         private IceGameUIGraphics _ui;
 
-        public override void Init(Character character)
+        public override void Init(CharacterGameObject character)
         {
             base.Init(character);
 
@@ -23,7 +23,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             character.Sound.PlaySnowballGather();
         }
 
-        public override CharacterState Update(Character penguin, CharacterInput input, float delta)
+        public override CharacterState Update(CharacterGameObject penguin, CharacterInput input, float delta)
         {
             penguin.Physics = penguin.Physics.Move(delta, new Vector2(), penguin.Settings.Acceleration);
 
@@ -47,7 +47,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             return this;
         }
 
-        public override void Draw(Graphics2D graphics, Character character, CharacterGraphics penguinGraphics)
+        public override void Draw(Graphics2D graphics, CharacterGameObject character, CharacterGraphics penguinGraphics)
         {
             var facing = CharacterGraphics.GetFacingFromVector(character.Facing);
             

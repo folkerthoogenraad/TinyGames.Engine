@@ -17,6 +17,7 @@ namespace PinguinGame.Audio
         public Song CurrentSong = null;
 
         private readonly ISettingsService _settings;
+        private readonly SoundSettings _soundSettings;
 
         public MusicService(ContentManager content, ISettingsService settings)
         {
@@ -26,6 +27,7 @@ namespace PinguinGame.Audio
             Victory = content.Load<Song>("Songs/Victory");
 
             _settings = settings;
+            _soundSettings = _settings.GetSoundSettings();
         }
 
         public void PlayInGameMusic()
@@ -54,7 +56,7 @@ namespace PinguinGame.Audio
 
             MediaPlayer.Stop();
 
-            MediaPlayer.Volume = _settings.GetSoundSettings().MusicVolume;
+            MediaPlayer.Volume = _soundSettings.MusicVolume;
 
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(song);

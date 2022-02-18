@@ -14,9 +14,10 @@ using TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators;
 
 namespace PinguinGame.MiniGames.Ice.GameStates
 {
-    public class ResultsGameState : GameState
+    public class ResultsGameState : IceGameState<int>
     {
-        public RoundResults Results;
+        private Fight _fight;
+        private RoundResults _results;
 
         public float Timer = 0;
         public bool Accepted = false;
@@ -24,21 +25,22 @@ namespace PinguinGame.MiniGames.Ice.GameStates
         public IUISoundService _uiSound;
         public UIIntermediateResultsScreen _ui;
 
-        public ResultsGameState(RoundResults results)
+        public ResultsGameState(IceGame game, Fight fight, RoundResults results) : base(game)
         {
-            Results = results;
+            _results = results;
+            _fight = fight;
+
+            _uiSound = game.UISoundService;
         }
 
-        public override void Init(IceGame world, GraphicsDevice device, ContentManager content)
+        public override void Init()
         {
-            base.Init(world, device, content);
+            base.Init();
 
-            _uiSound = world.UISoundService;
-
-            _ui = new UIIntermediateResultsScreen(new IntermediateResultsResources(content), new UIIntermediateResultsScreenModel()
+            _ui = new UIIntermediateResultsScreen(new IntermediateResultsResources(Content), new UIIntermediateResultsScreenModel()
             {
                 NextLabel = "Next",
-                Lines = World.Fight.Scoreboard.Select(x => new UIResultLineModel() { 
+                Lines = _fight.Scoreboard.Select(x => new UIResultLineModel() { 
                     PlayerName = x.Player.Name,
                     Icon = x.Player.CharacterInfo.Icon,
                     Color = x.Player.Color,
@@ -50,14 +52,14 @@ namespace PinguinGame.MiniGames.Ice.GameStates
                     WinningLabel = "Winning!",
                 }).ToArray()
             });
-            _ui.UpdateLayout(World.Camera.Bounds);
+            _ui.UpdateLayout(Game.Camera.Bounds);
         }
 
-        public override GameState Update(float delta)
+        public override void Update(float delta)
         {
             Timer += delta;
 
-            if(Timer > 1.5f && !Accepted && World.Players.Any(x => World.InputService.GetInputForPlayer(x).ActionPressed))
+            if(Timer > 1.5f && !Accepted && Game.Players.Any(x => Game.InputService.GetInputForPlayer(x).ActionPressed))
             {
                 Accepted = true;
                 Timer = 0;
@@ -68,14 +70,12 @@ namespace PinguinGame.MiniGames.Ice.GameStates
             }
             if(Timer > 0.5f && Accepted)
             {
-                World.ResetIceBlocks();
-                return new PreGameState();
+                Complete(0);
+                return;
             }
 
-            _ui.UpdateLayout(World.Camera.Bounds);
+            _ui.UpdateLayout(Game.Camera.Bounds);
             _ui.Update(delta);
-
-            return this;
         }
 
         public override void Draw(Graphics2D graphics)

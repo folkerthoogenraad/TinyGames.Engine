@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TinyGames.Engine.Graphics;
+using TinyGames.Engine.Scenes;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    public class IceGameEffects
+    public class IceGameEffects : ISceneBehaviour
     {
         public Animation StunEffect { get; set; }
         public Animation GeyserParticles { get; set; }
@@ -30,6 +31,29 @@ namespace PinguinGame.MiniGames.Ice
                 new Sprite(texture, new Rectangle(32, 48, 16, 32)).SetOrigin(8, 32),
                 new Sprite(texture, new Rectangle(48, 48, 16, 32)).SetOrigin(8, 32)
                 ).SetFrameRate(2);
+        }
+
+        // =============================== //
+        // Scene behaviours
+        // =============================== //
+        public void Init(Scene scene)
+        {
+
+        }
+
+        public void BeforeUpdate(float delta)
+        {
+
+        }
+
+        public void AfterUpdate(float delta)
+        {
+
+        }
+
+        public void Destroy()
+        {
+
         }
     }
 }

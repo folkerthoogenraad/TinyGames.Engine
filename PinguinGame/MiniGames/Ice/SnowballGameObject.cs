@@ -13,7 +13,7 @@ namespace PinguinGame.MiniGames.Ice
     [RequireSceneBehaviour(typeof(SceneGraphics))]
     [RequireSceneBehaviour(typeof(Walkables))]
     [RequireSceneBehaviour(typeof(IceGameGraphics))]
-    public class Snowball : GameObject, IDrawable2D
+    public class SnowballGameObject : GameObject, IDrawable2D
     {
         public Vector2 Position { get; set; }
         public Vector2 Velocity { get; set; }
@@ -26,7 +26,7 @@ namespace PinguinGame.MiniGames.Ice
         public IceGameGraphics Graphics { get; set; }
         public Walkables Walkables { get; set; }
 
-        public Snowball(PlayerInfo info)
+        public SnowballGameObject(PlayerInfo info)
         {
             Info = info;
         }

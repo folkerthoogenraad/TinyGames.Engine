@@ -27,11 +27,10 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             }
         }
 
-        public override CharacterState Update(Character character, CharacterInput input, float delta)
+        public override CharacterState Update(CharacterGameObject character, CharacterInput input, float delta)
         {
             AnimationTimer += delta;
             
-
             Walking = input.MoveDirection.LengthSquared() > 0;
 
             character.Physics = character.Physics.Move(delta, input.MoveDirection * character.Settings.MoveSpeed, character.Settings.Acceleration);
@@ -56,7 +55,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
                     var direction = input.MoveDirection.Normalized();
                     var snowball = character.SnowballGathering.CreateSnowball(character, direction);
 
-                    character.Level.AddSnowball(snowball);
+                    character.Scene.AddGameObject(snowball);
                     character.Sound.PlaySnowballThrow();
                     character.Physics = character.Physics.StartBonk(-direction * 48);
                 }
@@ -69,7 +68,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             return this;
         }
 
-        public override void Draw(Graphics2D graphics, Character penguin, CharacterGraphics penguinGraphics)
+        public override void Draw(Graphics2D graphics, CharacterGameObject penguin, CharacterGraphics penguinGraphics)
         {
             var facing = CharacterGraphics.GetFacingFromVector(penguin.Facing);
             var color = penguin.Player.Color;

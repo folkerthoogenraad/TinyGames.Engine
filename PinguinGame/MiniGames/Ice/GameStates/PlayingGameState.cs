@@ -45,7 +45,7 @@ namespace PinguinGame.MiniGames.Ice.GameStates
         }
     }
 
-    public class PlayingGameState : GameState
+    public class PlayingGameState : IceGameState<RoundResults>
     {
         private Dictionary<PlayerInfo, int> Lives;
         private List<PlayerInfo> _deathOrder;
@@ -53,31 +53,36 @@ namespace PinguinGame.MiniGames.Ice.GameStates
         private UIInGame _ui;
         private KillAudio _audio;
 
-        public Dictionary<Character, float> ToRespawn;
+        public Dictionary<CharacterGameObject, float> ToRespawn;
 
-        public override void Init(IceGame world, GraphicsDevice device, ContentManager content)
+        private Fight _fight;
+
+        public PlayingGameState(IceGame game, Fight fight) : base(game)
         {
-            base.Init(world, device, content);
+            _fight = fight;
+        }
 
-            _audio = new KillAudio(content);
+        public override void Init()
+        {
+            _audio = new KillAudio(Content);
             _deathOrder = new List<PlayerInfo>();
 
             Lives = new Dictionary<PlayerInfo, int>();
 
-            foreach (var player in world.Players) Lives.Add(player, 3);
+            foreach (var player in Game.Players) Lives.Add(player, 3);
 
-            _ui = new UIInGame(new InGameResources(content), GetUIModel());
-            _ui.UpdateLayout(world.Camera.Bounds);
+            _ui = new UIInGame(new InGameResources(Content), GetUIModel());
+            _ui.UpdateLayout(Game.Camera.Bounds);
             _ui.FadeIn();
 
-            ToRespawn = new Dictionary<Character, float>();
+            ToRespawn = new Dictionary<CharacterGameObject, float>();
         }
 
-        public override GameState Update(float delta)
+        public override void Update(float delta)
         {
-            World.Update(delta);
-            World.CharacterCollisions.TryBonkCharacters();
-            var results = World.CharacterCollisions.TryDrownCharacters();
+            Game.Update(delta);
+            Game.CharacterCollisions.TryBonkCharacters();
+            var results = Game.CharacterCollisions.TryDrownCharacters();
 
             _ui.Update(delta);
 
@@ -106,7 +111,7 @@ namespace PinguinGame.MiniGames.Ice.GameStates
                 {
                     _audio.PlayDeathSound(
                         Lives.Count(p => p.Value > 0), 
-                        Lives.Any(p => p.Value > 0 && World.Fight.IsPlayerWinning(p.Key)));
+                        Lives.Any(p => p.Value > 0 && _fight.IsPlayerWinning(p.Key)));
                 }
                 _ui.SetModel(GetUIModel());
             }
@@ -120,14 +125,14 @@ namespace PinguinGame.MiniGames.Ice.GameStates
                 if(timer < 0)
                 {
                     ToRespawn.Remove(character);
-                    World.RemoveCharacter(character);
-                    var player = World.SpawnCharacter(World.FindRandomSpawnPoint(), character.Player);
+                    Game.RemoveCharacter(character);
+                    var player = Game.SpawnCharacter(Game.FindRandomSpawnPoint(), character.Player);
                     player.InvunerableTime = 2f;
                 }
             }
 
             // When deaths and stuff
-            if(_deathOrder.Count > World.Fight.Players.Length - 2)
+            if(_deathOrder.Count > Game.Players.Count() - 2)
             {
                 var winningPlayer = Lives.Where(x => x.Value > 0).Select(x => x.Key).FirstOrDefault();
 
@@ -140,23 +145,15 @@ namespace PinguinGame.MiniGames.Ice.GameStates
 
                 var roundResults = new RoundResults(enumerable.ToArray());
 
-                World.Fight.AddRound(roundResults);
-
-                return new PostGameState(roundResults);
+                Complete(roundResults);
             }
-
-            return this;
         }
 
         public override void Draw(Graphics2D graphics)
         {
             base.Draw(graphics);
 
-            World.DrawPlayerIndicators(graphics);
-
             graphics.ClearDepthBuffer();
-
-            // Draw ui :)
 
             _ui.Draw(graphics);
         }
@@ -165,7 +162,7 @@ namespace PinguinGame.MiniGames.Ice.GameStates
         {
             return new UIInGameModel()
             {
-                Characters = World.Players.Select(player => new UICharacterLivesModel()
+                Characters = Game.Players.Select(player => new UICharacterLivesModel()
                 {
                     MaxLives = 3,
                     Lives = Lives[player],

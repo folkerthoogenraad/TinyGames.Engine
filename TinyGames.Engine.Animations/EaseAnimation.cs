@@ -11,13 +11,13 @@ namespace TinyGames.Engine.Animations
         public float CurrentTime { get; set; } = 0;
         public float Duration { get; set; } = 1;
 
-        public float Value => _easeFunction(GetLinearValue());
+        public float Value => EaseFunction(GetLinearValue());
 
-        private Func<float, float> _easeFunction;
+        public Func<float, float> EaseFunction;
 
         public EaseAnimation(Func<float, float> easeFunction, float duration, float predelay = 0)
         {
-            _easeFunction = easeFunction;
+            EaseFunction = easeFunction;
             Duration = duration;
             PreDelay = predelay;
         }

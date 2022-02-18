@@ -24,14 +24,11 @@ namespace PinguinGame.MiniGames.Ice
     public class IceGame
     {
         public Camera Camera { get; set; }
-        public IEnumerable<Character> Characters => Scene.FindGameObjectsOfType<Character>();
-        public IEnumerable<PlayerInfo> Players => Fight.Players;
-        public Fight Fight { get; private set; }
+        public IEnumerable<CharacterGameObject> Characters => Scene.FindGameObjectsOfType<CharacterGameObject>();
+        public PlayerInfo[] Players { get; private set; }
 
         public IceLevel Level { get; private set; }
         public IceLevelGraphics LevelGraphics { get; private set; }
-        public IceGameUIGraphics UIGraphics { get; set; }
-        public IceGameEffects Effects { get; set; }
 
         public IMiniGameInputService<CharacterInput> InputService { get; set; }
         public IUISoundService UISoundService { get; set; }
@@ -40,29 +37,24 @@ namespace PinguinGame.MiniGames.Ice
         private List<IceBlockBehaviour> _iceBlockBehaviour;
 
         public ContentManager Content { get; set; }
-
-        public Random Random { get; set; }
-
+        
         public Scene Scene { get; set; }
         public SceneGraphics SceneGraphics { get; set; }
-        public ParticleSystem ParticleSystem { get; set; }
         public CharacterCollisionBehaviour CharacterCollisions { get; set; }
 
         public IceGame(IServiceProvider services, LevelInfo level, PlayerInfo[] players, IMiniGameInputService<CharacterInput> inputService, IUISoundService uiSoundService, IScreenService screenservice)
         {
             var graphicsDeviceService = services.GetService<IGraphicsDeviceService>();            
+            
+            Players = players;
 
             Content = new ContentManager(services);
             Content.RootDirectory = "Content";
 
             UISoundService = uiSoundService;
             ScreenService = screenservice;
-            UIGraphics = new IceGameUIGraphics(Content);
-            Effects = new IceGameEffects(Content);
 
             InputService = inputService;
-
-            Fight = new Fight(players);
 
             Level = Content.LoadIceLevel(level.File);
             LevelGraphics = new IceLevelGraphics(Content, graphicsDeviceService.GraphicsDevice, Level, new IceLevelGraphicsSettings());
@@ -73,22 +65,21 @@ namespace PinguinGame.MiniGames.Ice
                 new TimedDriftIceBlockBehaviour(),
             };
 
-            Random = new Random();
-
             CharacterCollisions = new CharacterCollisionBehaviour();
 
             Scene = new Scene(services);
 
             SceneGraphics = Scene.AddBehaviour(new SceneGraphics());
-            ParticleSystem  = Scene.AddBehaviour(new ParticleSystem());
-            Scene.AddBehaviour(CharacterCollisions);
+            Scene.AddBehaviour(new ParticleSystem());
             Scene.AddBehaviour(new Walkables(Level));
-            Scene.AddBehaviour(UIGraphics);
+            Scene.AddBehaviour(new IceGameEffects(Content));
+            Scene.AddBehaviour(new IceGameUIGraphics(Content));
             Scene.AddBehaviour(new IceGameGraphics(Content));
+            Scene.AddBehaviour(CharacterCollisions);
+            Scene.AddBehaviour(new CharacterIndicatorBehaviour());
 
 
             // This is loading the Geysers, not really needed.
-
             foreach (var g in Level.Geysers.Select(x => new Geyser(x)))
             {
                 Scene.AddGameObject(g);
@@ -99,11 +90,11 @@ namespace PinguinGame.MiniGames.Ice
                 Scene.AddGameObject(bridge);
             }
 
-            foreach (var grass in Level.Grass.Select(x => new Grass(x)))
+            foreach (var grass in Level.Grass.Select(x => new GrassGameObject(x)))
             {
                 Scene.AddGameObject(grass);
             }
-            foreach (var grass in Level.Trees.Select(x => new Tree(x)))
+            foreach (var grass in Level.Trees.Select(x => new TreeGameObject(x)))
             {
                 Scene.AddGameObject(grass);
             }
@@ -112,17 +103,17 @@ namespace PinguinGame.MiniGames.Ice
             Scene.Init();
         }
 
-        public void AddSnowball(Snowball ball)
+        public void AddSnowball(SnowballGameObject ball)
         {
             Scene.AddGameObject(ball);
         }
 
-        public void AddCharacter(Character character)
+        public void AddCharacter(CharacterGameObject character)
         {
             Scene.AddGameObject(character);
         }
 
-        public void RemoveCharacter(Character character)
+        public void RemoveCharacter(CharacterGameObject character)
         {
             Scene.RemoveGameObject(character);
         }
@@ -163,12 +154,12 @@ namespace PinguinGame.MiniGames.Ice
 
         public Vector2 FindRandomSpawnPoint()
         {
-            return Random.NextPointsInPolygon(Level.Blocks.Where(x => x.IsIdle).Random().Polygon, 1).First();
+            return new Random().NextPointsInPolygon(Level.Blocks.Where(x => x.IsIdle).Random().Polygon, 1).First();
         }
 
-        public Character SpawnCharacter(Vector2 spawnLocation, PlayerInfo player)
+        public CharacterGameObject SpawnCharacter(Vector2 spawnLocation, PlayerInfo player)
         {
-            var character = new Character(this, player, spawnLocation);
+            var character = new CharacterGameObject(player, spawnLocation);
             character.Physics = character.Physics.SetFacing(-spawnLocation);
 
             AddCharacter(character);
@@ -230,22 +221,6 @@ namespace PinguinGame.MiniGames.Ice
             graphics.SetBlendMode(BlendMode.Normal);
         }
 
-        public void DrawPlayerIndicators(Graphics2D graphics)
-        {
-            foreach (var character in Characters)
-            {
-                if(character.Lifetime < 2)
-                {
-                    DrawIndicatorFor(graphics, character);
-                }
-            }
-        }
-
-        public void DrawIndicatorFor(Graphics2D graphics, Character character)
-        {
-            graphics.DrawSprite(UIGraphics.IndicatorOutline, character.Position - new Vector2(0, 32 + character.Bounce.Height), 0, GraphicsHelper.YToDepth(character.Position.Y));
-            graphics.DrawSprite(UIGraphics.Indicator, character.Position - new Vector2(0, 32 + character.Bounce.Height), 0, GraphicsHelper.YToDepth(character.Position.Y), character.Player.Color);
-        }
 
         public void Destroy()
         {

@@ -11,8 +11,8 @@ namespace PinguinGame.MiniGames.Ice.Behaviours
     public class CharacterCollisionBehaviour : ISceneBehaviour
     {
         public Scene Scene { get; set; }
-        public IEnumerable<Character> Characters => Scene.FindGameObjectsOfType<Character>();
-        private IEnumerable<Snowball> Snowballs => Scene.FindGameObjectsOfType<Snowball>();
+        public IEnumerable<CharacterGameObject> Characters => Scene.FindGameObjectsOfType<CharacterGameObject>();
+        private IEnumerable<SnowballGameObject> Snowballs => Scene.FindGameObjectsOfType<SnowballGameObject>();
         private IEnumerable<Geyser> Geysers => Scene.FindGameObjectsOfType<Geyser>();
 
         public void TryBonkCharacters()
@@ -105,7 +105,7 @@ namespace PinguinGame.MiniGames.Ice.Behaviours
             }
         }
 
-        private (bool Bonking, Vector2 Velocity, float StunTime) BonkCharacters(Character self, Character other, float bonkVelocity, Vector2 direction)
+        private (bool Bonking, Vector2 Velocity, float StunTime) BonkCharacters(CharacterGameObject self, CharacterGameObject other, float bonkVelocity, Vector2 direction)
         {
             // Advantage
             if (self.IsSliding && (other.IsGathering || other.IsWalking || self.IsBonking))
@@ -133,9 +133,9 @@ namespace PinguinGame.MiniGames.Ice.Behaviours
             }
         }
 
-        public List<Character> TryDrownCharacters()
+        public List<CharacterGameObject> TryDrownCharacters()
         {
-            var result = new List<Character>();
+            var result = new List<CharacterGameObject>();
 
             foreach (var p in Characters.Where(x => !x.IsDrowning))
             {

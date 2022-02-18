@@ -28,7 +28,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             Direction = Direction.Normalized();
         }
 
-        public override void Init(Character penguin)
+        public override void Init(CharacterGameObject penguin)
         {
             base.Init(penguin);
 
@@ -37,7 +37,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             penguin.Sound.PlayStartSlide();
         }
 
-        public override CharacterState Update(Character penguin, CharacterInput input, float delta)
+        public override CharacterState Update(CharacterGameObject penguin, CharacterInput input, float delta)
         {
             SlideTimer += delta;
 
@@ -53,7 +53,7 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             return this;
         }
 
-        public override void Draw(Graphics2D graphics, Character penguin, CharacterGraphics penguinGraphics)
+        public override void Draw(Graphics2D graphics, CharacterGameObject penguin, CharacterGraphics penguinGraphics)
         {
             var facing = CharacterGraphics.GetFacingFromVector(penguin.Facing);
             var color = penguin.Player.Color;

@@ -31,8 +31,8 @@ namespace PinguinGame.Screens.UI
                 Sprite = GetSpriteForSecond(3),
             };
 
-            Countdown.SetAnimation(new UITransformAnimation(new Vector2(0, 16), new Vector2(1.0f, 1.0f)));
             AddComponent(Countdown);
+            Animate();
         }
         public void SetCurrentSecond(int second)
         {
@@ -41,7 +41,19 @@ namespace PinguinGame.Screens.UI
             CurrentSecond = second;
 
             Countdown.Sprite = GetSpriteForSecond(CurrentSecond);
-            Countdown.SetAnimation(new UITransformAnimation(new Vector2(0, 16), new Vector2(1.0f, 1.0f)));
+            Animate();
+        }
+
+        private void Animate()
+        {
+            var animation = new UIEaseAnimation();
+
+            animation.ScaleAnimation.Animation.EaseFunction = Ease.Overshoot;
+            animation.ScaleAnimation.Animation.Duration = 0.2f;
+            animation.ScaleAnimation.Animation.PreDelay = 0;
+            animation.ScaleAnimation.Animate(new Vector2(2f, 2f), new Vector2(1, 1));
+
+            Countdown.SetAnimation(animation);
         }
 
         public override void UpdateLayout(AABB bounds)
