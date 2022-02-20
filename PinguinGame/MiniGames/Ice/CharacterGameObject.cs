@@ -14,7 +14,7 @@ using PinguinGame.Graphics;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    [RequireSceneBehaviour(typeof(SceneGraphics))] // This it doens't need :)
+    [RequireSceneBehaviour(typeof(SceneGraphics))]
     [RequireSceneBehaviour(typeof(Walkables))]
     [RequireSceneBehaviour(typeof(IceGameUIGraphics))]
     public class CharacterGameObject : GameObject, IDrawable2D
@@ -37,6 +37,7 @@ namespace PinguinGame.MiniGames.Ice
         public bool IsWalking => State is CharacterWalkState;
         public bool IsDrowning => State is CharacterDrownState;
         public bool IsGathering => State is CharacterGatherSnowState;
+        public bool CanCollide => !Invunerable && !IsDrowning;
 
         public bool Invunerable => InvunerableTime > 0;
         public float InvunerableTime { get; set;  } = 0;
@@ -44,10 +45,11 @@ namespace PinguinGame.MiniGames.Ice
         public bool Grounded { get; set; } = true;
         public float Lifetime { get; set; } = 0;
 
-        public Walkables Walkables { get; set; }
-        public IceGameUIGraphics UIGraphics { get; set; }
+        private Walkables _walkables;
 
         public PlayerInfo Player { get; private set; }
+
+        public IceGameUIGraphics UIGraphics { get; set; }
         public CharacterPhysics Physics { get; set; }
         public CharacterSettings Settings { get; private set; }
         public CharacterBounce Bounce { get; private set; }
@@ -65,7 +67,6 @@ namespace PinguinGame.MiniGames.Ice
         public Vector2 Facing => Physics.Facing;
         public float GroundHeight { get; set; } = 0;
 
-        public bool CanCollide => !Invunerable && !IsDrowning;
 
         public CharacterGameObject(PlayerInfo player, Vector2 position)
         {
@@ -84,7 +85,7 @@ namespace PinguinGame.MiniGames.Ice
         {
             base.Init();
 
-            Walkables = Scene.GetBehaviour<Walkables>();
+            _walkables = Scene.GetBehaviour<Walkables>();
             UIGraphics = Scene.GetBehaviour<IceGameUIGraphics>();
         }
 
@@ -121,7 +122,7 @@ namespace PinguinGame.MiniGames.Ice
 
         public void PlaceOnGround()
         {
-            var result = Walkables.GetGroundInfo(Position);
+            var result = _walkables.GetGroundInfo(Position);
 
             if (IsDrowning)
             {
@@ -139,7 +140,7 @@ namespace PinguinGame.MiniGames.Ice
         }
         public void MoveWithGround(float delta)
         {
-            var result = Walkables.GetGroundInfo(Position);
+            var result = _walkables.GetGroundInfo(Position);
 
             Position += result.Velocity * delta;
         }
