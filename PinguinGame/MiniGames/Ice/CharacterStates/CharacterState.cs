@@ -7,7 +7,7 @@ using TinyGames.Engine.Graphics;
 
 namespace PinguinGame.MiniGames.Ice.CharacterStates
 {
-    internal abstract class CharacterState
+    public abstract class CharacterState
     {
         public CharacterGameObject Character { get; set; }
         public virtual void Init(CharacterGameObject character) { Character = character; }

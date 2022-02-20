@@ -20,7 +20,7 @@ namespace PinguinGame.MiniGames.Ice
     public class CharacterGameObject : GameObject, IDrawable2D
     {
         private CharacterState _state { get; set; }
-        private CharacterState State
+        public CharacterState State
         {
             get => _state;
             set {
@@ -56,6 +56,7 @@ namespace PinguinGame.MiniGames.Ice
         public CharacterGraphics Graphics { get; private set; }
         public CharacterSnowballGathering SnowballGathering { get; private set; }
         public CharacterSoundComponent Sound { get; private set; }
+        public CharacterActionComponent Actions { get; set; }
 
 
         public Vector2 Position
@@ -78,6 +79,8 @@ namespace PinguinGame.MiniGames.Ice
             Settings = new CharacterSettings();
             Bounce = new CharacterBounce();
             SnowballGathering = new CharacterSnowballGathering();
+            Actions = new CharacterActionComponent();
+
             State = new CharacterWalkState();
         }
 
@@ -99,6 +102,8 @@ namespace PinguinGame.MiniGames.Ice
             Sound.Update(this, delta);
             State = State.Update(this, input, delta);
 
+            Actions.Update(delta, input);
+
             PlaceOnGround();
             MoveWithGround(delta);
         }
@@ -119,7 +124,6 @@ namespace PinguinGame.MiniGames.Ice
 
             State.Draw(graphics, this, Graphics);
         }
-
         public void PlaceOnGround()
         {
             var result = _walkables.GetGroundInfo(Position);
@@ -144,7 +148,6 @@ namespace PinguinGame.MiniGames.Ice
 
             Position += result.Velocity * delta;
         }
-
         public void Bonk(Vector2 velocity, float duration = 1)
         {
             State = new CharacterBonkState(Scene.GetBehaviour<IceGameEffects>(), velocity, duration);

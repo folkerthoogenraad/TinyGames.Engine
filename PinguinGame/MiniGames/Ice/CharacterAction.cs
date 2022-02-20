@@ -1,40 +1,34 @@
 ﻿using Microsoft.Xna.Framework;
+using PinguinGame.MiniGames.Ice.CharacterStates;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace PinguinGame.MiniGames.Ice
 {
-    public class CharacterActionInfo
-    {
-        public bool CanPerform { get; set; }
-        public string Name { get; set; }
-    }
     public abstract class CharacterAction<T>
     {
+        public CharacterGameObject Character { get; set; }
+
+        public CharacterAction(CharacterGameObject data)
+        {
+            Character = data;
+        }
+
         public abstract void Update(float delta, T status);
-    }
-
-    public abstract class CharacterButtonAction : CharacterAction<bool>
-    {
-
-    }
-    public abstract class CharacterMoveAction : CharacterAction<Vector2>
-    {
-
     }
 
     public class CharacterActionsSet
     {
-        public CharacterButtonAction Primary;
-        public CharacterButtonAction Secondary;
-        public CharacterMoveAction Move;
+        public CharacterAction<bool> Primary;
+        public CharacterAction<bool> Secondary;
+        public CharacterAction<Vector2> Move;
 
         public void Update(float delta, CharacterInput input)
         {
-            Primary.Update(delta, input.Action);
-            Secondary.Update(delta, input.ActionSecondary);
-            Move.Update(delta, input.MoveDirection);
+            Primary?.Update(delta, input.Action);
+            Secondary?.Update(delta, input.ActionSecondary);
+            Move?.Update(delta, input.MoveDirection);
         }
 
         public CharacterActionsSet Clone()
@@ -50,14 +44,24 @@ namespace PinguinGame.MiniGames.Ice
 
     public class CharacterActionComponent
     {
-        public CharacterActionsSet CurrentActions;
+        public CharacterActionsSet CurrentActions { get; set; }
 
         private Stack<CharacterActionsSet> _actionStack;
+
+        public CharacterActionComponent()
+        {
+            _actionStack = new Stack<CharacterActionsSet>();
+        }
 
         public void PushActions()
         {
             _actionStack.Push(CurrentActions);
-            CurrentActions = CurrentActions.Clone();
+            CurrentActions = CurrentActions?.Clone();
+        }
+
+        public void Update(float delta, CharacterInput input)
+        {
+            CurrentActions?.Update(delta, input);
         }
 
         public void PopActions()

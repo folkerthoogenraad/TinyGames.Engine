@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using PinguinGame.MiniGames.Generic;
+using PinguinGame.MiniGames.Ice.CharacterActions;
+using PinguinGame.MiniGames.Ice.CharacterActions.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,45 +12,45 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
 {
     internal class CharacterSlideState : CharacterState
     {
-        public Vector2 Direction { get; set; }
-
-        private float SlideTimer = 0;
+        public SlideData Data { get; set; }
 
         public CharacterSlideState(Vector2 speed)
         {
-            if(speed.LengthSquared() > 0)
+            Data = new SlideData()
             {
-                Direction = speed;
-            }
-            else
-            {
-                Direction = new Vector2(1, 0);
-            }
-
-            Direction = Direction.Normalized();
+                SlideTimer = 0,
+                InitialDirection = speed,
+            };
         }
 
-        public override void Init(CharacterGameObject penguin)
+        public override void Init(CharacterGameObject character)
         {
-            base.Init(penguin);
+            base.Init(character);
 
-            penguin.Physics = penguin.Physics.StartSlide(Direction * penguin.Settings.SlideSpeed);
-            penguin.Bounce.Height = 4;
-            penguin.Sound.PlayStartSlide();
+            character.Bounce.Height = 4;
+            character.Sound.PlayStartSlide();
+
+            character.Actions.PushActions();
+
+            character.Actions.CurrentActions = new CharacterActionsSet()
+            {
+                Move = new SlideAction(character, Data),
+                Primary = new StopSlideAction(character),
+                Secondary = new NoAction<bool>(character),
+            };
+        }
+        public override void Destroy()
+        {
+            base.Destroy();
+
+            Character.Sound.PlayStopSlide();
+
+            Character.Actions.PopActions();
         }
 
         public override CharacterState Update(CharacterGameObject penguin, CharacterInput input, float delta)
         {
-            SlideTimer += delta;
-
-            if(CanStopSlide && !input.Action)
-            {
-                penguin.Bounce.Height = 3;
-
-                return new CharacterWalkState();
-            }
-
-            penguin.Physics = penguin.Physics.Slide(delta, input.MoveDirection);
+            Data.SlideTimer += delta;
 
             return this;
         }
@@ -58,16 +60,8 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             var facing = CharacterGraphics.GetFacingFromVector(penguin.Facing);
             var color = penguin.Player.Color;
 
-            penguinGraphics.DrawSlide(graphics, facing, penguin.Position, penguin.Height, SlideTimer);
+            penguinGraphics.DrawSlide(graphics, facing, penguin.Position, penguin.Height, Data.SlideTimer);
         }
 
-        public override void Destroy()
-        {
-            base.Destroy();
-            
-            Character.Sound.PlayStopSlide();
-
-        }
-        public bool CanStopSlide => SlideTimer > 0.3f;
     }
 }

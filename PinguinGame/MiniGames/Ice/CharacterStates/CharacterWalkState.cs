@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using PinguinGame.MiniGames.Generic;
+using PinguinGame.MiniGames.Ice.CharacterActions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,26 +28,34 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             }
         }
 
+        public override void Init(CharacterGameObject character)
+        {
+            base.Init(character);
+
+
+            // This is not a very nice way of doing it, but wahtever
+            character.Actions.PushActions();
+
+            character.Actions.CurrentActions = new CharacterActionsSet()
+            {
+                Move = new WalkAction(character),
+                Primary = new StartSlideAction(character),
+                Secondary = new NoAction<bool>(character),
+            };
+        }
+        public override void Destroy()
+        {
+            base.Destroy();
+            Walking = false;
+
+            Character.Actions.PopActions();
+        }
+
         public override CharacterState Update(CharacterGameObject character, CharacterInput input, float delta)
         {
             AnimationTimer += delta;
             
             Walking = input.MoveDirection.LengthSquared() > 0;
-
-            character.Physics = character.Physics.Move(delta, input.MoveDirection * character.Settings.MoveSpeed, character.Settings.Acceleration);
-
-            if (input.ActionPressed)
-            {
-                Vector2 direction = character.Physics.Velocity / character.Settings.MoveSpeed;
-
-                direction += input.MoveDirection;
-
-                if (direction.LengthSquared() <= 0) direction = input.MoveDirection;
-                if (direction.LengthSquared() <= 0) direction = character.Facing;
-                if (direction.LengthSquared() <= 0) direction = new Vector2(1, 0);
-
-                return new CharacterSlideState(direction);
-            }
 
             if (input.ActionSecondaryPressed)
             {
@@ -71,7 +80,6 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
         public override void Draw(Graphics2D graphics, CharacterGameObject penguin, CharacterGraphics penguinGraphics)
         {
             var facing = CharacterGraphics.GetFacingFromVector(penguin.Facing);
-            var color = penguin.Player.Color;
 
             if (Walking)
             {
@@ -83,10 +91,5 @@ namespace PinguinGame.MiniGames.Ice.CharacterStates
             }
         }
 
-        public override void Destroy()
-        {
-            base.Destroy();
-            Walking = false;
-        }
     }
 }
