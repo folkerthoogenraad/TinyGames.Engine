@@ -16,8 +16,10 @@ using PinguinGame.Audio;
 using TinyGames.Engine.IO;
 using TinyGames.Engine.Collections;
 using PinguinGame.Levels;
-using PinguinGame.MiniGames.Generic;
+using PinguinGame.Gameplay.Generic;
 using PinguinGame.Settings;
+using PinguinGame.Graphics;
+using PinguinGame.Gameplay;
 
 namespace PinguinGame
 {
@@ -41,8 +43,8 @@ namespace PinguinGame
         {
             base.Initialize();
 
-            _graphics.PreferredBackBufferWidth = 1280;
-            _graphics.PreferredBackBufferHeight = 720;
+            _graphics.PreferredBackBufferWidth = 1600;
+            _graphics.PreferredBackBufferHeight = 900;
             _graphics.ApplyChanges();
 
             //_graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
@@ -51,6 +53,7 @@ namespace PinguinGame
             //_graphics.ApplyChanges();
 
 
+            Services.AddService<IGraphicsService>(new GraphicsService(GraphicsDevice, GraphicsServiceExtensions.GetPreferredScalingFactor(_graphics.PreferredBackBufferHeight, 180)));
             Services.AddService<IStorageSystem>(new StorageSystem(new DiskStorageProvider(Content.RootDirectory)));
             Services.AddService<ISettingsService, SettingsService>();
             Services.AddService<IInputService>(new InputService());
@@ -62,7 +65,7 @@ namespace PinguinGame
 
             Input = Services.GetService<IInputService>();
 
-            Manager = new ScreenManager(GraphicsDevice, Content);
+            Manager = new ScreenManager(Services.GetService<IGraphicsService>(), Content);
 
             var players = new PlayerInfo[] {
                 new PlayerInfo() { Index = 0, InputDevice = InputDeviceType.Keyboard0 },
@@ -76,8 +79,8 @@ namespace PinguinGame
                 player.CharacterInfo = Services.GetService<ICharactersService>().GetDefaultForPlayer(player);
             }
 
-            // ShowMapSelectScreen(players);
-            ShowInGameScreen(players, Services.GetService<ILevelsService>().GetLevels().FirstOrDefault());
+            ShowMapSelectScreen(players);
+            // ShowInGameScreen(players, Services.GetService<ILevelsService>().GetLevels().FirstOrDefault());
             // ShowSplashScreen();
             // ShowMenuScreen();
 
@@ -101,10 +104,6 @@ namespace PinguinGame
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 ShowMenuScreen();
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.F1))
-            {
-                GC.Collect();
             }
 
             Input.Poll();

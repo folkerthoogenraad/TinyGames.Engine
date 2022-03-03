@@ -27,6 +27,16 @@ namespace TinyGames.Engine.Maths
             i.Normalize();
             return i;
         }
+        public static Vector2 NormalizedOrDefault(this Vector2 i, Vector2 def)
+        {
+            if(i.LengthSquared() <= 0)
+            {
+                return def;
+            }
+
+            i.Normalize();
+            return i;
+        }
 
         public static float GetAngle(this Vector2 i)
         {

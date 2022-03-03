@@ -13,5 +13,6 @@ namespace PinguinGame.Levels.Contracts
         public string BackgroundColor { get; set; }
         public TiledLayer[] Layers { get; set; }
         public TiledTileset[] Tilesets { get; set; }
+        public TiledProperty[] Properties { get; set; }
     }
 }

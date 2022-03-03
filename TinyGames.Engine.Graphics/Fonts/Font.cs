@@ -55,6 +55,8 @@ namespace TinyGames.Engine.Graphics.Fonts
 
                 var glyph = GetGlyphForCharacter(ch);
 
+                if (glyph == null) continue;
+
                 graphics.DrawTextureRegion(_texture, glyph.Rectangle, position + new Vector2(glyph.OffsetX, glyph.OffsetY) * scale, scale * new Vector2(glyph.Width, glyph.Height), color);
 
                 position.X += glyph.Advance * scale.X;
@@ -83,6 +85,8 @@ namespace TinyGames.Engine.Graphics.Fonts
 
                 Glyph glyph = GetGlyphForCharacter(ch);
 
+                if (glyph == null) continue; // TODO default glyph
+
                 size.X += glyph.Advance;
 
                 // TODO figure out if we need this.
@@ -100,7 +104,11 @@ namespace TinyGames.Engine.Graphics.Fonts
 
         public Glyph GetGlyphForCharacter(char c)
         {
-            return _glyphs[c];
+            if (_glyphs.ContainsKey(c))
+            {
+                return _glyphs[c];
+            }
+            return null;
         }
 
         public void SetGlyphForCharacter(char c, Glyph g)

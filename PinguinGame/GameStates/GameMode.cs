@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using TinyGames.Engine.Graphics;
@@ -31,7 +32,14 @@ namespace PinguinGame.GameStates
 
             _started = true;
 
-            await RunSelf();
+            try
+            {
+                await RunSelf();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
 
             Done = true;
         }
@@ -50,12 +58,6 @@ namespace PinguinGame.GameStates
             State = state;
 
             return await state.WaitFor();
-        }
-        public async Task GotoState(GameState state)
-        {
-            State = state;
-
-            await state.WaitFor();
         }
         public virtual void Destroy()
         {

@@ -74,6 +74,21 @@
             "OriginX": 8,
             "OriginY": 8
          }
+      },
+      {
+         "Name": "Supermarket0",
+         "Identifier": "supermarket",
+         "Description": "It is supermarket",
+         "File": "Levels/Supermarket/Level0",
+         "Icon": {
+            "Texture": "Sprites/UI/MapIcons",
+            "X": 48,
+            "Y": 16,
+            "Width": 16,
+            "Height": 16,
+            "OriginX": 8,
+            "OriginY": 8
+         }
       }
    ]
 }

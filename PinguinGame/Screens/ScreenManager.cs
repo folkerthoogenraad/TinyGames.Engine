@@ -37,18 +37,18 @@ namespace PinguinGame.Screens
 
         public float FadeFactor => EaseFunction(GetFadeFactor());
 
-        private GraphicsDevice _device;
+        private IGraphicsService _graphicsService;
         private ContentManager _content;
         private Graphics2D _graphics;
 
         private Fade _fadeIn;
         private Fade _fadeOut;
 
-        public ScreenManager(GraphicsDevice device, ContentManager content)
+        public ScreenManager(IGraphicsService graphicsService, ContentManager content)
         {
-            _device = device;
+            _graphicsService = graphicsService;
             _content = content;
-            _graphics = new Graphics2D(device);
+            _graphics = new Graphics2D(_graphicsService.Device);
 
             //_fadeIn = new RandomBlockFade(Color.Black) { Forward = true };
             //_fadeOut = new RandomBlockFade(Color.Black) { Forward = false };
@@ -66,7 +66,7 @@ namespace PinguinGame.Screens
                     _currentScreen?.Destroy();
                     _currentScreen = _nextScreen;
                     _nextScreen = null;
-                    _currentScreen?.Init(_device, _content);
+                    _currentScreen?.Init(_graphicsService, _content);
                     _fadeTimer = FadeInDuration;
                 }
 

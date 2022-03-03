@@ -242,6 +242,18 @@
                  "width":0,
                  "x":104,
                  "y":96
+                }, 
+                {
+                 "height":0,
+                 "id":71,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "type":"Water",
+                 "visible":true,
+                 "width":0,
+                 "x":0,
+                 "y":0
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -323,8 +335,8 @@
                  "type":"Grass",
                  "visible":true,
                  "width":16,
-                 "x":113.925416556467,
-                 "y":58.828881248347
+                 "x":113.925,
+                 "y":58.8289
                 }, 
                 {
                  "gid":34,
@@ -335,8 +347,8 @@
                  "type":"Grass",
                  "visible":true,
                  "width":16,
-                 "x":168.844221105528,
-                 "y":70.7368421052632
+                 "x":168.844,
+                 "y":70.7368
                 }, 
                 {
                  "gid":34,
@@ -347,8 +359,8 @@
                  "type":"Grass",
                  "visible":true,
                  "width":16,
-                 "x":235.670986511505,
-                 "y":52.0751124041259
+                 "x":235.671,
+                 "y":52.0751
                 }, 
                 {
                  "gid":34,
@@ -359,8 +371,8 @@
                  "type":"Grass",
                  "visible":true,
                  "width":16,
-                 "x":198.880719386406,
-                 "y":155.158952658027
+                 "x":198.881,
+                 "y":155.159
                 }, 
                 {
                  "gid":34,
@@ -371,8 +383,8 @@
                  "type":"Grass",
                  "visible":true,
                  "width":16,
-                 "x":129.032531076435,
-                 "y":115.169531869876
+                 "x":129.033,
+                 "y":115.17
                 }, 
                 {
                  "gid":34,
@@ -383,8 +395,8 @@
                  "type":"Grass",
                  "visible":true,
                  "width":16,
-                 "x":79.9788415763026,
-                 "y":152.137529754033
+                 "x":79.9788,
+                 "y":152.138
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -452,7 +464,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":71,
+ "nextobjectid":72,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.1",

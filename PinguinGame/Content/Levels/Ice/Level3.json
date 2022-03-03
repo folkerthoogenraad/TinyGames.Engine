@@ -1,12 +1,4 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"Level3.json"
-        }
-    },
  "height":12,
  "infinite":false,
  "layers":[
@@ -96,6 +88,18 @@
                  "width":16,
                  "x":112,
                  "y":120
+                }, 
+                {
+                 "height":0,
+                 "id":7,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "type":"Water",
+                 "visible":true,
+                 "width":0,
+                 "x":0,
+                 "y":0
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -127,14 +131,14 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":7,
+ "nextobjectid":8,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.4.3",
+ "tiledversion":"1.8.1",
  "tileheight":16,
  "tilesets":[],
  "tilewidth":16,
  "type":"map",
- "version":1.4,
+ "version":"1.8",
  "width":20
 }

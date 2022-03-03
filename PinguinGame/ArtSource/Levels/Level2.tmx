@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.1" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="38">
+<map version="1.8" tiledversion="1.8.1" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="39">
  <editorsettings>
   <export target="../../Content/Levels/Ice/Level2.json" format="json"/>
  </editorsettings>
@@ -27,6 +27,9 @@
     <property name="TimerTrigger" type="float" value="7"/>
    </properties>
    <polygon points="0,0 48,8 72,40 72,88 32,104 8,96"/>
+  </object>
+  <object id="38" type="Water" x="0" y="0">
+   <point/>
   </object>
  </objectgroup>
  <objectgroup id="4" name="Spawns">

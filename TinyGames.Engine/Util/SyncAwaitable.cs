@@ -6,10 +6,15 @@ namespace TinyGames.Engine.Util
 {
     public class SyncAwaitable<T>
     {
+        public bool IsCompleted { get; private set; } = false;
+        public Exception Exception { get; private set; }
+        public T Result { get; private set; }
+
         private SyncAwaiter<T> _awaiter;
+
         public SyncAwaitable()
         {
-            _awaiter = new SyncAwaiter<T>();
+            _awaiter = new SyncAwaiter<T>(this);
         }
 
         public SyncAwaiter<T> GetAwaiter()
@@ -19,25 +24,16 @@ namespace TinyGames.Engine.Util
 
         public void Complete(T v)
         {
-            _awaiter.Complete(v);
-        }
-    }
+            IsCompleted = true;
+            Result = v;
 
-    public class SyncAwaitable
-    {
-        private SyncAwaiter _awaiter;
-        public SyncAwaitable()
-        {
-            _awaiter = new SyncAwaiter();
+            _awaiter.Complete();
         }
-
-        public SyncAwaiter GetAwaiter()
+        public void SetException(Exception e)
         {
-            return _awaiter;
-        }
+            IsCompleted = true;
+            Exception = e;
 
-        public void Complete()
-        {
             _awaiter.Complete();
         }
     }

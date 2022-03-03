@@ -1,0 +1,22 @@
+{
+	"glyphRows": [
+		"ABCDEFGHIJKLMNOPQ",
+		"RSTUVWXYZ",
+		"abcdefghijklmnopq",
+		"rstuvwxyz",
+		".,'\"!?:;()[]{}/\\~#",
+		"-+*^%_=@",
+		"1234567890"
+	],
+	"glyphWidth": 7,
+	"glyphHeight": 9,
+
+	"glyphOffsetX": 0,
+	"glyphOffsetY": 0,
+
+	"glyphSeperationX": 0,
+	"glyphSeperationY": 0,
+
+	"glyphBaseline": 6,
+	"letterSpacing": 1
+}

@@ -1,9 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using PinguinGame.Input;
-using PinguinGame.MiniGames.Generic;
+using PinguinGame.Gameplay.Generic;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using PinguinGame.Gameplay;
 
 namespace PinguinGame.Player
 {

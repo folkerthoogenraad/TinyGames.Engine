@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.8" tiledversion="1.8.1" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#464646" nextlayerid="10" nextobjectid="73">
+ <editorsettings>
+  <export target="../../Content/Levels/Supermarket/Level0.json" format="json"/>
+ </editorsettings>
+ <properties>
+  <property name="HasWater" type="bool" value="false"/>
+ </properties>
+ <tileset firstgid="1" source="IceGameplayElements.tsx"/>
+ <tileset firstgid="65" source="SuperMarket.tsx"/>
+ <layer id="6" name="Background" width="20" height="12">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,67,67,68,69,70,67,67,68,69,70,67,67,0,0,0,0,0,0,0,
+0,75,75,76,77,78,75,75,76,77,78,75,75,0,0,0,0,0,0,0,
+0,66,66,66,66,66,66,66,66,66,66,66,66,67,67,67,67,0,0,0,
+0,66,66,66,66,66,66,66,66,66,66,66,66,75,75,75,75,0,0,0,
+0,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,0,0,0,
+0,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,0,0,0,
+0,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,0,0,0,
+0,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,0,0,0,
+0,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,0,0,0,
+0,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="7" name="Top" width="20" height="12">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,102,103,104,102,0,0,0,
+0,0,0,0,94,94,94,94,94,94,94,0,0,110,111,112,110,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,95,95,95,95,95,95,95,0,0,102,103,104,102,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,110,111,112,110,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="8" name="Objects">
+  <object id="65" type="Spawn" x="104" y="160">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="9" name="Carts">
+  <object id="66" type="ShoppingCart" x="48" y="112">
+   <point/>
+  </object>
+  <object id="67" type="ShoppingCart" x="96" y="64">
+   <point/>
+  </object>
+  <object id="68" type="ShoppingCart" x="192" y="72">
+   <point/>
+  </object>
+  <object id="69" type="ShoppingCart" x="232" y="160">
+   <point/>
+  </object>
+  <object id="70" type="ShoppingCart" x="240" y="104">
+   <point/>
+  </object>
+  <object id="71" type="ShoppingCart" x="160" y="160">
+   <point/>
+  </object>
+  <object id="72" type="ShoppingCart" x="48" y="160">
+   <point/>
+  </object>
+ </objectgroup>
+</map>

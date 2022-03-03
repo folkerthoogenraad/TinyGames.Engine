@@ -37,7 +37,7 @@ namespace PinguinGame.Graphics
         // ======================================== // 
         public void Init(Scene scene)
         {
-            var graphics = scene.GetBehaviour<SceneGraphics>();
+            var graphics = scene.GetBehaviour<GraphicsSceneBehaviour>();
             graphics.AddManualDrawable(this);
         }
 

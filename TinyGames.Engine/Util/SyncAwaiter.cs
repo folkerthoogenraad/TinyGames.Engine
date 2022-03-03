@@ -5,44 +5,36 @@ using System.Text;
 
 namespace TinyGames.Engine.Util
 {
-    public class SyncAwaiter<T> : SyncAwaiter
+    public class SyncAwaiter<T> : INotifyCompletion
     {
-        private T Result;
+        // TODO can this only be one? I don't think so right?
+        public bool IsCompleted => _awaitable.IsCompleted;
+        private Action _onCompletion;
+        private SyncAwaitable<T> _awaitable;
 
-        public void Complete(T result)
+        public SyncAwaiter(SyncAwaitable<T> awaitable)
         {
-            Result = result;
-            Complete();
-        }
-
-        public T GetResult()
-        {
-            return Result;
-        }
-    }
-    public class SyncAwaiter : INotifyCompletion
-    {
-        public bool IsCompleted { get; set; } = false;
-        private List<Action> _onCompletionList;
-
-        public SyncAwaiter()
-        {
-            _onCompletionList = new List<Action>();
+            _awaitable = awaitable;
         }
 
         public void OnCompleted(Action continuation)
         {
-            _onCompletionList.Add(continuation);
+            if (_onCompletion != null) throw new NotImplementedException("Cannot add another conitnuation to this awaitable.");
+
+            _onCompletion = continuation;
         }
 
         public void Complete()
         {
-            IsCompleted = true;
-            foreach (var action in _onCompletionList) action();
+            _onCompletion?.Invoke();
         }
-        public void GetResult()
+
+        public T GetResult()
         {
-            // nothing :)
+            if (!_awaitable.IsCompleted) throw new InvalidOperationException("Cannot get result from uncompleted awaitable.");
+            if (_awaitable.Exception != null) throw _awaitable.Exception;
+            
+            return _awaitable.Result;
         }
     }
 }

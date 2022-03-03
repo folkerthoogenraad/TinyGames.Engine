@@ -7,10 +7,9 @@ using TinyGames.Engine.IO;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using PinguinGame.MiniGames;
+using PinguinGame.Gameplay;
 using System.IO;
 using PinguinGame.IO.Levels;
-using PinguinGame.MiniGames.Ice;
 
 namespace PinguinGame.IO
 {
@@ -25,23 +24,23 @@ namespace PinguinGame.IO
             _storage = storage;
         }
 
-        public List<MiniGames.Generic.LevelInfo> LoadLevelInfos(string file)
+        public List<Gameplay.LevelInfo> LoadLevelInfos(string file)
         {
             var infos = _storage.Load<LevelsInfo>(file);
 
             return infos.Levels.Select(x => ConvertInfo(x)).ToList();
         }
 
-        public List<MiniGames.Generic.CharacterInfo> LoadCharacterInfos(string file)
+        public List<Gameplay.CharacterInfo> LoadCharacterInfos(string file)
         {
             var infos = _storage.Load<CharactersInfo>(file);
 
             return infos.Characters.Select(x => ConvertInfo(x)).ToList();
         }
 
-        private MiniGames.Generic.LevelInfo ConvertInfo(LevelInfo data)
+        private Gameplay.LevelInfo ConvertInfo(Levels.LevelInfo data)
         {
-            var info = new MiniGames.Generic.LevelInfo();
+            var info = new Gameplay.LevelInfo();
 
             info.Name = data.Name;
             info.Identifier = data.Identifier;
@@ -52,14 +51,14 @@ namespace PinguinGame.IO
             return info;
         }
 
-        private MiniGames.Generic.CharacterInfo ConvertInfo(CharacterInfo data)
+        private Gameplay.CharacterInfo ConvertInfo(Characters.CharacterInfo data)
         {
-            var info = new MiniGames.Generic.CharacterInfo();
+            var info = new Gameplay.CharacterInfo();
 
             info.Name = data.Name;
             info.Identifier = data.Identifier;
             info.Icon = ConvertSprite(data.Icon);
-            info.Graphics = new MiniGames.Generic.CharacterGraphics(_content.Load<Texture2D>(data.Sheet));
+            info.Graphics = new Gameplay.CharacterGraphics(_content.Load<Texture2D>(data.Sheet));
             info.Sound = CharacterSound.CreateCharacterSound(_content);
 
             return info;
@@ -74,6 +73,16 @@ namespace PinguinGame.IO
             spr.SetOrigin(input.OriginX, input.OriginY);
 
             return spr;
+        }
+
+        List<Gameplay.CharacterInfo> IMiniGameLoader.LoadCharacterInfos(string file)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<Gameplay.LevelInfo> IMiniGameLoader.LoadLevelInfos(string file)
+        {
+            throw new NotImplementedException();
         }
     }
 }

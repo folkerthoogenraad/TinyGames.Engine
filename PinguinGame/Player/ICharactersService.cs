@@ -1,4 +1,4 @@
-﻿using PinguinGame.MiniGames.Generic;
+﻿using PinguinGame.Gameplay;
 using System;
 using System.Collections.Generic;
 using System.Text;

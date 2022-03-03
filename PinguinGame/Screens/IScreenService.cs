@@ -1,4 +1,5 @@
-﻿using PinguinGame.MiniGames.Generic;
+﻿using PinguinGame.Gameplay;
+using PinguinGame.Gameplay.Generic;
 using PinguinGame.Player;
 using PinguinGame.Screens;
 using System;

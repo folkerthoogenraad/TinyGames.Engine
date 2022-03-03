@@ -39,9 +39,9 @@ namespace PinguinGame.Screens
             _musicService = music;
         }
 
-        public override void Init(GraphicsDevice device, ContentManager content)
+        public override void Init(IGraphicsService graphicsService, ContentManager content)
         {
-            base.Init(device, content);
+            base.Init(graphicsService, content);
 
             _ui = new UISelectPlayers(new PlayerSelectResources(content));
             _ui.UpdateLayout(Camera.Bounds);

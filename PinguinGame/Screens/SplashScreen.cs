@@ -29,9 +29,9 @@ namespace PinguinGame.Screens
             _screens = screens;
         }
 
-        public override void Init(GraphicsDevice device, ContentManager content)
+        public override void Init(IGraphicsService graphicsService, ContentManager content)
         {
-            base.Init(device, content);
+            base.Init(graphicsService, content);
 
             _ui = new UISplashScreen(new SplashResources(content));
             _ui.UpdateLayout(Camera.Bounds);

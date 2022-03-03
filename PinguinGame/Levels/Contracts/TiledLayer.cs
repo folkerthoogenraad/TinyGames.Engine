@@ -18,6 +18,7 @@ namespace PinguinGame.Levels.Contracts
         public int[] Data { get; set; }
 
         public TiledObject[] Objects { get; set; }
+        public TiledProperty[] Properties { get; set; }
 
         public bool IsObjectLayer => Type == LayerTypeObjectGroup;
         public bool IsTileLayer => Type == LayerTypeTileLayer;

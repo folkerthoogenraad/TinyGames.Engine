@@ -36,6 +36,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TinyGames.Engine.Animations\TinyGames.Engine.Animations.csproj" />
     <ProjectReference Include="..\TinyGames.Engine.Collisions\TinyGames.Engine.Collisions.csproj" />
+    <ProjectReference Include="..\TinyGames.Engine.Console\TinyGames.Engine.Console.csproj" />
     <ProjectReference Include="..\TinyGames.Engine.Graphics\TinyGames.Engine.Graphics.csproj" />
     <ProjectReference Include="..\TinyGames.Engine.IO\TinyGames.Engine.IO.csproj" />
     <ProjectReference Include="..\TinyGames.Engine.Scenes.Extensions\TinyGames.Engine.Scenes.Extensions.csproj" />

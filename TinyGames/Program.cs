@@ -12,7 +12,7 @@ namespace TinyGames
         [STAThread]
         static void Main()
         {
-            using (var game = new SpringTestGame())
+            using (var game = new TextWritingTestGame())
                 game.Run();
         }
     }

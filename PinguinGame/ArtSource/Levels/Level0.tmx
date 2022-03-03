@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.1" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#1c5476" nextlayerid="5" nextobjectid="80">
+<map version="1.8" tiledversion="1.8.1" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#1c5476" nextlayerid="5" nextobjectid="81">
  <editorsettings>
   <export target="../../Content/Levels/Ice/Level0.json" format="json"/>
  </editorsettings>
@@ -94,6 +94,9 @@
     <property name="Behaviour" value="RandomSink"/>
    </properties>
    <polygon points="0,0 0,-16 40,-16 32,0"/>
+  </object>
+  <object id="80" type="Water" x="0" y="0">
+   <point/>
   </object>
  </objectgroup>
  <objectgroup id="3" name="Spawns">

@@ -37,9 +37,9 @@ namespace PinguinGame.Screens
             _charactersService = charactersService;
         }
 
-        public override void Init(GraphicsDevice device, ContentManager content)
+        public override void Init(IGraphicsService graphicsService, ContentManager content)
         {
-            base.Init(device, content);
+            base.Init(graphicsService, content);
 
             _ui = new UIMenuScreen(new MenuResources(content));
             _ui.UpdateLayout(Camera.Bounds);

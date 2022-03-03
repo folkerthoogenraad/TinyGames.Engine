@@ -553,6 +553,18 @@
                  "width":0,
                  "x":88,
                  "y":80
+                }, 
+                {
+                 "height":0,
+                 "id":80,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "type":"Water",
+                 "visible":true,
+                 "width":0,
+                 "x":0,
+                 "y":0
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -691,7 +703,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":80,
+ "nextobjectid":81,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.1",

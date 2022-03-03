@@ -41,9 +41,9 @@ namespace PinguinGame.Screens
             _uiSound = uiSound;
         }
 
-        public override void Init(GraphicsDevice device, ContentManager content)
+        public override void Init(IGraphicsService graphicsService, ContentManager content)
         {
-            base.Init(device, content);
+            base.Init(graphicsService, content);
 
             _ui = new UIMapSelectScreen(new MapSelectResources(content), new UIMapSelectModel()
             {

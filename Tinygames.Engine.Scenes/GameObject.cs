@@ -7,7 +7,7 @@ namespace TinyGames.Engine.Scenes
 {
     public class GameObject
     {
-        public int Id { get; set; }
+        public int Id { get; set; } = -1;
         public bool Initialized { get; set; }
         public bool Destroyed { get; set; }
         public Scene Scene { get; set; }

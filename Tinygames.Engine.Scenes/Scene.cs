@@ -89,7 +89,12 @@ namespace TinyGames.Engine.Scenes
             }
 
             obj.Scene = this;
-            obj.Id = _lastIndex++;
+
+            if (obj.Id < 0)
+            {
+                obj.Id = _lastIndex++;
+            }
+            else if (FindGameObjectById(obj.Id) != null) throw new ArgumentException("Id is already in use");       
             _gameObjects.Add(obj);
         }
 

@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PinguinGame.Audio;
 using PinguinGame.Input;
-using PinguinGame.MiniGames.Ice;
-using PinguinGame.MiniGames.Ice.GameStates;
-using PinguinGame.MiniGames.Ice.CharacterStates;
+using PinguinGame.Gameplay;
+using PinguinGame.Gameplay.GameStates;
+using PinguinGame.Gameplay.CharacterStates;
 using PinguinGame.Player;
 using PinguinGame.Screens.UI;
 using System;
@@ -15,8 +15,8 @@ using System.Linq;
 using TinyGames.Engine.Graphics;
 using TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators;
 using TinyGames.Engine.Util;
-using PinguinGame.MiniGames.Generic;
-using PinguinGame.MiniGames.Ice.GameModes;
+using PinguinGame.Gameplay.Generic;
+using PinguinGame.Gameplay.GameModes;
 using PinguinGame.GameStates;
 
 namespace PinguinGame.Screens
@@ -47,9 +47,9 @@ namespace PinguinGame.Screens
             _level = level;
         }
 
-        public override void Init(GraphicsDevice device, ContentManager content)
+        public override void Init(IGraphicsService graphicsService, ContentManager content)
         {
-            base.Init(device, content);
+            base.Init(graphicsService, content);
 
             // TODO this is very weirdly coupled tbh
             World = new IceGame(Services, _level, _players, new IceInput(_inputService), _uiSoundService, _screens);

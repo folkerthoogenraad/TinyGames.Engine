@@ -12,18 +12,19 @@ namespace PinguinGame.Screens
         public Camera Camera { get; set; }
         public Graphics2D Graphics { get; set; }
 
-        public GraphicsDevice Device;
+        public IGraphicsService GraphicsService { get; private set; }
+        public GraphicsDevice Device => GraphicsService.Device;
+
         public ContentManager Content;
 
-        public virtual void Init(GraphicsDevice device, ContentManager content)
+        public virtual void Init(IGraphicsService graphicsService, ContentManager content)
         {
-            Graphics = new Graphics2D(device);
-            
-            float aspect = device.PresentationParameters.BackBufferWidth / (float)device.PresentationParameters.BackBufferHeight;
-            Camera = new Camera(GetApplicableHeight(device.PresentationParameters.BackBufferWidth, device.PresentationParameters.BackBufferHeight), aspect);
-
+            GraphicsService = graphicsService;
             Content = content;
-            Device = device;
+
+            Graphics = new Graphics2D(Device);
+            Camera = new Camera(graphicsService.Height, graphicsService.AspectRatio);
+
         }
 
         public virtual void Update(float delta)

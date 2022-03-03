@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using TinyGames.Engine.Graphics;
 using TinyGames.Engine.Graphics.Fonts;
 using TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators;
 
@@ -37,9 +38,9 @@ namespace PinguinGame.Screens
             _uiSound = sound;
         }
 
-        public override void Init(GraphicsDevice device, ContentManager content)
+        public override void Init(IGraphicsService graphicsService, ContentManager content)
         {
-            base.Init(device, content);
+            base.Init(graphicsService, content);
 
             var winner = _winner;
             var text = winner.Name;
