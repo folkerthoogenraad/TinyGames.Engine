@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.1" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#464646" nextlayerid="10" nextobjectid="73">
+<map version="1.8" tiledversion="1.8.1" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#464646" nextlayerid="11" nextobjectid="78">
  <editorsettings>
   <export target="../../Content/Levels/Supermarket/Level0.json" format="json"/>
  </editorsettings>
@@ -44,6 +44,13 @@
   <object id="65" type="Spawn" x="104" y="160">
    <point/>
   </object>
+ </objectgroup>
+ <objectgroup id="10" name="Walls">
+  <object id="73" type="Wall" x="0" y="0" width="16" height="192"/>
+  <object id="74" type="Wall" x="16" y="176" width="272" height="16"/>
+  <object id="75" type="Wall" x="16" y="0" width="192" height="48"/>
+  <object id="76" type="Wall" x="208" y="32" width="64" height="48"/>
+  <object id="77" type="Wall" x="272" y="32" width="16" height="144"/>
  </objectgroup>
  <objectgroup id="9" name="Carts">
   <object id="66" type="ShoppingCart" x="48" y="112">

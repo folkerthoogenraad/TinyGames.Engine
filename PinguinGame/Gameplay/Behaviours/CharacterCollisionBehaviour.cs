@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TinyGames.Engine.Collisions;
+using TinyGames.Engine.Maths;
 using TinyGames.Engine.Scenes;
 using TinyGames.Engine.Util;
 
@@ -16,6 +18,7 @@ namespace PinguinGame.Gameplay.Behaviours
         private IEnumerable<SnowballGameObject> Snowballs => Scene.FindGameObjectsOfType<SnowballGameObject>();
         private IEnumerable<GeyserGameObject> Geysers => Scene.FindGameObjectsOfType<GeyserGameObject>();
         private IEnumerable<ShoppingCartGameObject> ShoppingCarts => Scene.FindGameObjectsOfType<ShoppingCartGameObject>();
+        private IEnumerable<SolidGameObject> Solids => Scene.FindGameObjectsOfType<SolidGameObject>();
 
         public WalkablesSceneBehaviour Walkables { get; set; }
 
@@ -184,7 +187,7 @@ namespace PinguinGame.Gameplay.Behaviours
                     var dir = p2 - p1;
                     var dist = dir.Length();
 
-                    if (dist > 8) continue;
+                    if (dist > 12) continue;
                     if (dist == 0)
                     {
                         dir = new Vector2(1, 0);
@@ -202,6 +205,37 @@ namespace PinguinGame.Gameplay.Behaviours
                     cart.Position += dir * penetration;
 
                     character.OnVehicleCollision(cart);
+                }
+            }
+
+            foreach (var character in Characters)
+            {
+                if (!character.CanCollide) continue;
+
+                var collider = new CircleCollider(new Circle(Vector2.Zero, 4));
+
+                foreach (var solid in Solids)
+                {
+                    if (!collider.Overlaps(solid.Collider, solid.Position - character.Position)) continue;
+
+                    var v = collider.Penetration(solid.Collider, solid.Position - character.Position);
+                    character.Position += v; // Test123
+                }
+            }
+            foreach (var carts in ShoppingCarts)
+            {
+                var collider = new CircleCollider(new Circle(Vector2.Zero, 8));
+
+                foreach (var solid in Solids)
+                {
+                    if (!collider.Overlaps(solid.Collider, solid.Position - carts.Position)) continue;
+
+                    var v = collider.Penetration(solid.Collider, solid.Position - carts.Position);
+
+                    var normal = v.Normalized();
+
+                    carts.Position += v;
+                    carts.Velocity = Vector2.Reflect(carts.Velocity, normal);
                 }
             }
         }

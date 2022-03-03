@@ -52,6 +52,72 @@
         }, 
         {
          "draworder":"topdown",
+         "id":10,
+         "name":"Walls",
+         "objects":[
+                {
+                 "height":192,
+                 "id":73,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Wall",
+                 "visible":true,
+                 "width":16,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "height":16,
+                 "id":74,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Wall",
+                 "visible":true,
+                 "width":272,
+                 "x":16,
+                 "y":176
+                }, 
+                {
+                 "height":48,
+                 "id":75,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Wall",
+                 "visible":true,
+                 "width":192,
+                 "x":16,
+                 "y":0
+                }, 
+                {
+                 "height":48,
+                 "id":76,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Wall",
+                 "visible":true,
+                 "width":64,
+                 "x":208,
+                 "y":32
+                }, 
+                {
+                 "height":144,
+                 "id":77,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Wall",
+                 "visible":true,
+                 "width":16,
+                 "x":272,
+                 "y":32
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":9,
          "name":"Carts",
          "objects":[
@@ -145,8 +211,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":73,
+ "nextlayerid":11,
+ "nextobjectid":78,
  "orientation":"orthogonal",
  "properties":[
         {

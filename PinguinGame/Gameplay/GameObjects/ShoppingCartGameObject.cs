@@ -51,7 +51,7 @@ namespace PinguinGame.Gameplay.GameObjects
 
             if(speed > 0)
             {
-                speed -= 16 * delta;
+                speed -= speed * speed * 0.0001f;
 
                 if(speed < 0) speed = 0;
 

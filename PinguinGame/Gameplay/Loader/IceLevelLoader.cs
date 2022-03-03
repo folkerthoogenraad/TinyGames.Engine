@@ -86,6 +86,7 @@ namespace PinguinGame.Gameplay.CharacterStates
             });
             register.RegisterObjectType("Spawn", obj => new SpawnGameObject(obj.Position));
             register.RegisterObjectType("Bridge", obj => new BridgeGameObject(obj.Position, obj.Size));
+            register.RegisterObjectType("Wall", obj => new WallGameObject(obj.Position, obj.Size));
             register.RegisterObjectType("Geyser", obj => new GeyserGameObject(obj.Position));
             register.RegisterObjectType("Grass", obj => new GrassGameObject(obj.Position));
             register.RegisterObjectType("Tree", obj => new TreeGameObject(obj.Position));

@@ -71,7 +71,7 @@ namespace PinguinGame
                 new PlayerInfo() { Index = 0, InputDevice = InputDeviceType.Keyboard0 },
                 new PlayerInfo() { Index = 1, InputDevice = InputDeviceType.Keyboard1 },
                 //new PlayerInfo() { Index = 2, InputDevice = InputDeviceType.Keyboard0 },
-                //new PlayerInfo() { Index = 3, InputDevice = InputDeviceType.Gamepad1 },
+                new PlayerInfo() { Index = 3, InputDevice = InputDeviceType.Gamepad0 },
             };
 
             foreach (var player in players.Where(x => x.CharacterInfo == null))
