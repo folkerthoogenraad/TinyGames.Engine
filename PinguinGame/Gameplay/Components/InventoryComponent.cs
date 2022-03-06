@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using PinguinGame.Gameplay.GameObjects;
+using PinguinGame.Player;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,43 +10,16 @@ namespace PinguinGame.Gameplay.Components
 {
     public class InventoryComponent : Component
     {
-        private float _snowballTimer = 0;
-        private float _maxGatherTime = 1.0f;
+        public bool HasSnowball { get; set; }
 
-        public bool HasSnowball { get; private set; }
-        public bool Gathering { get; private set; }
-        public float GatherProgress => _snowballTimer / _maxGatherTime;
-
-        public void RemoveSnowball()
+        public void RemoveItem()
         {
             HasSnowball = false;
-            Gathering = false;
-            _snowballTimer = 0;
         }
 
-        public void Update(float delta, bool gathering)
+        public GameObject ThrowItem(PlayerInfo owner, Vector2 position, float height, Vector2 direction)
         {
-            if (HasSnowball) return;
-
-            Gathering = gathering;
-
-            if (!gathering)
-            {
-                _snowballTimer = 0;
-                return;
-            }
-
-            _snowballTimer += delta;
-
-            if(_snowballTimer > _maxGatherTime)
-            {
-                HasSnowball = true;
-            }
-        }
-
-        public SnowballGameObject CreateSnowball(CharacterGameObject character, Vector2 direction)
-        {
-            RemoveSnowball();
+            RemoveItem();
 
             if (direction.LengthSquared() > 0)
             {
@@ -53,13 +27,13 @@ namespace PinguinGame.Gameplay.Components
             }
 
             // Throw snowball
-            return new SnowballGameObject(character.Player)
+            return new SnowballGameObject()
             {
-                Position = character.Position + direction * 8,
+                Position = position + direction * 8,
                 Velocity = direction * 128,
                 Lifetime = 1,
-                Height = character.GroundHeight + 8,
-                Info = character.Player,
+                Height = height + 8,
+                Info = owner,
             };
         }
     }

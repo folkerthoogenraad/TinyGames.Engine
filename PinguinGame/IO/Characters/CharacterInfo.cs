@@ -9,6 +9,6 @@ namespace PinguinGame.IO.Characters
         public string Name { get; set; }
         public string Identifier { get; set; }
         public string Sheet { get; set; }
-        public Sprite Icon { get; set; }
+        public IOSprite Icon { get; set; }
     }
 }

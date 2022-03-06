@@ -64,7 +64,7 @@ namespace PinguinGame.IO
             return info;
         }
 
-        private TinyGames.Engine.Graphics.Sprite ConvertSprite(Sprite input)
+        private TinyGames.Engine.Graphics.Sprite ConvertSprite(IOSprite input)
         {
             var texture = _content.Load<Texture2D>(input.Texture);
 

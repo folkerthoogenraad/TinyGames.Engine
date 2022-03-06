@@ -19,6 +19,7 @@ namespace PinguinGame.Gameplay.Behaviours
         private IEnumerable<GeyserGameObject> Geysers => Scene.FindGameObjectsOfType<GeyserGameObject>();
         private IEnumerable<ShoppingCartGameObject> ShoppingCarts => Scene.FindGameObjectsOfType<ShoppingCartGameObject>();
         private IEnumerable<SolidGameObject> Solids => Scene.FindGameObjectsOfType<SolidGameObject>();
+        private IEnumerable<SolidGameObject> CollidableSolids => Solids.Where(x => x.CanCollide);
 
         public WalkablesSceneBehaviour Walkables { get; set; }
 
@@ -214,7 +215,7 @@ namespace PinguinGame.Gameplay.Behaviours
 
                 var collider = new CircleCollider(new Circle(Vector2.Zero, 4));
 
-                foreach (var solid in Solids)
+                foreach (var solid in CollidableSolids)
                 {
                     if (!collider.Overlaps(solid.Collider, solid.Position - character.Position)) continue;
 
@@ -226,7 +227,7 @@ namespace PinguinGame.Gameplay.Behaviours
             {
                 var collider = new CircleCollider(new Circle(Vector2.Zero, 8));
 
-                foreach (var solid in Solids)
+                foreach (var solid in CollidableSolids)
                 {
                     if (!collider.Overlaps(solid.Collider, solid.Position - carts.Position)) continue;
 

@@ -57,6 +57,7 @@ namespace PinguinGame.Gameplay.CharacterStates
                 scene.AddBehaviour(new CharacterCollisionBehaviour());
                 scene.AddBehaviour(new CharacterIndicatorBehaviour());
                 scene.AddBehaviour(new TilemapSceneBehaviour(map));
+                scene.AddBehaviour(new ShoppingGraphics(content));
 
                 // Setup camera
                 graphics.Camera.Position = new Vector2(level.Width * level.TileWidth, level.Height * level.TileHeight) / 2;
@@ -65,7 +66,7 @@ namespace PinguinGame.Gameplay.CharacterStates
             };
 
             register.RegisterObjectType("IceBlock", obj => {
-                if (obj.Properties.GetBoolProperty("Disabled", false)) return null;
+                if (obj.Properties.GetBool("Disabled", false)) return null;
 
                 var position = new Vector2(obj.X, obj.Y);
                 var polygon = new Polygon(obj.Polygon.Select(x => position + x.ToVector2()).ToArray());
@@ -74,13 +75,13 @@ namespace PinguinGame.Gameplay.CharacterStates
 
                 var block = new IceBlockGameObject(polygon);
 
-                block.Behaviour = obj.Properties.GetStringProperty("Behaviour", "None");
-                block.TimerOffset = obj.Properties.GetFloatProperty("TimerOffset", 0);
-                block.TimerTrigger = obj.Properties.GetFloatProperty("TimerTrigger", 0);
-                block.TimerCycleDuration = obj.Properties.GetFloatProperty("TimerCycleDuration", 0);
+                block.Behaviour = obj.Properties.GetString("Behaviour", "None");
+                block.TimerOffset = obj.Properties.GetFloat("TimerOffset", 0);
+                block.TimerTrigger = obj.Properties.GetFloat("TimerTrigger", 0);
+                block.TimerCycleDuration = obj.Properties.GetFloat("TimerCycleDuration", 0);
 
-                block.DriftDirection.X = obj.Properties.GetFloatProperty("DriftDirectionX", 0);
-                block.DriftDirection.Y = obj.Properties.GetFloatProperty("DriftDirectionY", 0);
+                block.DriftDirection.X = obj.Properties.GetFloat("DriftDirectionX", 0);
+                block.DriftDirection.Y = obj.Properties.GetFloat("DriftDirectionY", 0);
 
                 return block;
             });
@@ -92,6 +93,7 @@ namespace PinguinGame.Gameplay.CharacterStates
             register.RegisterObjectType("Tree", obj => new TreeGameObject(obj.Position));
             register.RegisterObjectType("Water", obj => new WaterGameObject());
             register.RegisterObjectType("ShoppingCart", obj => new ShoppingCartGameObject(content, obj.Position));
+            register.RegisterObjectType("Groceries", obj => new GroceriesGameObject(obj.Position, obj.Size, obj.Properties.GetString("Sprite")));
 
             return loader.Load(content.ServiceProvider);
         }

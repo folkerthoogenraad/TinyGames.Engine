@@ -27,11 +27,6 @@ namespace PinguinGame.Gameplay.GameObjects
         public IceGameGraphics Graphics { get; set; }
         public WalkablesSceneBehaviour Walkables { get; set; }
 
-        public SnowballGameObject(PlayerInfo info)
-        {
-            Info = info;
-        }
-
         public override void Init()
         {
             base.Init();

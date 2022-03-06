@@ -167,5 +167,64 @@ namespace PinguinGame.Graphics
 
             graphics.DrawRaw(vertices, sprite.Texture);
         }
+
+
+        public static void DrawSpriteFlat(this Graphics2D graphics, Sprite sprite, Vector2 position, Vector2 scale, float angle, float height, Color blend)
+        {
+            var vertices = new VertexPositionColorTexture[6];
+
+            position += new Vector2(0, -height);
+
+            float s = 0;
+            float c = 1;
+
+            if (angle != 0)
+            {
+                s = MathF.Sin(angle * Tools.DegToRad);
+                c = MathF.Cos(angle * Tools.DegToRad);
+            }
+
+            // Basically create a matrix if you will
+            Vector3 right = new Vector3(c, s, 0);
+            Vector3 up = new Vector3(s, -c, 0);
+
+            float l = (-sprite.Origin.X) * scale.X;
+            float r = (-sprite.Origin.X + sprite.Width) * scale.X;
+
+            float t = (-sprite.Origin.Y) * scale.Y;
+            float b = (-sprite.Origin.Y + sprite.Height) * scale.Y;
+
+            Vector3 tl = new Vector3(position.X, position.Y, 0) + l * right - t * up;
+            Vector3 tr = new Vector3(position.X, position.Y, 0) + r * right - t * up;
+            Vector3 bl = new Vector3(position.X, position.Y, 0) + l * right - b * up;
+            Vector3 br = new Vector3(position.X, position.Y, 0) + r * right - b * up;
+
+            float tWidth = sprite.Texture.Width;
+            float tHeight = sprite.Texture.Height;
+
+            Rectangle rect = sprite.SourceRectangle;
+
+            Vector2 uvTL = new Vector2(rect.Left / tWidth, rect.Top / tHeight);
+            Vector2 uvTR = new Vector2(rect.Right / tWidth, rect.Top / tHeight);
+            Vector2 uvBL = new Vector2(rect.Left / tWidth, rect.Bottom / tHeight);
+            Vector2 uvBR = new Vector2(rect.Right / tWidth, rect.Bottom / tHeight);
+
+            // Clockwise
+            // TL--- TR
+            // | \   |
+            // |   \ |
+            // BL--- BR
+
+            vertices[0] = new VertexPositionColorTexture(new Vector3(tl.X, tl.Y, GraphicsHelper.YToDepth(tl.Y + height)), blend, uvTL);
+            vertices[1] = new VertexPositionColorTexture(new Vector3(tr.X, tr.Y, GraphicsHelper.YToDepth(tr.Y + height)), blend, uvTR);
+            vertices[2] = new VertexPositionColorTexture(new Vector3(br.X, br.Y, GraphicsHelper.YToDepth(br.Y + height)), blend, uvBR);
+
+            vertices[3] = new VertexPositionColorTexture(new Vector3(tl.X, tl.Y, GraphicsHelper.YToDepth(tl.Y + height)), blend, uvTL);
+            vertices[4] = new VertexPositionColorTexture(new Vector3(br.X, br.Y, GraphicsHelper.YToDepth(br.Y + height)), blend, uvBR);
+            vertices[5] = new VertexPositionColorTexture(new Vector3(bl.X, bl.Y, GraphicsHelper.YToDepth(bl.Y + height)), blend, uvBL);
+
+
+            graphics.DrawRaw(vertices, sprite.Texture);
+        }
     }
 }

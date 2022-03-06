@@ -6,7 +6,7 @@ namespace PinguinGame.Levels.Contracts
 {
     public static class TiledPropertiesExtensions
     {
-        public static bool GetBoolProperty(this TiledProperty[] self, string name, bool def = false)
+        public static bool GetBool(this TiledProperty[] self, string name, bool def = false)
         {
             if (self != null)
             {
@@ -14,7 +14,7 @@ namespace PinguinGame.Levels.Contracts
             }
             return def;
         }
-        public static int GetIntProperty(this TiledProperty[] self, string name, int def = 0)
+        public static int GetInt(this TiledProperty[] self, string name, int def = 0)
         {
             if (self != null)
             {
@@ -22,7 +22,7 @@ namespace PinguinGame.Levels.Contracts
             }
             return def;
         }
-        public static string GetStringProperty(this TiledProperty[] self, string name, string def = null)
+        public static string GetString(this TiledProperty[] self, string name, string def = null)
         {
             if (self != null)
             {
@@ -31,7 +31,7 @@ namespace PinguinGame.Levels.Contracts
 
             return def;
         }
-        public static float GetFloatProperty(this TiledProperty[] self, string name, float def = 0)
+        public static float GetFloat(this TiledProperty[] self, string name, float def = 0)
         {
             if (self != null)
             {

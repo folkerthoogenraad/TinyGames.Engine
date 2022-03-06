@@ -7,6 +7,6 @@ namespace TinyGames.Engine.Maths.Algorithms
 {
     public interface ISquarePackingAlgorithm
     {
-        public Rectangle[] Pack(int width, int height, Point[] rectangleSizes);
+        Rectangle[] Pack(int width, int height, Point[] rectangleSizes);
     }
 }

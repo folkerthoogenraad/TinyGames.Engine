@@ -10,6 +10,6 @@ namespace PinguinGame.IO.Levels
         public string Identifier { get; set; }
         public string Description { get; set; }
         public string File { get; set; }
-        public Sprite Icon { get; set; }
+        public IOSprite Icon { get; set; }
     }
 }

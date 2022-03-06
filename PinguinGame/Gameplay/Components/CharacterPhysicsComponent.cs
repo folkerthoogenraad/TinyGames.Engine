@@ -12,7 +12,7 @@ namespace PinguinGame.Gameplay.Components
     {
         public Vector2 Position { get; set; }
         public Vector2 Velocity { get; private set; }
-        public Vector2 Facing { get; private set; }
+        public Vector2 Facing { get; set; }
 
         public CharacterPhysicsComponent(Vector2 position)
         {

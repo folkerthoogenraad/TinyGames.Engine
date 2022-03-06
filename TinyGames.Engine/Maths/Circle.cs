@@ -19,6 +19,11 @@ namespace TinyGames.Engine.Maths
             Position = position;
             Radius = radius;
         }
+        public Circle(float radius)
+        {
+            Radius = radius;
+            Position = Vector2.Zero;
+        }
 
         public AABB Bounds => AABB.CreateCentered(Position, new Vector2(Diameter, Diameter));
 

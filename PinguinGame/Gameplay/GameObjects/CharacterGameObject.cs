@@ -70,7 +70,7 @@ namespace PinguinGame.Gameplay.GameObjects
             set => Physics.Position = value;
         }
         public float Height => -Bounce.Offset.Y;
-        public Vector2 Facing => Physics.Facing;
+        public Vector2 Facing => Physics.Facing.Normalized();
         public float GroundHeight { get; set; } = 0;
         public float HeightFromGround => Height - GroundHeight;
 
@@ -128,8 +128,17 @@ namespace PinguinGame.Gameplay.GameObjects
 
             if (Inventory.HasSnowball)
             {
-                graphics.DrawSprite(UIGraphics.SnowballIndicator, Position - new Vector2(0, 24 + Bounce.Height), 0, GraphicsHelper.YToDepth(Position.Y));
+                var pos = Position + Facing * 4;
+                graphics.DrawSprite(UIGraphics.SnowballIndicator, pos - new Vector2(0, Height + 6), 0, GraphicsHelper.YToDepth(pos.Y + 2));
             }
+
+            graphics.DrawSpriteFlat(
+                UIGraphics.DirectionIndicator, 
+                Position,
+                new Vector2(1, 1),
+                Facing.GetAngleInDegrees(), 
+                Height + 1, 
+                Player.Color);
 
             State.Draw(graphics, this, Graphics);
         }

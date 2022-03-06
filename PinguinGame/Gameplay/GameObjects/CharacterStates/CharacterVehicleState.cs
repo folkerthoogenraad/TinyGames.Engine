@@ -46,6 +46,7 @@ namespace PinguinGame.Gameplay.GameObjects.CharacterStates
 
             if(input.MoveDirection.LengthSquared() > 0)
             {
+                character.Physics.Facing = input.MoveDirection;
                 Cart.Facing = input.MoveDirection;
             }
 

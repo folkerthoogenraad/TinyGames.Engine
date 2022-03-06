@@ -13,21 +13,18 @@ namespace PinguinGame.Gameplay.GameObjects
 {
     [RequireSceneBehaviour(typeof(IceGameGraphics))]
     [RequireSceneBehaviour(typeof(WalkablesSceneBehaviour))]
-    public abstract class IceDetailGameObject : GameObject, IDrawable2D
+    public abstract class DetailGameObject : SolidGameObject, IDrawable2D
     {
-        public Vector2 Position { get; set; }
         public float Height { get; set; } = 0;
-
         public Sprite Sprite { get; set; }
         public Sprite Shadow { get; set; }
-
         public WalkablesSceneBehaviour Walkables { get; set; }
-
         public float Angle { get; set; }
 
-        public IceDetailGameObject(Vector2 position)
+        public DetailGameObject(Vector2 position)
         {
             Position = position;
+            IsSolid = false;
         }
 
         public override void Init()

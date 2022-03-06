@@ -55,7 +55,11 @@ namespace PinguinGame.Gameplay.GameObjects.CharacterStates
                 if (character.Inventory.HasSnowball && input.MoveDirection.LengthSquared() > 0)
                 {
                     var direction = input.MoveDirection.Normalized();
-                    var snowball = character.Inventory.CreateSnowball(character, direction);
+                    var snowball = character.Inventory.ThrowItem(
+                        character.Player,
+                        character.Position,
+                        character.Height,
+                        direction);
 
                     character.Scene.AddGameObject(snowball);
                     character.Sound.PlaySnowballThrow();

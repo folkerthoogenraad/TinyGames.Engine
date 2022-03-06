@@ -20,6 +20,9 @@ namespace PinguinGame.Gameplay
         public Sprite SnowballChargeOutline { get; set; }
         public Sprite SnowballIndicator { get; set; }
 
+        public Sprite DirectionIndicator { get; set; }
+
+
         public IceGameUIGraphics(ContentManager content)
         {
             var texture = content.Load<Texture2D>("Sprites/UI/InGameUI");
@@ -38,6 +41,8 @@ namespace PinguinGame.Gameplay
             SnowballChargeOutline = new Sprite(texture, new Rectangle(0, 48, 16, 16)).CenterOrigin();
 
             SnowballIndicator = new Sprite(content.Load<Texture2D>("Sprites/Ice/IceGameplayElements"), new Rectangle(0, 0, 8, 8)).CenterOrigin();
+
+            DirectionIndicator = new Sprite(content.Load<Texture2D>("Sprites/Ice/IceGameplayElements"), new Rectangle(16, 0, 16, 16)).SetOrigin(4, 8);
         }
 
         // =========================================== //
