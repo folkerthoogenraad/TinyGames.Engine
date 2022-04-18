@@ -159,7 +159,7 @@ namespace EmmaGame
             Graphics.SetRenderTarget(LightingRenderTarget);
             Graphics.SetBlendMode(BlendMode.Additive);
 
-            Graphics.DrawRectangle(new Rectangle(0, 0, 192, 128), new Color(0.2f, 0.2f, 0.3f));
+            Graphics.DrawRectangle(new Rectangle(0, 0, 192, 128), new Color(1f, 1f, 1f));
             Graphics.DrawTexture(TerminalLightsBackground, new Vector2(0, 0), new Vector2(192, 128));
 
             foreach (var light in Lights)
