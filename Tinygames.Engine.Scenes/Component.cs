@@ -23,5 +23,20 @@ namespace TinyGames.Engine.Scenes
         {
 
         }
+
+        public T GetComponent<T>() where T : Component
+        {
+            return GameObject.GetComponent<T>();
+        }
+
+        public object GetComponent(Type t)
+        {
+            return GameObject.GetComponent(t);
+        }
+
+        public IEnumerable<T> GetComponents<T>() where T : Component
+        {
+            return GameObject.GetComponents<T>();
+        }
     }
 }
