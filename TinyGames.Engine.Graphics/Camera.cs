@@ -14,6 +14,7 @@ namespace TinyGames.Engine.Graphics
 
         public Vector2 Position;
         public AABB Bounds => GetBounds();
+        public AABB LocalBounds => GetLocalBounds();
 
         public Vector2 Size => new Vector2(Width, Height);
 
@@ -25,16 +26,19 @@ namespace TinyGames.Engine.Graphics
             AspectRatio = aspectRatio;
         }
 
-        public Matrix GetMatrix()
+        public Matrix GetProjectionMatrix()
         {
-            return Matrix.CreateTranslation(new Vector3(-Position, 0)) * 
-                Matrix.CreateRotationZ(Angle * Tools.DegToRad) *
-                Matrix.CreateOrthographicOffCenter(- Width / 2, Width / 2, Height / 2, -Height / 2, -1000, 1000);
+            return Matrix.CreateRotationZ(Angle * Tools.DegToRad) *
+                Matrix.CreateOrthographicOffCenter(-Width / 2, Width / 2, Height / 2, -Height / 2, -1000, 1000);
+        }
+        public Matrix GetModelMatrix()
+        {
+            return Matrix.CreateTranslation(new Vector3(-Position, 0));
         }
 
-        public Matrix GetHeightDepthMatrix()
+        public Matrix GetHeightDepthProjectionMatrix()
         {
-            var matrix = GetMatrix();
+            var matrix = GetProjectionMatrix();
 
             matrix.M32 = -matrix.M22;
             matrix.M23 = matrix.M33;
@@ -80,6 +84,17 @@ namespace TinyGames.Engine.Graphics
                 Right = Position.X + Width / 2,
                 Bottom = Position.Y + Height / 2,
                 Top = Position.Y - Height / 2,
+            };
+        }
+
+        private AABB GetLocalBounds()
+        {
+            return new AABB()
+            {
+                Left = -Width / 2,
+                Right = Width / 2,
+                Bottom = Height / 2,
+                Top = -Height / 2,
             };
         }
 

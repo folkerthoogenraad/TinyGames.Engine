@@ -7,13 +7,13 @@ namespace TinyGames.Engine.Scenes
 {
     public class GameObject
     {
+        private readonly List<Component> _components;
+
         public int Id { get; set; } = -1;
         public bool Initialized { get; set; }
         public bool Destroyed { get; set; }
         public Scene Scene { get; set; }
         public IEnumerable<Component> Components => _components;
-
-        private List<Component> _components;
 
         public GameObject()
         {

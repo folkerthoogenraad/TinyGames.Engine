@@ -6,12 +6,13 @@ namespace TinyGames.Engine.Scenes
 {
     public class Scene
     {
+        private readonly List<ISceneBehaviour> _behaviours;
+        private readonly List<GameObject> _gameObjects;
+
         public delegate void SceneGameObjectDelegate(Scene scene, GameObject obj);
 
         public bool Initialized { get; private set; }
 
-        private List<ISceneBehaviour> _behaviours;
-        private List<GameObject> _gameObjects;
         private int _lastIndex = 0;
 
         public IEnumerable<GameObject> GameObjects => _gameObjects.Where(x => !x.Destroyed && (x.Initialized || !Initialized));
@@ -154,7 +155,7 @@ namespace TinyGames.Engine.Scenes
         }
         public object GetBehaviour(Type type)
         {
-            return _behaviours.Where(x => x.GetType() == type).FirstOrDefault();
+            return _behaviours.Where(x => type.IsAssignableFrom(x.GetType())).FirstOrDefault();
         }
     }
 }

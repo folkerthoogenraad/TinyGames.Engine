@@ -23,5 +23,7 @@ namespace TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators.Contracts
         public int GlyphBaseline { get; set; }
 
         public int LetterSpacing { get; set; }
+
+        public bool Monospaced { get; set; } = false;
     }
 }

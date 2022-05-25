@@ -113,6 +113,22 @@ namespace TinyGames.Engine.Maths
         {
             return Grow(-amount);
         }
+
+        public AABB ContainMotion(Vector2 direction)
+        {
+            // Expands the AABB in the direction given  
+            // It is basically moving the AABB to the new direction and taking the outer bouding box of both those bounding boxes.
+
+            var ret =  new AABB()
+            {
+                Left = Left + (direction.X < 0 ? direction.X : 0),
+                Right = Right + (direction.X > 0 ? direction.X : 0),
+                Top = Top + (direction.Y < 0 ? direction.Y : 0),
+                Bottom = Bottom + (direction.Y > 0 ? direction.Y : 0),
+            };
+
+            return ret;
+        }
         
         public Vector2 ClampPoint(Vector2 input)
         {

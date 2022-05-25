@@ -28,6 +28,7 @@ namespace TinyGames.Engine.Graphics
 
         private DepthStencilState DepthStencilState;
         private BlendState BlendState;
+        private RasterizerState RasterizerState;
 
         private BlendMode CurrentBlendMode;
 
@@ -82,7 +83,13 @@ namespace TinyGames.Engine.Graphics
 
                 ColorBlendFunction = BlendFunction.Add,
                 ColorSourceBlend = Blend.SourceAlpha,
-                ColorDestinationBlend = Blend.InverseSourceAlpha
+                ColorDestinationBlend = Blend.InverseSourceAlpha,
+            };
+
+            RasterizerState = new RasterizerState()
+            {
+                CullMode = CullMode.None,
+                MultiSampleAntiAlias = true,
             };
         }
 
@@ -408,14 +415,14 @@ namespace TinyGames.Engine.Graphics
             Device.Clear(ClearOptions.DepthBuffer, Color.Transparent, Device.Viewport.MaxDepth, 0);
         }
 
-        public void Begin(Matrix m)
+        public void Begin(Matrix projection, Matrix model)
         {
             Drawing = true;
             VertexIndex = 0;
 
             TransformStack.Clear();
-            Matrix = Matrix.Identity;
-            ProjectionMatrix = m; //Matrix.CreateOrthographicOffCenter(0, Device.PresentationParameters.BackBufferWidth, Device.PresentationParameters.BackBufferHeight, 0, -100, 100);
+            Matrix = model;
+            ProjectionMatrix = projection; //Matrix.CreateOrthographicOffCenter(0, Device.PresentationParameters.BackBufferWidth, Device.PresentationParameters.BackBufferHeight, 0, -100, 100);
         }
 
         public void Push()
@@ -500,8 +507,8 @@ namespace TinyGames.Engine.Graphics
             if (VertexIndex <= 0) return;
 
             Device.SamplerStates[0] = SamplerState.PointWrap;
-            Device.RasterizerState = RasterizerState.CullNone;
             
+            Device.RasterizerState = RasterizerState;
             Device.DepthStencilState = DepthStencilState;
             Device.BlendState = BlendState;
 

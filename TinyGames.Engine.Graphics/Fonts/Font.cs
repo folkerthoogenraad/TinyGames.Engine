@@ -102,6 +102,36 @@ namespace TinyGames.Engine.Graphics.Fonts
             return new Vector2(size.X + offsetX, size.Y);
         }
 
+        public float OffsetOf(string t, int index)
+        {
+            float amount = 0;
+            for (int i = 0; i < index; i++)
+            {
+                bool last = i == index - 1;
+
+                char ch = t[i];
+
+                if (ch == ' ')
+                {
+                    amount += SpaceSize;
+                    continue;
+                }
+
+                Glyph glyph = GetGlyphForCharacter(ch);
+
+                if (glyph == null) continue; // TODO default glyph
+
+                amount += glyph.Advance;
+
+                if (!last)
+                {
+                    amount += LetterSpacing;
+                }
+            }
+
+            return amount;
+        }
+
         public Glyph GetGlyphForCharacter(char c)
         {
             if (_glyphs.ContainsKey(c))

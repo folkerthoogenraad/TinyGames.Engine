@@ -30,6 +30,7 @@ namespace TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators
             font.LetterSpacing = Settings.LetterSpacing;
             font.Height = Settings.GlyphHeight;
             font.Baseline = Settings.GlyphBaseline;
+            font.SpaceSize = Settings.GlyphWidth;
 
             int x = Settings.GlyphOffsetX;
             int y = Settings.GlyphOffsetY;
@@ -63,6 +64,8 @@ namespace TinyGames.Engine.Graphics.Fonts.LoadersAndGenerators
 
         private int GetCharacterWidth(Rectangle scanRect)
         {
+            if (Settings.Monospaced) return scanRect.Width;
+
             int width = 0;
 
             for(int i = 0; i < scanRect.Width; i++)

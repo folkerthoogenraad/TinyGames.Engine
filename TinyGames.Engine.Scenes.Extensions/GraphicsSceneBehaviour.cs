@@ -33,6 +33,7 @@ namespace TinyGames.Engine.Scenes.Extensions
         {
             Scene = scene;
 
+            // TODO all the drawables should register themselves, not the other way around.
             Scene.OnGameObjectCreated += OnGameObjectCreated;
             Scene.OnGameObjectDestroyed += OnGameObjectDestroyed;
         }
@@ -66,7 +67,7 @@ namespace TinyGames.Engine.Scenes.Extensions
 
         public void Draw()
         {
-            Graphics.Begin(Camera.GetMatrix());
+            Graphics.Begin(Camera.GetProjectionMatrix(), Camera.GetModelMatrix());
             Graphics.Clear(BackgroundColor);
 
             foreach (var drawable in _drawables) drawable.Draw(Graphics);

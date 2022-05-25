@@ -63,6 +63,9 @@ namespace TinyGames.Engine.UI
                 graphics.SetAlpha(Animation.Alpha);
             }
 
+            // graphics.DrawRectangle(centerBounds.Shrink(10), new Color(255, 255, 0, 120));
+            // graphics.DrawCircle(Vector2.Zero, 4, Color.Red);
+
             foreach (var child in Children) child.Draw(graphics);
             DrawSelf(graphics, centerBounds);
 

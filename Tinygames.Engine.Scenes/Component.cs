@@ -8,10 +8,11 @@ namespace TinyGames.Engine.Scenes
     {
         public GameObject GameObject { get; set; }
         public Scene Scene => GameObject.Scene;
+        public bool Initialized { get; private set; }
 
         public virtual void Init()
         {
-
+            Initialized = true;
         }
 
         public virtual void Update(float delta)
@@ -21,7 +22,7 @@ namespace TinyGames.Engine.Scenes
 
         public virtual void Destroy()
         {
-
+            Initialized = false;
         }
 
         public T GetComponent<T>() where T : Component
