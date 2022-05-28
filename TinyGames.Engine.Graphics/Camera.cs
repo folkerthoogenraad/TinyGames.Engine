@@ -26,6 +26,11 @@ namespace TinyGames.Engine.Graphics
             AspectRatio = aspectRatio;
         }
 
+        public Matrix GetMatrix()
+        {
+            return GetProjectionMatrix() * GetModelMatrix();
+        }
+
         public Matrix GetProjectionMatrix()
         {
             return Matrix.CreateRotationZ(Angle * Tools.DegToRad) *

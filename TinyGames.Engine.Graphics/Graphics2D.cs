@@ -48,6 +48,7 @@ namespace TinyGames.Engine.Graphics
         private int VertexIndex = 0;
 
         public Graphics2D(GraphicsDevice device): this(device, new AlphaTestEffect(device)) { }
+
         public Graphics2D(GraphicsDevice device, Effect defaultEffect)
         {
             Device = device;
@@ -415,6 +416,15 @@ namespace TinyGames.Engine.Graphics
             Device.Clear(ClearOptions.DepthBuffer, Color.Transparent, Device.Viewport.MaxDepth, 0);
         }
 
+        public void Begin(Matrix projection)
+        {
+            Drawing = true;
+            VertexIndex = 0;
+
+            TransformStack.Clear();
+            Matrix = Matrix.Identity;
+            ProjectionMatrix = projection; //Matrix.CreateOrthographicOffCenter(0, Device.PresentationParameters.BackBufferWidth, Device.PresentationParameters.BackBufferHeight, 0, -100, 100);
+        }
         public void Begin(Matrix projection, Matrix model)
         {
             Drawing = true;

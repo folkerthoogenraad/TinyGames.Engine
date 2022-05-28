@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TinyGames.Engine.Scenes;
 using TinyGames.Engine.Graphics;
 using Microsoft.Xna.Framework;
+using System.Linq;
+using System.Diagnostics;
 
 namespace TinyGames.Engine.Scenes.Extensions
 {
@@ -32,17 +34,10 @@ namespace TinyGames.Engine.Scenes.Extensions
         public void Init(Scene scene)
         {
             Scene = scene;
-
-            // TODO all the drawables should register themselves, not the other way around.
-            Scene.OnGameObjectCreated += OnGameObjectCreated;
-            Scene.OnGameObjectDestroyed += OnGameObjectDestroyed;
         }
 
         public void Destroy()
         {
-            Scene.OnGameObjectCreated -= OnGameObjectCreated;
-            Scene.OnGameObjectDestroyed -= OnGameObjectDestroyed;
-
             Graphics.Dispose();
         }
 
@@ -56,31 +51,26 @@ namespace TinyGames.Engine.Scenes.Extensions
             // Do nothing
         }
 
-        public void OnGameObjectCreated(Scene scene, GameObject obj)
-        {
-            if (obj is IDrawable2D) AddManualDrawable(obj as IDrawable2D);
-        }
-        public void OnGameObjectDestroyed(Scene scene, GameObject obj)
-        {
-            if (obj is IDrawable2D) RemoveManualDrawable(obj as IDrawable2D);
-        }
-
         public void Draw()
         {
             Graphics.Begin(Camera.GetProjectionMatrix(), Camera.GetModelMatrix());
             Graphics.Clear(BackgroundColor);
+
+            _drawables = _drawables.OrderBy(x => x.LayerIndex).ToList();
 
             foreach (var drawable in _drawables) drawable.Draw(Graphics);
             
             Graphics.End();
         }
 
-        public void AddManualDrawable(IDrawable2D drawable)
+        public void AddDrawable(IDrawable2D drawable)
         {
+            Debug.Assert(!_drawables.Contains(drawable));
             _drawables.Add(drawable);
         }
-        public void RemoveManualDrawable(IDrawable2D drawable)
+        public void RemoveDrawable(IDrawable2D drawable)
         {
+            Debug.Assert(_drawables.Contains(drawable));
             _drawables.Remove(drawable);
         }
     }

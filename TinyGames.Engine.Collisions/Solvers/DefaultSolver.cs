@@ -17,7 +17,7 @@ namespace TinyGames.Engine.Collisions.Solvers
                 var boundsA = collision.BodyA;
                 var boundsB = collision.BodyB;
 
-                if (!boundsA.Solid && !boundsB.Solid) continue;
+                if (!boundsA.Solid || !boundsB.Solid) continue;
 
                 var relativePosition = (boundsB.Position + boundsB.UnstuckMotion) - (boundsA.Position + boundsA.UnstuckMotion);
 

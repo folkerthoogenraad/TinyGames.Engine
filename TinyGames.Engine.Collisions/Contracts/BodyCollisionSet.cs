@@ -4,6 +4,8 @@ using System.Text;
 
 using System.Linq;
 using System.Diagnostics;
+using TinyGames.Engine.Maths;
+using Microsoft.Xna.Framework;
 
 namespace TinyGames.Engine.Collisions.Contracts
 {
@@ -21,9 +23,10 @@ namespace TinyGames.Engine.Collisions.Contracts
                 var from = collision.BodyA;
                 var to = collision.BodyB;
 
-                var velocity = from.Velocity + to.Velocity;
+                var relativeVelocity = to.Velocity - from.Velocity;
 
-                yield return new BodyCollision(from.Body, to.Body, velocity);
+                yield return new BodyCollision(from.Body, to.Body, -relativeVelocity, from.UnstuckMotion.NormalizedOrDefault(new Vector2(1, 0)));
+                yield return new BodyCollision(to.Body, from.Body, relativeVelocity, to.UnstuckMotion.NormalizedOrDefault(new Vector2(1, 0)));
             }
         }
     }

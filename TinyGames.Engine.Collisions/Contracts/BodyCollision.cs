@@ -11,12 +11,14 @@ namespace TinyGames.Engine.Collisions.Contracts
         public PhysicsBody To;
 
         public Vector2 Velocity;
+        public Vector2 Normal;
 
-        public BodyCollision(PhysicsBody from, PhysicsBody to, Vector2 velocity)
+        public BodyCollision(PhysicsBody from, PhysicsBody to, Vector2 velocity, Vector2 normal)
         {
             From = from;
             To = to;
             Velocity = velocity;
+            Normal = normal;
         }
     }
 }

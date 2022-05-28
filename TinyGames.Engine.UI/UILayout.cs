@@ -12,7 +12,13 @@ namespace TinyGames.Engine.UI
         TopRight,
         BottomLeft,
         BottomRight,
-        Center
+        
+        Center,
+        
+        TopCenter,
+        BottomCenter,
+        LeftCenter,
+        RightCenter,
     }
 
     // TOOD this class is unused
@@ -29,7 +35,17 @@ namespace TinyGames.Engine.UI
 
         public void Anchor(UIComponent child, UIAnchor anchor, Vector2 offset)
         {
-            
+            Anchor(child, anchor, AABB.Create(offset, Vector2.Zero));
+        }
+
+        public void Anchor(UIComponent child, UIAnchor anchor, AABB bounds)
+        {
+            child.UpdateLayout(bounds.Translated(GetAnchor(anchor)));
+        }
+
+        public void Overlay(UIComponent child, float inset = 0)
+        {
+            child.UpdateLayout(_localBounds.Shrink(inset));
         }
 
         private Vector2 GetAnchor(UIAnchor anchor)
@@ -40,6 +56,13 @@ namespace TinyGames.Engine.UI
                 case UIAnchor.TopRight: return _localBounds.TopRight;
                 case UIAnchor.BottomLeft: return _localBounds.BottomLeft;
                 case UIAnchor.BottomRight: return _localBounds.BottomRight;
+
+                case UIAnchor.Center: return _localBounds.Center;
+
+                case UIAnchor.TopCenter: return _localBounds.TopCenter;
+                case UIAnchor.BottomCenter: return _localBounds.BottomCenter;
+                case UIAnchor.LeftCenter: return _localBounds.LeftCenter;
+                case UIAnchor.RightCenter: return _localBounds.RightCenter;
             };
 
             return _localBounds.Center;

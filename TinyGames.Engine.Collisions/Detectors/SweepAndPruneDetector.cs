@@ -40,7 +40,6 @@ namespace TinyGames.Engine.Collisions.Detectors
                 possibleCollisions.RemoveWhere(x => AABB.IsOnLeft(self.Bounds, x.Bounds));
 
                 // This can be one linq expression probably
-
                 foreach (var other in possibleCollisions
                     .Where(x => !(x.Static && self.Static))
                     .Where(x => AABB.Overlaps(x.Bounds, self.Bounds))
