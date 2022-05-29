@@ -28,7 +28,9 @@ namespace TinyGames.Engine.Graphics
 
         public Sprite GetSpriteByIndex(int index)
         {
-            return Sprites[index % Sprites.Length];
+            int idx = index % Sprites.Length;
+            if (idx < 0) idx += Sprites.Length;
+            return Sprites[idx];
         }
 
         public Animation SetFrameRate(float rate)

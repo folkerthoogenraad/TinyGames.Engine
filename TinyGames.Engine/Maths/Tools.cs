@@ -26,6 +26,19 @@ namespace TinyGames.Engine.Maths
             return a;
         }
 
+        public static float Clamp(float min, float max, float value)
+        {
+            if (value < min) return min;
+            if (value > max) return max;
+            return value;
+        }
+        public static float Clamp01(float value)
+        {
+            if (value < 0) return 0;
+            if (value > 1) return 1;
+            return value;
+        }
+
         public static Vector2 AngleVector(float angle)
         {
             return new Vector2(MathF.Cos(angle), MathF.Sin(angle));

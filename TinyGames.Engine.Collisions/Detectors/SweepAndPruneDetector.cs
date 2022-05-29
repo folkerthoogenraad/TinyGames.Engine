@@ -12,7 +12,7 @@ namespace TinyGames.Engine.Collisions.Detectors
     {
         public BodyCollisionSet Detect(IEnumerable<PhysicsBody> bodies)
         {
-            var bodyBounds = bodies.Select(x => new BodyBounds()
+            var bodyBounds = bodies.Where(x => !x.IgnoreCollisions).Select(x => new BodyBounds()
             {
                 Body = x,
                 Position = x.Position,
