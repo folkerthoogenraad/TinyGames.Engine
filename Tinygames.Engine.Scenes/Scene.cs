@@ -22,6 +22,7 @@ namespace TinyGames.Engine.Scenes
         public event SceneGameObjectDelegate OnGameObjectCreated;
         public event SceneGameObjectDelegate OnGameObjectDestroyed;
 
+
         public Scene(IServiceProvider services)
         {
             _gameObjects = new List<GameObject>();

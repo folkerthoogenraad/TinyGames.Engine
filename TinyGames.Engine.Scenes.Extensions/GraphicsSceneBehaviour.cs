@@ -25,7 +25,7 @@ namespace TinyGames.Engine.Scenes.Extensions
             _graphicsService = graphics;
             _drawables = new List<IDrawable2D>();
 
-            Camera = new Camera(_graphicsService.Height, _graphicsService.AspectRatio);
+            Camera = new Camera(_graphicsService.Height, _graphicsService.AspectRatio); // TODO this camera information should come from the scene somehow
             Graphics = new Graphics2D(_graphicsService.Device);
 
             BackgroundColor = Color.White;
@@ -80,6 +80,10 @@ namespace TinyGames.Engine.Scenes.Extensions
         public static GraphicsSceneBehaviour GetSceneGraphics(this Scene scene)
         {
             return scene.GetBehaviour<GraphicsSceneBehaviour>();
+        }
+        public static Camera GetCamera(this Scene scene)
+        {
+            return scene.GetSceneGraphics().Camera;
         }
     }
 }

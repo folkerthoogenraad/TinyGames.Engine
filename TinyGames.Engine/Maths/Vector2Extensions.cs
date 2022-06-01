@@ -46,5 +46,9 @@ namespace TinyGames.Engine.Maths
         {
             return MathF.Atan2(i.Y, i.X) * Tools.RadToDeg;
         }
+        public static bool IsNan(this Vector2 i)
+        {
+            return float.IsNaN(i.X) || float.IsNaN(i.Y);
+        }
     }
 }

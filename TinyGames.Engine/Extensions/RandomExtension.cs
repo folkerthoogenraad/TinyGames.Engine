@@ -32,11 +32,15 @@ namespace TinyGames.Engine.Extensions
             return input.Random(random);
         }
 
+        public static Vector2 NextPointInBox(this Random random, AABB box)
+        {
+            return new Vector2(random.NextFloatRange(box.Left, box.Right), random.NextFloatRange(box.Top, box.Bottom));
+        }
         public static Vector2 NextPointInBox(this Random random, float minX, float maxX, float minY, float maxY)
         {
             return new Vector2(random.NextFloatRange(minX, maxX), random.NextFloatRange(minY, maxY));
         }
-        public static Vector2 RandomPointInCircle(this Random random, Vector2 center, float radius)
+        public static Vector2 NextPointInCircle(this Random random, Vector2 center, float radius)
         {
             float r = radius * MathF.Sqrt(random.NextFloat());
             float angle = random.NextFloat() * MathF.PI * 2;
@@ -78,16 +82,16 @@ namespace TinyGames.Engine.Extensions
             (Triangle Triangle, float SurfaceArea)[] triangles = polygon.Triangles.Select(x => (x, x.SurfaceArea())).ToArray();
             float totalSurfaceArea = triangles.Sum(x => x.SurfaceArea);
 
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 float surface = random.NextFloat() * totalSurfaceArea;
                 int triangleIndex = 0;
 
-                while(surface > 0)
+                while (surface > 0)
                 {
                     surface -= triangles[triangleIndex].SurfaceArea;
 
-                    if(surface < 0)
+                    if (surface < 0)
                     {
                         yield return random.NextPointInTriangle(triangles[triangleIndex].Triangle);
                         break;
@@ -96,6 +100,24 @@ namespace TinyGames.Engine.Extensions
                     triangleIndex++;
                 }
             }
+        }
+
+        public static Vector2 NextPointOnBox(this Random random, AABB box)
+        {
+            float totalLength = box.Width * 2 + box.Height * 2;
+
+            float position = random.NextFloatRange(0, totalLength);
+
+            if (position < box.Width) return box.TopLeft + new Vector2(position, 0);
+            position -= box.Width;
+
+            if (position < box.Width) return box.BottomLeft + new Vector2(position, 0);
+            position -= box.Width;
+
+            if (position < box.Height) return box.TopLeft + new Vector2(0, position);
+            position -= box.Height;
+
+            return box.TopRight + new Vector2(0, position);
         }
     }
 }
