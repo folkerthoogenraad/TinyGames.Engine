@@ -412,15 +412,27 @@ namespace TinyGames.Engine.Graphics
             Device.Clear(ClearOptions.DepthBuffer, Color.Transparent, Device.Viewport.MaxDepth, 0);
         }
 
+        public void Begin()
+        {
+            if(RenderTarget == null)
+            {
+                Begin(Device.PresentationParameters.BackBufferWidth, Device.PresentationParameters.BackBufferHeight);
+            }
+            else
+            {
+                Begin(RenderTarget.Width, RenderTarget.Height);
+            }
+        }
+        public void Begin(int width, int height, int near = -1000, int far = 1000)
+        {
+            Begin(Matrix.CreateOrthographicOffCenter(0, width, height, 0, near, far));
+        }
+
         public void Begin(Matrix projection)
         {
-            Drawing = true;
-            VertexIndex = 0;
-
-            TransformStack.Clear();
-            Matrix = Matrix.Identity;
-            ProjectionMatrix = projection; //Matrix.CreateOrthographicOffCenter(0, Device.PresentationParameters.BackBufferWidth, Device.PresentationParameters.BackBufferHeight, 0, -100, 100);
+            Begin(projection, Matrix.Identity);
         }
+
         public void Begin(Matrix projection, Matrix model)
         {
             Drawing = true;
@@ -428,7 +440,7 @@ namespace TinyGames.Engine.Graphics
 
             TransformStack.Clear();
             Matrix = model;
-            ProjectionMatrix = projection; //Matrix.CreateOrthographicOffCenter(0, Device.PresentationParameters.BackBufferWidth, Device.PresentationParameters.BackBufferHeight, 0, -100, 100);
+            ProjectionMatrix = projection;
         }
 
         public void Push()
@@ -578,6 +590,12 @@ namespace TinyGames.Engine.Graphics
 
         public void SetRenderTarget(RenderTarget2D target)
         {
+            if (Drawing)
+            {
+                // Actually this is completely possible because of the flush.
+                // But this messes up your projection matrix, because that is not made for this rendertarget.
+                throw new ApplicationException("Cannot set render target while drawing");
+            }
             if(RenderTarget != target)
             {
                 Flush();
