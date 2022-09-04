@@ -2,7 +2,25 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<Version>0.0.1</Version>
+	<Company>JustF Games</Company>
+	<Authors>Folkert Hoogenraad</Authors>
+	<Description>A package with helpers</Description>
+	<PackageProjectUrl></PackageProjectUrl>
+	<RepositoryUrl>https://github.com/folkerthoogenraad/TinyGames.Engine</RepositoryUrl>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<RepositoryType>git</RepositoryType>
+	<PackageTags>Monogame;Engine;Helper;Graphics;Drawing</PackageTags>
+
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\docs\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
