@@ -15,9 +15,13 @@ namespace TinyGames.Engine
     {
         public GraphicsDeviceManager GraphicsDeviceManager { get; set; }
 
+        public Vector2 WindowSize => new Vector2(WindowWidth, WindowHeight);
+        public float WindowAspectRatio => ScreenWidth / (float)ScreenHeight;
         public int WindowWidth => GraphicsDevice.PresentationParameters.BackBufferWidth;
         public int WindowHeight => GraphicsDevice.PresentationParameters.BackBufferHeight;
 
+        public Vector2 ScreenSize => new Vector2(ScreenWidth, ScreenHeight);
+        public float ScreenAspectRatio => ScreenWidth / (float)ScreenHeight;
         public int ScreenWidth => GraphicsDevice.Adapter.CurrentDisplayMode.Width;
         public int ScreenHeight => GraphicsDevice.Adapter.CurrentDisplayMode.Height;
 

@@ -28,6 +28,7 @@ namespace TinyGames.Engine.Graphics
         private DepthStencilState DepthStencilState;
         private BlendState BlendState;
         private RasterizerState RasterizerState;
+        private SamplerState SamplerState;
 
         private BlendMode CurrentBlendMode;
 
@@ -89,6 +90,20 @@ namespace TinyGames.Engine.Graphics
             {
                 CullMode = CullMode.None,
                 MultiSampleAntiAlias = true,
+            };
+
+            SamplerState = new SamplerState()
+            {
+                Filter = TextureFilter.Point,
+                AddressU = TextureAddressMode.Clamp,
+                AddressV = TextureAddressMode.Clamp,
+                AddressW = TextureAddressMode.Clamp,
+                BorderColor = Color.White,
+                MaxAnisotropy = 4,
+                MaxMipLevel = 0,
+                MipMapLevelOfDetailBias = 0.0f,
+                ComparisonFunction = CompareFunction.Never,
+                FilterMode = TextureFilterMode.Default
             };
         }
 
@@ -530,7 +545,7 @@ namespace TinyGames.Engine.Graphics
 
             if (VertexIndex <= 0) return;
 
-            Device.SamplerStates[0] = SamplerState.PointWrap;
+            Device.SamplerStates[0] = SamplerState;
             
             Device.RasterizerState = RasterizerState;
             Device.DepthStencilState = DepthStencilState;
@@ -609,6 +624,16 @@ namespace TinyGames.Engine.Graphics
             SetRenderTarget(null);
         }
 
+        public void SetTextureInterpolationMode(TextureFilter filter, TextureAddressMode addressMode = TextureAddressMode.Clamp)
+        {
+            Flush();
+
+            SamplerState.Filter = filter;
+            SamplerState.AddressU = addressMode;
+            SamplerState.AddressV = addressMode;
+            SamplerState.AddressW = addressMode;
+        }
+
         public void SetBlendMode(BlendMode mode)
         {
             if (CurrentBlendMode == mode) return;
@@ -662,7 +687,6 @@ namespace TinyGames.Engine.Graphics
                     break;
             }
         }
-
         private void Vertex(Vector3 pos, Vector2 uv, Color blend)
         {
             Vertices[VertexIndex].Position = pos;
@@ -671,12 +695,10 @@ namespace TinyGames.Engine.Graphics
 
             VertexIndex++;
         }
-
         private void SetPixelTexture(int index = 0)
         {
             SetTexture(Pixel, index);
         }
-
         private void SetTexture(Texture2D texture, int index = 0)
         {
             // Idk if getting texture does stuff with video memory, if so i need to cache this
@@ -686,7 +708,6 @@ namespace TinyGames.Engine.Graphics
 
             Textures[index] = texture;
         }
-        
         public void SetShader(Effect effect)
         {
             if (effect == null) effect = DefaultEffect;
@@ -699,10 +720,34 @@ namespace TinyGames.Engine.Graphics
         {
             SetShader(null);
         }
-
         private int VerticesLeftUntilFlush()
         {
             return Vertices.Length - VertexIndex - 1;
+        }
+
+        public void SetSamplerState(SamplerState state)
+        {
+            Flush();
+
+            SamplerState = state;
+        }
+        public void SetRasterizerState(RasterizerState state)
+        {
+            Flush();
+
+            RasterizerState = state;
+        }
+        public void SetBlendState(BlendState state)
+        {
+            Flush();
+
+            BlendState = state;
+        }
+        public void SetDepthStencilState(DepthStencilState state)
+        {
+            Flush();
+
+            DepthStencilState = state;
         }
 
         public void Dispose()
