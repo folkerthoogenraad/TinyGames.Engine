@@ -44,6 +44,17 @@ namespace TinyGames.Engine.Maths
             return new Vector2(MathF.Cos(angle), MathF.Sin(angle));
         }
 
+        public static Vector2 RotateVector(Vector2 v, float angle)
+        {
+            float sin = MathF.Sin(angle);
+            float cos = MathF.Cos(angle);
+
+            return new Vector2(
+                v.X * cos + v.Y * -sin,
+                v.X * sin + v.Y * cos
+                );
+        }
+
         public static bool IsPowerOfTwo(int x)
         {
             return (x & (x - 1)) == 0;

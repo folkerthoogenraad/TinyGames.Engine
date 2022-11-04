@@ -504,6 +504,10 @@ namespace TinyGames.Engine.Maths
             };
         }
 
+        public override string ToString()
+        {
+            return $"{{Left={Left}, Right={Right} Top={Top}, Bottom={Bottom}}}";
+        }
         public override int GetHashCode()
         {
             return HashCode.Combine(Left, Right, Top, Bottom);

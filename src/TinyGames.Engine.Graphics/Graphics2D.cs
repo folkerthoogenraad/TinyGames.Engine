@@ -13,6 +13,7 @@ namespace TinyGames.Engine.Graphics
         Additive,
         Multiply
     }
+
     public class Graphics2D : IDisposable
     {
         public GraphicsDevice Device { get; set; }
@@ -180,6 +181,11 @@ namespace TinyGames.Engine.Graphics
 
         public void DrawTexture(Texture2D texture, Vector2 position, Vector2 size, float depth = 0)
         {
+            DrawTexture(texture, position, size, Color.White, depth);
+        }
+
+        public void DrawTexture(Texture2D texture, Vector2 position, Vector2 size, Color blend, float depth = 0)
+        {
             if (VertexIndex >= Vertices.Length - 6) Flush();
 
             SetTexture(texture);
@@ -193,13 +199,13 @@ namespace TinyGames.Engine.Graphics
 
             Vector3 pos = new Vector3(position, depth);
 
-            Vertex(pos + new Vector3(0, 0, 0), new Vector2(0, 0), Color.White);
-            Vertex(pos + new Vector3(size.X, 0, 0), new Vector2(1, 0), Color.White);
-            Vertex(pos + new Vector3(size.X, size.Y, 0), new Vector2(1, 1), Color.White);
+            Vertex(pos + new Vector3(0, 0, 0), new Vector2(0, 0), blend);
+            Vertex(pos + new Vector3(size.X, 0, 0), new Vector2(1, 0), blend);
+            Vertex(pos + new Vector3(size.X, size.Y, 0), new Vector2(1, 1), blend);
 
-            Vertex(pos + new Vector3(0, 0, 0), new Vector2(0, 0), Color.White);
-            Vertex(pos + new Vector3(size.X, size.Y, 0), new Vector2(1, 1), Color.White);
-            Vertex(pos + new Vector3(0, size.Y, 0), new Vector2(0, 1), Color.White);
+            Vertex(pos + new Vector3(0, 0, 0), new Vector2(0, 0), blend);
+            Vertex(pos + new Vector3(size.X, size.Y, 0), new Vector2(1, 1), blend);
+            Vertex(pos + new Vector3(0, size.Y, 0), new Vector2(0, 1), blend);
         }
 
         public void DrawTextureRegion(Texture2D texture, Rectangle sourceRectangle, Vector2 position, Vector2 size, float depth = 0)
@@ -299,7 +305,6 @@ namespace TinyGames.Engine.Graphics
         {
             DrawRectangle(new Vector2(x, y), new Vector2(w, h), color, depth);
         }
-
         public void DrawRectangle(AABB bounds, Color color, float depth = 0)
         {
             DrawRectangle(bounds.TopLeft, bounds.Size, color, depth);
@@ -387,7 +392,7 @@ namespace TinyGames.Engine.Graphics
 
         public void DrawCircle(Vector2 pos, float radius, Color color, float depth = 0, int subdivisions = 32)
         {
-            if (VertexIndex >= Vertices.Length - subdivisions * 3) Flush();
+            if (VertexIndex >= Vertices.Length - subdivisions * 6) Flush();
 
             float radiansPerSubdivision = MathF.PI * 2 / subdivisions;
 
@@ -395,14 +400,57 @@ namespace TinyGames.Engine.Graphics
 
             SetPixelTexture();
 
-            for (int i = 0; i < subdivisions; i++)
+            float previousSin = 0;
+            float previousCos = 1;
+
+            for (int i = 1; i <= subdivisions; i++)
             {
-                float radStart = i * radiansPerSubdivision; //bro
-                float radEnd = (i + 1) * (radiansPerSubdivision);
+                float rad = i * radiansPerSubdivision;
+
+                float sin = MathF.Sin(rad);
+                float cos = MathF.Cos(rad);
 
                 Vertex(center, Vector2.Zero, color);
-                Vertex(center + new Vector3(MathF.Cos(radStart) * radius, MathF.Sin(radStart) * radius, depth), Vector2.Zero, color);
-                Vertex(center + new Vector3(MathF.Cos(radEnd) * radius, MathF.Sin(radEnd) * radius, depth), Vector2.Zero, color);
+                Vertex(center + new Vector3(previousCos * radius, previousSin * radius, depth), Vector2.Zero, color);
+                Vertex(center + new Vector3(cos * radius, sin * radius, depth), Vector2.Zero, color);
+
+                previousSin = sin;
+                previousCos = cos;
+            }
+        }
+
+        public void DrawDonut(Vector2 pos, float innerRadius, float outerRadius, Color color, float depth = 0, int subdivisions = 32)
+        {
+            if (VertexIndex >= Vertices.Length - subdivisions * 6) Flush();
+
+            float radiansPerSubdivision = MathF.PI * 2 / subdivisions;
+
+            Vector3 center = new Vector3(pos.X, pos.Y, depth);
+
+            SetPixelTexture();
+
+            float previousSin = 0;
+            float previousCos = 1;
+
+            for (int i = 1; i <= subdivisions; i++)
+            {
+                float rad = i * radiansPerSubdivision;
+
+                float sin = MathF.Sin(rad);
+                float cos = MathF.Cos(rad);
+
+                // triangle A
+                Vertex(center + new Vector3(previousCos * innerRadius, previousSin * innerRadius, depth), Vector2.Zero, color);
+                Vertex(center + new Vector3(previousCos * outerRadius, previousSin * outerRadius, depth), Vector2.Zero, color);
+                Vertex(center + new Vector3(cos * outerRadius, sin * outerRadius, depth), Vector2.Zero, color);
+
+                // Triangle B
+                Vertex(center + new Vector3(previousCos * innerRadius, previousSin * innerRadius, depth), Vector2.Zero, color);
+                Vertex(center + new Vector3(cos * outerRadius, sin * outerRadius, depth), Vector2.Zero, color);
+                Vertex(center + new Vector3(cos * innerRadius, sin * innerRadius, depth), Vector2.Zero, color);
+
+                previousSin = sin;
+                previousCos = cos;
             }
         }
 
@@ -510,6 +558,23 @@ namespace TinyGames.Engine.Graphics
             Matrix = matrix;
         }
 
+        public void DrawRaw(Span<VertexPositionColorTexture> vertices)
+        {
+            DrawRaw(vertices, Pixel);
+        }
+
+        public void DrawRaw(Span<VertexPositionColorTexture> vertices, Texture2D texture)
+        {
+            SetTexture(texture);
+
+            if (VerticesLeftUntilFlush() < vertices.Length) Flush();
+
+            foreach (var vertex in vertices)
+            {
+                Vertex(vertex);
+            }
+        }
+
         public void DrawRaw(IEnumerable<VertexPositionColorTexture> vertices)
         {
             DrawRaw(vertices, Pixel);
@@ -523,7 +588,7 @@ namespace TinyGames.Engine.Graphics
 
             foreach(var vertex in vertices)
             {
-                Vertex(vertex.Position, vertex.TextureCoordinate, vertex.Color);
+                Vertex(vertex);
             }
         }
 
@@ -692,6 +757,12 @@ namespace TinyGames.Engine.Graphics
             Vertices[VertexIndex].Position = pos;
             Vertices[VertexIndex].Color = blend;
             Vertices[VertexIndex].TextureCoordinate = uv;
+
+            VertexIndex++;
+        }
+        private void Vertex(VertexPositionColorTexture vertex)
+        {
+            Vertices[VertexIndex] = vertex;
 
             VertexIndex++;
         }

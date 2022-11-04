@@ -20,7 +20,7 @@ namespace TinyGames.Engine.Graphics.Fonts
         public int Advance { get; set; }
     }
 
-    public class Font
+    public class Font : IFont
     {
         private Texture2D _texture;
         private Dictionary<char, Glyph> _glyphs;
